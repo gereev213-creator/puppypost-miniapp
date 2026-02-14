@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PuppyPost</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8E8E8;--acc:#FF5722;--acc2:#FF7043;--dk:#2C2C2C;--gr:#888;--lg:#bbb;--gn:#4CAF50;--yl:#FFC107;--rd:#F44336;--sl:-6px -6px 14px rgba(255,255,255,.85);--sd:6px 6px 14px rgba(0,0,0,.13);--sh:var(--sl),var(--sd);--il:inset -4px -4px 8px rgba(255,255,255,.8);--id:inset 4px 4px 8px rgba(0,0,0,.1);--ins:var(--il),var(--id);--r:20px;--rs:14px;--rp:50px}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden;color:var(--dk)}
+::-webkit-scrollbar{width:0}
+.screen{display:none;min-height:100vh;padding-bottom:90px;animation:fi .22s ease}
+.screen.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.hdr{position:sticky;top:0;z-index:100;background:var(--bg);padding:14px 18px 10px;display:flex;align-items:center;gap:10px}
+.hdr-logo{display:flex;align-items:center;gap:10px;flex:1}
+.logo-ic{width:40px;height:40px;background:var(--bg);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);font-size:18px}
+.logo-nm{font-size:20px;font-weight:900;color:var(--dk)}
+.logo-nm span{color:var(--acc)}
+.hbtn{width:40px;height:40px;background:var(--bg);border-radius:12px;border:none;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);font-size:17px;cursor:pointer;transition:all .2s;position:relative;font-family:'Nunito',sans-serif}
+.hbtn:active{box-shadow:var(--ins);transform:scale(.95)}
+.bdot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--acc);border-radius:50%;box-shadow:0 0 6px rgba(255,87,34,.7)}
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--bg);padding:8px 6px 18px;display:flex;align-items:center;justify-content:space-around;box-shadow:0 -6px 24px rgba(0,0,0,.07);border-radius:26px 26px 0 0}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 14px;border-radius:var(--rs);cursor:pointer;transition:all .2s;flex:1;background:transparent;border:none}
+.ni .ic{font-size:21px;transition:transform .2s}
+.ni .lb{font-size:10px;font-weight:700;color:var(--lg);transition:color .2s;font-family:'Nunito',sans-serif}
+.ni.active{background:var(--bg);box-shadow:var(--sh)}
+.ni.active .lb{color:var(--acc)}
+.ni.active .ic{transform:scale(1.15)}
+.card{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:18px}
+.ci{background:var(--bg);border-radius:var(--r);box-shadow:var(--ins);padding:14px}
+.btn{width:100%;padding:15px;border:none;border-radius:var(--rp);font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif}
+.ba{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 8px 20px rgba(255,87,34,.3)}
+.ba:active{transform:scale(.97);box-shadow:0 4px 12px rgba(255,87,34,.2)}
+.bn{background:var(--bg);color:var(--acc);box-shadow:var(--sh)}
+.bn:active{box-shadow:var(--ins);transform:scale(.97)}
+.inp{width:100%;padding:13px 16px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--ins);font-size:15px;font-weight:600;color:var(--dk);font-family:'Nunito',sans-serif;outline:none}
+.inp::placeholder{color:var(--lg)}
+.txta{width:100%;padding:13px 16px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--ins);font-size:14px;font-weight:600;color:var(--dk);font-family:'Nunito',sans-serif;outline:none;resize:none;min-height:88px}
+.flb{font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block}
+.fgr{margin-bottom:18px}
+.pc{padding:0 18px}
+.stl{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:14px;padding:0 18px}
+.sinp{width:100%;padding:13px 16px 13px 42px;background:var(--bg);border:none;border-radius:var(--rp);box-shadow:var(--ins);font-size:15px;font-weight:600;color:var(--dk);font-family:'Nunito',sans-serif;outline:none}
+.sinp::placeholder{color:var(--lg)}
+.csc{display:flex;gap:8px;padding:0 18px 18px;overflow-x:auto;scrollbar-width:none}
+.cc{flex-shrink:0;padding:9px 16px;background:var(--bg);border-radius:var(--rp);box-shadow:var(--sh);font-size:13px;font-weight:700;color:var(--gr);cursor:pointer;transition:all .2s;border:none;font-family:'Nunito',sans-serif;white-space:nowrap}
+.cc.active{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 6px 14px rgba(255,87,34,.3)}
+.acard{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:14px;cursor:pointer;transition:all .2s}
+.acard:active{transform:scale(.98)}
+.aimg{width:100%;height:170px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;font-size:54px;position:relative}
+.pinb{position:absolute;top:10px;left:10px;background:var(--dk);color:#fff;font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px}
+.ab{padding:14px}
+.acat{font-size:11px;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.atl{font-size:16px;font-weight:800;color:var(--dk);margin-bottom:7px;line-height:1.3}
+.ame{display:flex;align-items:center;justify-content:space-between}
+.apr{font-size:21px;font-weight:900;color:var(--acc)}
+.ain{font-size:12px;font-weight:600;color:var(--gr)}
+.ata{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tag{padding:3px 9px;background:var(--bg);border-radius:18px;font-size:11px;font-weight:700;color:var(--gr);box-shadow:var(--sh)}
+.hsc{display:flex;gap:12px;padding:0 18px 4px;overflow-x:auto;scrollbar-width:none}
+.hac{flex-shrink:0;width:190px;background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;cursor:pointer;transition:all .2s}
+.hac:active{transform:scale(.97)}
+.hai{height:120px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;font-size:38px}
+.hab{padding:10px}
+.hat{font-size:13px;font-weight:800;color:var(--dk);margin-bottom:3px;line-height:1.2}
+.hap{font-size:15px;font-weight:900;color:var(--acc)}
+.mac{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:14px;margin-bottom:12px;display:flex;gap:12px;cursor:pointer;transition:all .2s}
+.mac:active{transform:scale(.98)}
+.mat{width:68px;height:68px;border-radius:var(--rs);background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.mai{flex:1;min-width:0}
+.matl{font-size:14px;font-weight:800;color:var(--dk);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map{font-size:16px;font-weight:900;color:var(--acc);margin-bottom:4px}
+.mas{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:18px;font-size:10px;font-weight:800}
+.sa{background:rgba(76,175,80,.12);color:var(--gn)}
+.sm{background:rgba(255,193,7,.15);color:var(--yl)}
+.si{background:rgba(0,0,0,.06);color:var(--gr)}
+.mav{font-size:11px;font-weight:600;color:var(--lg);margin-top:3px}
+.tabs{display:flex;gap:7px;padding:0 18px 18px}
+.tb{flex:1;padding:10px;background:var(--bg);border:none;border-radius:var(--rs);font-size:11px;font-weight:800;color:var(--gr);cursor:pointer;box-shadow:var(--sh);transition:all .2s;font-family:'Nunito',sans-serif}
+.tb.active{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 6px 14px rgba(255,87,34,.25)}
+.ph{background:var(--bg);margin:0 18px 18px;border-radius:var(--r);box-shadow:var(--sh);padding:22px;display:flex;align-items:center;gap:16px}
+.pav{width:66px;height:66px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;box-shadow:0 8px 18px rgba(255,87,34,.3)}
+.pnm{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:3px}
+.psi{font-size:12px;font-weight:600;color:var(--gr);margin-bottom:7px}
+.tpl{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:18px;font-size:10px;font-weight:800;color:#fff;text-transform:uppercase}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 18px;margin-bottom:18px}
+.si2{background:var(--bg);border-radius:var(--r);padding:16px;box-shadow:var(--sh);text-align:center}
+.sv{font-size:26px;font-weight:900;color:var(--acc);line-height:1;margin-bottom:3px}
+.sl{font-size:11px;font-weight:700;color:var(--gr);text-transform:uppercase;letter-spacing:.4px}
+.ir{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer;transition:background .15s}
+.ir:active{background:rgba(0,0,0,.02)}
+.irl{display:flex;align-items:center;gap:11px}
+.iric{font-size:19px;width:30px;text-align:center}
+.irlb{font-size:15px;font-weight:700;color:var(--dk)}
+.irv{font-size:14px;font-weight:700;color:var(--gr)}
+.ira{color:var(--lg);font-size:16px;margin-left:5px}
+.prc{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
+.prc.ft{background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 12px 28px rgba(255,87,34,.3)}
+.prb{display:inline-block;padding:4px 11px;border-radius:18px;font-size:10px;font-weight:800;text-transform:uppercase;background:rgba(255,87,34,.12);color:var(--acc);margin-bottom:10px}
+.prc.ft .prb{background:rgba(255,255,255,.25);color:#fff}
+.prn{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:3px}
+.prc.ft .prn{color:#fff}
+.prp{font-size:34px;font-weight:900;color:var(--acc);line-height:1}
+.prc.ft .prp{color:#fff}
+.prp span{font-size:16px;font-weight:600;color:var(--gr)}
+.prc.ft .prp span{color:rgba(255,255,255,.75)}
+.prpe{font-size:13px;font-weight:600;color:var(--gr);margin-bottom:14px}
+.prc.ft .prpe{color:rgba(255,255,255,.85)}
+.fl{list-style:none;margin-bottom:18px}
+.fl li{padding:5px 0;font-size:13px;font-weight:600;color:#666;padding-left:20px;position:relative}
+.fl li::before{content:'✓';position:absolute;left:0;color:var(--acc);font-weight:900}
+.prc.ft .fl li{color:rgba(255,255,255,.9)}
+.prc.ft .fl li::before{color:#fff}
+.pot{position:absolute;top:-1px;right:18px;background:var(--dk);color:#fff;padding:4px 12px;border-radius:0 0 12px 12px;font-size:10px;font-weight:800;text-transform:uppercase}
+.fst{display:none}
+.fst.active{display:block}
+.sti{display:flex;align-items:center;gap:5px;padding:0 18px 18px}
+.sdt{height:4px;border-radius:2px;background:var(--bg);box-shadow:var(--ins);flex:1;transition:all .3s}
+.sdt.done{background:var(--acc);box-shadow:0 2px 6px rgba(255,87,34,.3)}
+.cgr{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.cbtn{padding:18px 14px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--sh);display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif}
+.cbtn:active{box-shadow:var(--ins);transform:scale(.96)}
+.cbtn.sel{background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 8px 18px rgba(255,87,34,.3)}
+.cbtn .ce{font-size:30px}
+.cbtn .cn{font-size:13px;font-weight:800;color:var(--dk)}
+.cbtn.sel .cn{color:#fff}
+.chrow{display:flex;gap:8px;flex-wrap:wrap}
+.ch{flex-shrink:0;padding:8px 14px;background:var(--bg);border-radius:var(--rp);box-shadow:var(--sh);font-size:13px;font-weight:700;color:var(--gr);cursor:pointer;transition:all .2s;border:none;font-family:'Nunito',sans-serif}
+.ch.active{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 5px 12px rgba(255,87,34,.28)}
+.adi{width:100%;height:240px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;font-size:74px}
+.adb{padding:18px}
+.adp{font-size:30px;font-weight:900;color:var(--acc);margin-bottom:5px}
+.adt{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:14px}
+.adr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.adr:last-of-type{border-bottom:none}
+.adri{font-size:17px;width:26px;text-align:center}
+.adrt{font-size:14px;font-weight:600;color:var(--dk)}
+.adrk{font-size:11px;font-weight:700;color:var(--gr)}
+.actr{display:flex;gap:10px;margin-top:18px}
+.fab2{width:52px;height:52px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:16px;border:none;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 8px 20px rgba(255,87,34,.32);transition:all .2s;flex-shrink:0}
+.fab2:active{transform:scale(.92)}
+.rfb{background:var(--bg);border-radius:var(--r);box-shadow:var(--ins);padding:13px 16px;margin-bottom:18px;font-size:13px;font-weight:700;color:var(--gr);word-break:break-all;line-height:1.5}
+.rc{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.rav{width:46px;height:46px;background:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--sh);flex-shrink:0}
+.ri{flex:1}
+.rn{font-size:14px;font-weight:800;color:var(--dk);margin-bottom:2px}
+.rd{font-size:12px;font-weight:600;color:var(--gr)}
+.rr{font-size:17px;font-weight:900;color:var(--acc)}
+.pm{width:100%;padding:15px 18px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--sh);display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;margin-bottom:11px;font-family:'Nunito',sans-serif;text-align:left}
+.pm:active{box-shadow:var(--ins);transform:scale(.98)}
+.pmi{font-size:24px}
+.pml{font-size:15px;font-weight:800;color:var(--dk)}
+.pms{font-size:12px;font-weight:600;color:var(--gr)}
+.pma{margin-left:auto;color:var(--lg);font-size:18px}
+.emt{text-align:center;padding:50px 20px}
+.ei{font-size:56px;margin-bottom:14px}
+.et{font-size:19px;font-weight:900;color:var(--dk);margin-bottom:7px}
+.es{font-size:14px;font-weight:600;color:var(--gr);line-height:1.5}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dk);color:#fff;padding:11px 22px;border-radius:var(--rp);font-size:14px;font-weight:700;z-index:999;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.ov.open{display:flex;animation:ofi .2s ease}
+@keyframes ofi{from{opacity:0}to{opacity:1}}
+.modal{background:var(--bg);border-radius:28px 28px 0 0;width:100%;max-width:600px;padding:24px 20px 36px;animation:msi .2s ease;max-height:90vh;overflow-y:auto}
+@keyframes msi{from{transform:translateY(30px)}to{transform:translateY(0)}}
+.mh{width:40px;height:4px;background:var(--lg);border-radius:2px;margin:0 auto 20px}
+.mt{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:18px}
+.wh{margin:0 18px 22px;padding:26px 22px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:var(--r);box-shadow:0 12px 28px rgba(255,87,34,.3);color:#fff;position:relative;overflow:hidden}
+.wh::after{content:'🐶';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:60px;opacity:.25}
+.wg{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:5px}
+.wn{font-size:24px;font-weight:900;margin-bottom:3px}
+.ws{font-size:13px;font-weight:600;color:rgba(255,255,255,.8)}
+.qg{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 18px 22px}
+.qb{background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--sh);padding:16px 14px;display:flex;flex-direction:column;align-items:flex-start;gap:7px;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif}
+.qb:active{box-shadow:var(--ins);transform:scale(.97)}
+.qi{font-size:24px}
+.ql{font-size:13px;font-weight:800;color:var(--dk)}
+.qs{font-size:11px;font-weight:600;color:var(--gr)}
+.bb{background:none;border:none;font-size:22px;cursor:pointer;padding:4px;border-radius:10px;transition:all .2s}
+.bb:active{transform:scale(.88)}
+.pgr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.psl{aspect-ratio:1;background:var(--bg);border-radius:var(--rs);box-shadow:var(--ins);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;position:relative;overflow:hidden}
+.psl img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.psl .rmv{position:absolute;top:4px;right:4px;width:20px;height:20px;background:var(--rd);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:900;cursor:pointer;z-index:1}
+.psl.add{box-shadow:var(--sh)}
+.pinc{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:18px;margin-bottom:14px}
+.pinh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pint{font-size:16px;font-weight:900;color:var(--dk)}
+.pinbg{padding:4px 10px;background:rgba(255,87,34,.1);color:var(--acc);border-radius:18px;font-size:11px;font-weight:800}
+.ptr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.ptr:last-child{border-bottom:none}
+.pti{font-size:20px;width:30px;text-align:center}
+.ptin{flex:1}
+.ptn{font-size:14px;font-weight:800;color:var(--dk)}
+.ptd{font-size:12px;font-weight:600;color:var(--gr)}
+.ptv{font-size:14px;font-weight:900;color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: AD ACTIONS -->
+<div class="ov" id="mod-actions">
+  <div class="modal">
+    <div class="mh"></div>
+    <div class="mt" id="mod-act-title">Действия</div>
+    <button class="pm" id="btn-pin" onclick="doPin()"><span class="pmi">📌</span><div><div class="pml">Закрепить объявление</div><div class="pms" id="btn-pin-sub">Поднять в топ поиска</div></div><span class="pma">›</span></button>
+    <button class="pm" id="btn-deact" onclick="doDeact()"><span class="pmi">🚫</span><div><div class="pml">Снять с публикации</div><div class="pms">Скрыть объявление</div></div><span class="pma">›</span></button>
+    <button class="pm" id="btn-react" style="display:none" onclick="doReact()"><span class="pmi">✅</span><div><div class="pml">Опубликовать снова</div><div class="pms">Отправить на модерацию</div></div><span class="pma">›</span></button>
+    <button class="pm" id="btn-edit" onclick="doEdit()"><span class="pmi">✏️</span><div><div class="pml">Редактировать</div><div class="pms">Изменить цену, описание, контакт</div></div><span class="pma">›</span></button>
+    <button class="pm" onclick="doDel()"><span class="pmi">🗑️</span><div><div class="pml" style="color:var(--rd)">Удалить полностью</div><div class="pms">Без возможности восстановления</div></div><span class="pma">›</span></button>
+    <button class="btn bn" onclick="closeModal('mod-actions')" style="margin-top:6px">Отмена</button>
+  </div>
+</div>
+
+<!-- MODAL: EDIT AD -->
+<div class="ov" id="mod-edit">
+  <div class="modal">
+    <div class="mh"></div>
+    <div class="mt">✏️ Редактирование</div>
+    <div class="fgr"><label class="flb">💰 Новая цена (₽)</label><input class="inp" id="edit-price" type="number" placeholder="Введите цену"></div>
+    <div class="fgr"><label class="flb">📝 Описание</label><textarea class="txta" id="edit-desc" placeholder="Описание товара"></textarea></div>
+    <div class="fgr"><label class="flb">📞 Контакт</label><input class="inp" id="edit-contact" placeholder="@username или телефон"></div>
+    <button class="btn ba" onclick="saveEdit()">💾 Сохранить изменения</button>
+    <button class="btn bn" onclick="closeModal('mod-edit')" style="margin-top:10px">Отмена</button>
+  </div>
+</div>
+
+<!-- MODAL: PAYMENT -->
+<div class="ov" id="mod-pay">
+  <div class="modal">
+    <div class="mh"></div>
+    <div class="mt" id="mod-pay-title">Оплата тарифа</div>
+    <div id="mod-pay-amount" style="font-size:30px;font-weight:900;color:var(--acc);margin-bottom:4px"></div>
+    <div id="mod-pay-sub" style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:18px"></div>
+    <div class="fgr">
+      <label class="flb">🎟 Промокод (необязательно)</label>
+      <div style="display:flex;gap:8px">
+        <input class="inp" id="promo-inp" placeholder="Введите промокод" style="flex:1;text-transform:uppercase">
+        <button class="btn ba" style="width:auto;padding:13px 16px;font-size:13px" onclick="checkPromo()">Применить</button>
+      </div>
+      <div id="promo-res" style="margin-top:8px;font-size:13px;font-weight:700"></div>
+    </div>
+    <button class="pm" onclick="payMethod('yoomoney')"><span class="pmi">💳</span><div><div class="pml">YooMoney</div><div class="pms">Онлайн-оплата</div></div><span class="pma">→</span></button>
+    <button class="pm" onclick="payMethod('crypto')"><span class="pmi">₿</span><div><div class="pml">Криптовалюта</div><div class="pms">USDT / TON</div></div><span class="pma">→</span></button>
+    <button class="pm" onclick="payMethod('tinkoff')"><span class="pmi">🏦</span><div><div class="pml">Тинькофф</div><div class="pms">Перевод на карту</div></div><span class="pma">→</span></button>
+    <button class="pm" onclick="payMethod('balance')"><span class="pmi">💰</span><div><div class="pml">Реферальный баланс</div><div class="pms" id="bal-sub">Баланс: 750₽</div></div><span class="pma">→</span></button>
+    <div id="receipt-sec" style="display:none;margin-top:14px">
+      <label class="flb">📸 Чек об оплате</label>
+      <div id="receipt-prev" style="width:100%;height:110px;background:var(--bg);border-radius:var(--r);box-shadow:var(--ins);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gr);cursor:pointer;margin-bottom:12px" onclick="document.getElementById('rec-file').click()">📎 Нажмите для загрузки чека</div>
+      <input type="file" id="rec-file" accept="image/*" style="display:none" onchange="handleReceipt(this)">
+      <button class="btn ba" onclick="submitPayment()">✅ Отправить на проверку</button>
+    </div>
+    <button class="btn bn" onclick="closeModal('mod-pay')" style="margin-top:10px">Отмена</button>
+  </div>
+</div>
+
+<!-- MODAL: CONFIRM DELETE -->
+<div class="ov" id="mod-del">
+  <div class="modal">
+    <div class="mh"></div>
+    <div class="mt">🗑️ Удалить объявление?</div>
+    <p style="font-size:14px;font-weight:600;color:var(--gr);margin-bottom:22px;line-height:1.6" id="del-text">Это действие необратимо. Объявление будет удалено навсегда.</p>
+    <button class="btn ba" style="background:var(--rd);box-shadow:0 8px 18px rgba(244,67,54,.3);margin-bottom:10px" onclick="confirmDelete()">🗑️ Да, удалить</button>
+    <button class="btn bn" onclick="closeModal('mod-del')">Отмена</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: HOME ═══ -->
+<div class="screen active" id="sc-home">
+  <div class="hdr"><div class="hdr-logo"><div class="logo-ic">🐶</div><div class="logo-nm">Puppy<span>Post</span></div></div><button class="hbtn">🔔<span class="bdot"></span></button></div>
+  <div class="wh"><div class="wg">Добро пожаловать 👋</div><div class="wn" id="wname">Загрузка...</div><div class="ws" id="wsub">Тариф: Free</div></div>
+  <div class="qg">
+    <button class="qb" onclick="navTo('create');initCreate()"><div class="qi">➕</div><div class="ql">Создать</div><div class="qs">Объявление</div></button>
+    <button class="qb" onclick="navTo('search')"><div class="qi">🔍</div><div class="ql">Поиск</div><div class="qs">Найти товар</div></button>
+    <button class="qb" onclick="navTo('my-ads');setTab('active')"><div class="qi">📋</div><div class="ql">Мои</div><div class="qs">Объявления</div></button>
+    <button class="qb" onclick="navTo('favorites')"><div class="qi">❤️</div><div class="ql">Избранное</div><div class="qs">Сохранённое</div></button>
+  </div>
+  <div class="stl">🔥 Свежие объявления</div>
+  <div class="hsc" id="home-fresh"></div>
+  <div style="height:18px"></div>
+  <div class="stl">📌 Закреплённые</div>
+  <div class="pc" id="home-pinned"></div>
+</div>
+
+<!-- ═══ SCREEN: SEARCH ═══ -->
+<div class="screen" id="sc-search">
+  <div class="hdr"><div class="hdr-logo"><div class="logo-ic">🐶</div><div class="logo-nm">Puppy<span>Post</span></div></div></div>
+  <div class="pc" style="padding-bottom:14px;position:relative"><span style="position:absolute;left:32px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none">🔍</span><input class="sinp" id="sinp" placeholder="Поиск товаров..." oninput="doSearch(this.value)"></div>
+  <div class="csc" id="cat-chips"></div>
+  <div class="pc" id="search-res"></div>
+</div>
+
+<!-- ═══ SCREEN: MY ADS ═══ -->
+<div class="screen" id="sc-my-ads">
+  <div class="hdr"><div class="hdr-logo"><div class="logo-ic">🐶</div><div class="logo-nm">Puppy<span>Post</span></div></div></div>
+  <div class="tabs">
+    <button class="tb active" id="tab-active" onclick="setTab('active')">✅ Активные</button>
+    <button class="tb" id="tab-moderation" onclick="setTab('moderation')">⏳ Модерация</button>
+    <button class="tb" id="tab-archive" onclick="setTab('archive')">📦 Архив</button>
+  </div>
+  <div class="pc" id="my-ads-list"></div>
+</div>
+
+<!-- ═══ SCREEN: FAVORITES ═══ -->
+<div class="screen" id="sc-favorites">
+  <div class="hdr"><div class="hdr-logo"><div class="logo-ic">🐶</div><div class="logo-nm">Puppy<span>Post</span></div></div></div>
+  <div class="stl">❤️ Избранное</div>
+  <div class="pc" id="fav-list"></div>
+</div>
+
+<!-- ═══ SCREEN: PROFILE ═══ -->
+<div class="screen" id="sc-profile">
+  <div class="hdr"><div class="hdr-logo"><div class="logo-ic">🐶</div><div class="logo-nm">Puppy<span>Post</span></div></div></div>
+  <div class="ph"><div class="pav">🧑</div><div><div class="pnm" id="pname">Загрузка...</div><div class="psi">С нами с 2024 года</div><div class="tpl" id="ptariff">🎁 Free</div></div></div>
+  <div class="sg"><div class="si2"><div class="sv" id="ps-ads">0</div><div class="sl">Объявлений</div></div><div class="si2"><div class="sv" id="ps-views">0</div><div class="sl">Просмотров</div></div><div class="si2"><div class="sv" id="ps-fav">0</div><div class="sl">Избранных</div></div><div class="si2"><div class="sv" id="ps-pins">0</div><div class="sl">Закреплено</div></div></div>
+  <div class="pc" style="margin-bottom:18px">
+    <div class="pinc"><div class="pinh"><span class="pint">📌 Закрепления</span><span class="pinbg" id="pin-badge">0/0</span></div>
+    <div class="ptr"><span class="pti">💼</span><div class="ptin"><div class="ptn">Standard</div><div class="ptd">1 закреп · 24 часа</div></div><div class="ptv">990₽/мес</div></div>
+    <div class="ptr"><span class="pti">👑</span><div class="ptin"><div class="ptn">PRO</div><div class="ptd">3 закрепа · 7 дней</div></div><div class="ptv">1990₽/мес</div></div></div>
+  </div>
+  <div class="ir" onclick="showSc('sc-tariffs')"><div class="irl"><span class="iric">💎</span><span class="irlb">Тарифы и подписки</span></div><div style="display:flex;align-items:center"><span class="irv" id="ir-tr">Free</span><span class="ira">›</span></div></div>
+  <div class="ir" onclick="showSc('sc-referral')"><div class="irl"><span class="iric">👥</span><span class="irlb">Реферальная программа</span></div><div style="display:flex;align-items:center"><span class="irv" id="ir-bal">750₽</span><span class="ira">›</span></div></div>
+  <div class="ir"><div class="irl"><span class="iric">🔔</span><span class="irlb">Уведомления</span></div><div style="display:flex;align-items:center"><span class="irv">Вкл</span><span class="ira">›</span></div></div>
+  <div class="ir"><div class="irl"><span class="iric">❓</span><span class="irlb">Помощь</span></div><span class="ira">›</span></div>
+</div>
+
+<!-- ═══ SCREEN: TARIFFS ═══ -->
+<div class="screen" id="sc-tariffs">
+  <div class="hdr"><button class="bb" onclick="showSc('sc-profile')">←</button><div class="hdr-logo"><div class="logo-nm" style="font-size:17px">💎 Тарифы</div></div></div>
+  <div class="pc">
+    <div class="prc"><div class="prb">Бесплатно</div><div class="prn">Старт</div><div class="prp">0₽</div><div class="prpe">Навсегда бесплатно</div><ul class="fl"><li>1 объявление в день</li><li>7 дней размещения</li><li>Стандартные фото</li><li>Без закреплений</li></ul><button class="btn bn" id="free-cur-btn">Текущий план</button></div>
+    <div class="prc ft"><div class="pot">🔥 Популярный</div><div class="prb">Для бизнеса</div><div class="prn">Профи</div><div class="prp">990₽ <span>/мес</span></div><div class="prpe">или 9 990₽ в год</div><ul class="fl"><li>50 объявлений</li><li>1 закреп на 24ч/месяц</li><li>HD фотографии</li><li>30 дней размещения</li><li>Выделение в поиске</li></ul><button class="btn" style="background:#fff;color:var(--acc);box-shadow:0 8px 18px rgba(0,0,0,.15)" onclick="openPay('Standard',990)">Попробовать</button></div>
+    <div class="prc"><div class="prb">Премиум</div><div class="prn">Максимум</div><div class="prp">1990₽ <span>/мес</span></div><div class="prpe">или 19 990₽ в год</div><ul class="fl"><li>Безлимит объявлений</li><li>3 закрепа на 7 дней</li><li>VIP поддержка 24/7</li><li>90 дней размещения</li><li>Топ выдачи</li><li>Аналитика</li></ul><button class="btn ba" onclick="openPay('PRO',1990)">Выбрать</button></div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: CREATE AD ═══ -->
+<div class="screen" id="sc-create">
+  <div class="hdr"><button class="bb" id="create-back" onclick="backCreate()">←</button><div class="hdr-logo"><div class="logo-nm" style="font-size:16px">➕ Новое объявление</div></div></div>
+  <div class="sti" id="stepi"></div>
+  <div class="fst active pc" id="step-0">
+    <label class="flb">Выберите категорию</label>
+    <div class="cgr">
+      <button class="cbtn" onclick="selCat('👕 Одежда',this)"><span class="ce">👕</span><span class="cn">Одежда</span></button>
+      <button class="cbtn" onclick="selCat('👟 Обувь',this)"><span class="ce">👟</span><span class="cn">Обувь</span></button>
+      <button class="cbtn" onclick="selCat('📱 Техника',this)"><span class="ce">📱</span><span class="cn">Техника</span></button>
+      <button class="cbtn" onclick="selCat('🎁 Другое',this)"><span class="ce">🎁</span><span class="cn">Другое</span></button>
+    </div>
+  </div>
+  <div class="fst pc" id="step-1">
+    <div class="fgr"><label class="flb">Название товара</label><input class="inp" id="ad-title" placeholder="Например: Nike Air Max 90"></div>
+    <div class="fgr"><label class="flb">Состояние</label><div class="chrow" id="cond-ch"></div></div>
+    <div class="fgr" id="size-gr" style="display:none"><label class="flb">Размер</label><input class="inp" id="ad-size" placeholder="42EU, M, XL..."></div>
+    <div class="fgr"><label class="flb">Описание (необязательно)</label><textarea class="txta" id="ad-desc" placeholder="Расскажите о товаре..."></textarea></div>
+    <button class="btn ba" onclick="nextStep()">Далее →</button>
+  </div>
+  <div class="fst pc" id="step-2">
+    <div class="fgr"><label class="flb">📍 Город</label><input class="inp" id="ad-city" placeholder="Москва, Санкт-Петербург..."></div>
+    <div class="fgr"><label class="flb">🚚 Способы доставки</label><div class="chrow" id="deliv-ch"></div></div>
+    <div class="fgr"><label class="flb">💰 Цена в рублях</label><input class="inp" id="ad-price" type="number" placeholder="2500"></div>
+    <button class="btn ba" onclick="nextStep()">Далее →</button>
+  </div>
+  <div class="fst pc" id="step-3">
+    <div class="fgr">
+      <label class="flb">📸 Фотографии (до 10 шт)</label>
+      <div class="pgr" id="photo-grid"></div>
+      <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
+    </div>
+    <div class="fgr"><label class="flb">📞 Контакт для связи</label><input class="inp" id="ad-contact" placeholder="@username или номер телефона"></div>
+    <button class="btn ba" onclick="submitAd()">✅ Опубликовать</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: AD DETAIL ═══ -->
+<div class="screen" id="sc-ad-detail">
+  <div class="hdr"><button class="bb" id="ad-back">←</button><div class="hdr-logo"><div class="logo-nm" style="font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="ad-hdr">Объявление</div></div><button class="hbtn" id="fav-hbtn" onclick="toggleFav()">🤍</button></div>
+  <div class="adi" id="ad-det-img">📦</div>
+  <div class="adb"><div class="adp" id="ad-det-price"></div><div class="adt" id="ad-det-title"></div><div id="ad-det-rows"></div>
+    <div class="actr"><button class="btn ba" style="flex:1" onclick="contactSeller()">💬 Связаться</button><button class="fab2" id="fav-fab" onclick="toggleFav()">🤍</button></div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: REFERRAL ═══ -->
+<div class="screen" id="sc-referral">
+  <div class="hdr"><button class="bb" onclick="showSc('sc-profile')">←</button><div class="hdr-logo"><div class="logo-nm" style="font-size:17px">👥 Рефералы</div></div></div>
+  <div class="pc">
+    <div style="background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:var(--r);padding:22px;margin-bottom:18px;box-shadow:0 12px 28px rgba(255,87,34,.3)">
+      <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:3px">💰 Ваш реферальный баланс</div>
+      <div style="font-size:36px;font-weight:900;color:#fff;line-height:1;margin-bottom:3px" id="ref-bal">750₽</div>
+      <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.75)">Всего заработано: 1 450₽</div>
+    </div>
+    <div class="sg" style="padding:0;margin-bottom:18px">
+      <div class="si2"><div class="sv" id="ref-cnt">12</div><div class="sl">Приглашено</div></div>
+      <div class="si2"><div class="sv" id="ref-act">5</div><div class="sl">Купили подписку</div></div>
+    </div>
+    <div class="card" style="margin-bottom:18px">
+      <label class="flb" style="margin-bottom:10px">🔗 Ваша реферальная ссылка</label>
+      <div class="rfb" id="ref-link">https://t.me/postcrab_bot?start=ref_123456</div>
+      <div style="display:flex;gap:8px"><button class="btn ba" style="flex:1" onclick="copyRef()">📋 Скопировать</button><button class="btn bn" style="flex:1" onclick="shareRef()">📤 Поделиться</button></div>
+    </div>
+    <div class="stl" style="padding:0;margin-bottom:14px">👥 Мои рефералы</div>
+    <div id="ref-list"></div>
+    <button class="btn bn" style="margin-top:8px" onclick="openPay('ref_balance',0)">💎 Потратить баланс на тариф</button>
+  </div>
+</div>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="bnav">
+  <button class="ni active" id="nav-home" onclick="navTo('home')"><span class="ic">🏠</span><span class="lb">Главная</span></button>
+  <button class="ni" id="nav-search" onclick="navTo('search')"><span class="ic">🔍</span><span class="lb">Поиск</span></button>
+  <button class="ni" id="nav-create" onclick="navTo('create');initCreate()"><span class="ic">➕</span><span class="lb">Создать</span></button>
+  <button class="ni" id="nav-my-ads" onclick="navTo('my-ads');setTab('active')"><span class="ic">📋</span><span class="lb">Мои</span></button>
+  <button class="ni" id="nav-profile" onclick="navTo('profile')"><span class="ic">👤</span><span class="lb">Профиль</span></button>
+</nav>
+
+<script>
+// ═══════════════════════════════════════
+// CONFIG (синхронизировано с ботом)
+// ═══════════════════════════════════════
+const TARIFFS = {
+  Free:     {daily_ads:1,  pins:0, pin_hours:0,   price:0},
+  Standard: {daily_ads:3,  pins:1, pin_hours:24,  price:990},
+  PRO:      {daily_ads:50, pins:3, pin_hours:168, price:1990}
+};
+const PAYMENT = {
+  yoomoney: 'https://yoomoney.ru/to/4100119456604619',
+  crypto:   'https://t.me/send?start=IVRMtMS6xa0a',
+  tinkoff_card: '2200701043238127'
+};
+const REFERRAL_PCT = 5;
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const S = {
+  user: {name:'Пользователь', tg_id:null, tariff:'Free', tariff_end:null, pins_used:0, ref_balance:750},
+  ads: [], myAds: [],
+  favs: JSON.parse(localStorage.getItem('pp_favs')||'[]'),
+  curAdId: null, prevSc: 'sc-home',
+  actionAdId: null,
+  createStep: 0, newAd: {}, photos: [], deliveries: [],
+  promoDiscount: 0, promoCode: '',
+  pendingPay: null,
+};
+
+// ═══════════════════════════════════════
+// MOCK DATA
+// ═══════════════════════════════════════
+S.ads = [
+  {id:1,title:'Nike Air Max 90',price:5500,category:'👟 Обувь',condition:'Б/у, отличное',size:'42EU',city:'Москва',delivery:'СДЭК / Самовывоз',contact:'seller1',emoji:'👟',pinned:true,views:342},
+  {id:2,title:'iPhone 14 Pro 128GB',price:55000,category:'📱 Техника',condition:'Новый',city:'Санкт-Петербург',delivery:'Почта / СДЭК',contact:'seller2',emoji:'📱',pinned:false,views:1240},
+  {id:3,title:"Levi's 501 W32 L32",price:3200,category:'👕 Одежда',condition:'Б/у',size:'W32 L32',city:'Казань',delivery:'Яндекс / СДЭК',contact:'seller3',emoji:'👖',pinned:false,views:89},
+  {id:4,title:'MacBook Air M2 256GB',price:89000,category:'📱 Техника',condition:'Новый в плёнке',city:'Москва',delivery:'Самовывоз',contact:'seller4',emoji:'💻',pinned:true,views:512},
+  {id:5,title:'Adidas Yeezy Boost 350',price:18000,category:'👟 Обувь',condition:'Новые',size:'43EU',city:'Новосибирск',delivery:'СДЭК',contact:'seller5',emoji:'👟',pinned:false,views:234},
+  {id:6,title:'Supreme Hoodie FW23 L',price:9800,category:'👕 Одежда',condition:'Б/у',size:'L',city:'Екатеринбург',delivery:'СДЭК',contact:'seller6',emoji:'👕',pinned:false,views:67},
+  {id:7,title:'PlayStation 5 Disc',price:45000,category:'📱 Техника',condition:'Б/у 3 мес',city:'Москва',delivery:'Самовывоз',contact:'seller7',emoji:'🎮',pinned:false,views:890},
+  {id:8,title:'Кресло IKEA ПОЭНГ',price:4500,category:'🎁 Другое',condition:'Б/у',city:'СПб',delivery:'Самовывоз',contact:'seller8',emoji:'🪑',pinned:false,views:45},
+];
+S.myAds = [
+  {id:101,title:'Air Jordan 1 Retro Chicago',price:12000,category:'👟 Обувь',status:'active',views:234,emoji:'👟',pinned_until:null,desc:'Отличное состояние',contact:'@myuser'},
+  {id:102,title:'Samsung Galaxy S23 Ultra',price:42000,category:'📱 Техника',status:'active',views:567,emoji:'📱',pinned_until:'2026-02-20',desc:'',contact:'@myuser'},
+  {id:103,title:'Куртка Tommy Hilfiger M',price:6500,category:'👕 Одежда',status:'moderation',views:0,emoji:'🧥',pinned_until:null,desc:'',contact:'@myuser'},
+  {id:104,title:'Sony WH-1000XM5',price:22000,category:'📱 Техника',status:'inactive',views:89,emoji:'🎧',pinned_until:null,desc:'',contact:'@myuser'},
+];
+const REFS = [
+  {name:'Максим',detail:'PRO · Купил подписку ✅',reward:'+45₽',active:true},
+  {name:'Алина',detail:'Standard · Купил подписку ✅',reward:'+15₽',active:true},
+  {name:'Дима',detail:'Free · Ещё не купил ❌',reward:'—',active:false},
+];
+const MOCK_PROMOS = {
+  'SAVE10': {discount:10, tariff:'any'},
+  'PRO20':  {discount:20, tariff:'PRO'},
+  'PUPPY30':{discount:30, tariff:'any'},
+};
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function showSc(id, prev) {
+  if(prev) S.prevSc = prev;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  const nm={'sc-home':'home','sc-search':'search','sc-create':'create','sc-my-ads':'my-ads','sc-profile':'profile'};
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  if(nm[id]) document.getElementById('nav-'+nm[id])?.classList.add('active');
+}
+function navTo(key) {
+  showSc('sc-'+key);
+  if(key==='home') renderHome();
+  if(key==='search'){renderCats();doSearch('');}
+  if(key==='my-ads') renderMyAds(S.currentTab||'active');
+  if(key==='favorites') renderFavs();
+  if(key==='profile') renderProfile();
+}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+// ═══════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════
+function renderHome(){
+  document.getElementById('home-fresh').innerHTML = S.ads.slice(0,6).map(ad=>`
+    <div class="hac" onclick="openAd(${ad.id},'sc-home')">
+      <div class="hai">${ad.emoji}</div>
+      <div class="hab"><div class="hat">${ad.title}</div><div class="hap">${ad.price.toLocaleString()}₽</div></div>
+    </div>`).join('');
+  document.getElementById('home-pinned').innerHTML = S.ads.filter(a=>a.pinned).map(ad=>adCard(ad,'sc-home')).join('');
+  const u=S.user;
+  document.getElementById('wname').textContent = u.name;
+  document.getElementById('wsub').textContent = `Тариф: ${u.tariff}${u.tariff_end?' · до '+u.tariff_end:''}`;
+}
+
+// ═══════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════
+let curCat='Все';
+function renderCats(){
+  const cats=['Все','👕 Одежда','👟 Обувь','📱 Техника','🎁 Другое'];
+  document.getElementById('cat-chips').innerHTML=cats.map((c,i)=>`
+    <button class="cc ${i===0?'active':''}" onclick="filterCat(this,'${c}')">${c}</button>`).join('');
+}
+function filterCat(el,cat){
+  document.querySelectorAll('.cc').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); curCat=cat;
+  doSearch(document.getElementById('sinp').value);
+}
+function doSearch(q){
+  let res=S.ads;
+  if(curCat!=='Все') res=res.filter(a=>a.category===curCat);
+  if(q.trim()){const lq=q.toLowerCase();res=res.filter(a=>a.title.toLowerCase().includes(lq)||(a.city||'').toLowerCase().includes(lq));}
+  document.getElementById('search-res').innerHTML = res.length
+    ? res.map(ad=>adCard(ad,'sc-search')).join('')
+    : `<div class="emt"><div class="ei">😔</div><div class="et">Ничего не найдено</div><div class="es">Попробуйте другой запрос</div></div>`;
+}
+
+// ═══════════════════════════════════════
+// AD CARD
+// ═══════════════════════════════════════
+function adCard(ad,from){
+  const fav=S.favs.includes(ad.id);
+  return `<div class="acard" onclick="openAd(${ad.id},'${from}')">
+    <div class="aimg">${ad.emoji}${ad.pinned?'<div class="pinb">📌 Топ</div>':''}</div>
+    <div class="ab"><div class="acat">${ad.category}</div><div class="atl">${ad.title}</div>
+    <div class="ame"><div class="apr">${ad.price.toLocaleString()}₽</div><div class="ain">👁 ${ad.views} · 📍 ${ad.city||'—'}</div></div>
+    <div class="ata">${ad.condition?`<span class="tag">${ad.condition}</span>`:''}${ad.size?`<span class="tag">📏 ${ad.size}</span>`:''}${ad.delivery?`<span class="tag">🚚 ${ad.delivery.split('/')[0].trim()}</span>`:''}<span class="tag">${fav?'❤️':'🤍'}</span></div></div></div>`;
+}
+
+// ═══════════════════════════════════════
+// AD DETAIL
+// ═══════════════════════════════════════
+function openAd(id,from){
+  S.prevSc=from||'sc-home'; S.curAdId=id;
+  const ad=S.ads.find(a=>a.id===id); if(!ad) return;
+  document.getElementById('ad-det-img').textContent=ad.emoji;
+  document.getElementById('ad-det-price').textContent=ad.price.toLocaleString()+'₽';
+  document.getElementById('ad-det-title').textContent=ad.title;
+  document.getElementById('ad-hdr').textContent=ad.title.substring(0,20)+(ad.title.length>20?'...':'');
+  const rows=[
+    {i:'📂',k:'Категория',v:ad.category},
+    ad.condition&&{i:'✨',k:'Состояние',v:ad.condition},
+    ad.size&&{i:'📏',k:'Размер',v:ad.size},
+    ad.city&&{i:'📍',k:'Город',v:ad.city},
+    ad.delivery&&{i:'🚚',k:'Доставка',v:ad.delivery},
+    {i:'👁',k:'Просмотры',v:ad.views},
+  ].filter(Boolean);
+  document.getElementById('ad-det-rows').innerHTML=rows.map(r=>`
+    <div class="adr"><span class="adri">${r.i}</span><div><div class="adrk">${r.k}</div><div class="adrt">${r.v}</div></div></div>`).join('');
+  updateFavBtns();
+  document.getElementById('ad-back').onclick=()=>showSc(S.prevSc);
+  showSc('sc-ad-detail');
+}
+function updateFavBtns(){
+  const f=S.favs.includes(S.curAdId)?'❤️':'🤍';
+  document.getElementById('fav-hbtn').textContent=f;
+  document.getElementById('fav-fab').textContent=f;
+}
+function toggleFav(){
+  const id=S.curAdId;
+  if(S.favs.includes(id)){S.favs=S.favs.filter(f=>f!==id);toast('Удалено из избранного');}
+  else{S.favs.push(id);toast('Добавлено в избранное ❤️');}
+  localStorage.setItem('pp_favs',JSON.stringify(S.favs));
+  updateFavBtns();
+}
+function contactSeller(){
+  const ad=S.ads.find(a=>a.id===S.curAdId); if(!ad) return;
+  if(window.Telegram?.WebApp) window.Telegram.WebApp.openTelegramLink(`https://t.me/${ad.contact}`);
+  else toast(`Контакт: @${ad.contact}`);
+}
+
+// ═══════════════════════════════════════
+// MY ADS
+// ═══════════════════════════════════════
+S.currentTab='active';
+function setTab(tab){
+  S.currentTab=tab;
+  ['active','moderation','archive'].forEach(t=>document.getElementById('tab-'+t)?.classList.remove('active'));
+  document.getElementById('tab-'+tab)?.classList.add('active');
+  renderMyAds(tab);
+}
+function renderMyAds(tab){
+  const sm={active:'active',moderation:'moderation',archive:'inactive'};
+  const ads=S.myAds.filter(a=>a.status===(sm[tab]||tab));
+  const el=document.getElementById('my-ads-list');
+  if(!ads.length){
+    const m={active:'Создайте первое объявление!',moderation:'Нет объявлений на модерации',archive:'Архив пуст'};
+    el.innerHTML=`<div class="emt"><div class="ei">${tab==='active'?'📋':tab==='moderation'?'⏳':'📦'}</div><div class="et">Нет объявлений</div><div class="es">${m[tab]}</div></div>`;
+    return;
+  }
+  el.innerHTML=ads.map(ad=>`
+    <div class="mac" onclick="openAdActions(${ad.id})">
+      <div class="mat">${ad.emoji}</div>
+      <div class="mai">
+        <div class="matl">${ad.title}</div>
+        <div class="map">${ad.price.toLocaleString()}₽</div>
+        <div class="mas ${ad.status==='active'?'sa':ad.status==='moderation'?'sm':'si'}">
+          ${ad.status==='active'?'✅ Активно':ad.status==='moderation'?'⏳ Модерация':'📦 Архив'}
+          ${ad.pinned_until?' · 📌 Закреплено':''}
+        </div>
+        ${ad.status==='active'?`<div class="mav">👁 ${ad.views} просмотров</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ═══ AD ACTIONS MODAL ═══
+function openAdActions(id){
+  S.actionAdId=id;
+  const ad=S.myAds.find(a=>a.id===id); if(!ad) return;
+  document.getElementById('mod-act-title').textContent=ad.title.substring(0,28)+(ad.title.length>28?'...':'');
+  const tr=S.user.tariff, cfg=TARIFFS[tr], avail=cfg.pins-S.user.pins_used;
+  document.getElementById('btn-pin-sub').textContent =
+    tr==='Free'?'Доступно с тарифа Standard':avail>0?`Доступно: ${avail}/${cfg.pins} закреплений`:'Лимит исчерпан в этом месяце';
+  const isActive=ad.status==='active', isArch=ad.status==='inactive';
+  document.getElementById('btn-deact').style.display=isActive?'flex':'none';
+  document.getElementById('btn-react').style.display=isArch?'flex':'none';
+  document.getElementById('btn-edit').style.display=(isActive||isArch)?'flex':'none';
+  openModal('mod-actions');
+}
+function doPin(){
+  const ad=S.myAds.find(a=>a.id===S.actionAdId);
+  const tr=S.user.tariff, cfg=TARIFFS[tr];
+  if(tr==='Free'){closeModal('mod-actions');toast('Закрепление доступно с тарифа Standard!');showSc('sc-tariffs');return;}
+  if(S.user.pins_used>=cfg.pins){closeModal('mod-actions');toast('Лимит закреплений исчерпан!');return;}
+  // API: POST /pin_ad { ad_id: S.actionAdId }
+  S.user.pins_used++;
+  if(ad){const d=new Date();d.setHours(d.getHours()+cfg.pin_hours);ad.pinned_until=d.toLocaleDateString('ru');}
+  closeModal('mod-actions'); renderMyAds(S.currentTab);
+  toast(`📌 Объявление закреплено на ${cfg.pin_hours}ч!`);
+}
+function doDeact(){
+  const ad=S.myAds.find(a=>a.id===S.actionAdId);
+  if(ad){ad.status='inactive';}
+  // API: POST /deactivate_ad { ad_id: S.actionAdId }
+  closeModal('mod-actions'); renderMyAds(S.currentTab);
+  toast('🚫 Объявление снято с публикации');
+}
+function doReact(){
+  const ad=S.myAds.find(a=>a.id===S.actionAdId);
+  if(ad){ad.status='moderation';}
+  // API: POST /reactivate_ad { ad_id: S.actionAdId }
+  closeModal('mod-actions'); setTab('moderation');
+  toast('✅ Отправлено на модерацию');
+}
+function doEdit(){
+  const ad=S.myAds.find(a=>a.id===S.actionAdId);
+  if(ad){
+    document.getElementById('edit-price').value=ad.price||'';
+    document.getElementById('edit-desc').value=ad.desc||'';
+    document.getElementById('edit-contact').value=ad.contact||'';
+  }
+  closeModal('mod-actions');
+  openModal('mod-edit');
+}
+function saveEdit(){
+  const ad=S.myAds.find(a=>a.id===S.actionAdId);
+  const price=parseInt(document.getElementById('edit-price').value);
+  const desc=document.getElementById('edit-desc').value;
+  const contact=document.getElementById('edit-contact').value;
+  if(!price){toast('Введите цену');return;}
+  if(ad){ad.price=price;ad.desc=desc;ad.contact=contact;}
+  // API: POST /edit_ad { ad_id, price, desc, contact }
+  closeModal('mod-edit'); renderMyAds(S.currentTab);
+  toast('✅ Изменения сохранены');
+}
+function doDel(){
+  const ad=S.myAds.find(a=>a.id===S.actionAdId);
+  document.getElementById('del-text').textContent=`Удалить "${ad?.title}"? Это действие необратимо.`;
+  closeModal('mod-actions'); openModal('mod-del');
+}
+function confirmDelete(){
+  S.myAds=S.myAds.filter(a=>a.id!==S.actionAdId);
+  // API: POST /delete_ad { ad_id: S.actionAdId }
+  closeModal('mod-del'); renderMyAds(S.currentTab);
+  toast('🗑️ Объявление удалено');
+}
+
+// ═══════════════════════════════════════
+// FAVORITES
+// ═══════════════════════════════════════
+function renderFavs(){
+  const favAds=S.ads.filter(a=>S.favs.includes(a.id));
+  document.getElementById('fav-list').innerHTML=favAds.length
+    ? favAds.map(ad=>adCard(ad,'sc-favorites')).join('')
+    : `<div class="emt"><div class="ei">💔</div><div class="et">Избранное пусто</div><div class="es">Добавляйте понравившиеся объявления, нажимая ❤️</div></div>`;
+}
+
+// ═══════════════════════════════════════
+// PROFILE
+// ═══════════════════════════════════════
+function renderProfile(){
+  const u=S.user, tr=TARIFFS[u.tariff], p=S.user.pins_used;
+  document.getElementById('pname').textContent=u.name;
+  document.getElementById('ptariff').textContent=`${u.tariff==='Free'?'🎁':u.tariff==='Standard'?'💼':'👑'} ${u.tariff}`;
+  document.getElementById('ir-tr').textContent=u.tariff;
+  document.getElementById('ir-bal').textContent=u.ref_balance+'₽';
+  document.getElementById('pin-badge').textContent=`${p}/${tr.pins}`;
+  document.getElementById('ps-ads').textContent=S.myAds.filter(a=>a.status==='active').length;
+  document.getElementById('ps-views').textContent=S.myAds.reduce((s,a)=>s+a.views,0);
+  document.getElementById('ps-fav').textContent=S.favs.length;
+  document.getElementById('ps-pins').textContent=p;
+}
+
+// ═══════════════════════════════════════
+// PAYMENT
+// ═══════════════════════════════════════
+function openPay(plan, basePrice){
+  S.pendingPay={plan, basePrice};
+  S.promoDiscount=0; S.promoCode='';
+  document.getElementById('promo-inp').value='';
+  document.getElementById('promo-res').textContent='';
+  document.getElementById('promo-res').style.color='';
+  document.getElementById('receipt-sec').style.display='none';
+  document.getElementById('bal-sub').textContent=`Баланс: ${S.user.ref_balance}₽`;
+  if(plan==='ref_balance'){
+    document.getElementById('mod-pay-title').textContent='💰 Использовать баланс';
+    document.getElementById('mod-pay-amount').textContent=S.user.ref_balance+'₽';
+    document.getElementById('mod-pay-sub').textContent='Доступно для оплаты тарифа';
+  } else {
+    document.getElementById('mod-pay-title').textContent=`Оплата тарифа ${plan}`;
+    document.getElementById('mod-pay-amount').textContent=basePrice.toLocaleString()+'₽';
+    document.getElementById('mod-pay-sub').textContent=`${plan} тариф · ${plan==='Standard'?'30 дней':'30 дней'}`;
+  }
+  openModal('mod-pay');
+}
+function checkPromo(){
+  const code=document.getElementById('promo-inp').value.toUpperCase().trim();
+  const el=document.getElementById('promo-res');
+  if(!code){toast('Введите промокод');return;}
+  const p=MOCK_PROMOS[code];
+  if(!p){el.textContent='❌ Промокод не найден или недействителен';el.style.color='var(--rd)';return;}
+  const base=S.pendingPay?.basePrice||0;
+  const disc=Math.round(base*p.discount/100);
+  const final=base-disc;
+  S.promoDiscount=disc; S.promoCode=code;
+  el.textContent=`✅ Скидка ${p.discount}% применена! Итого: ${final.toLocaleString()}₽`;
+  el.style.color='var(--gn)';
+  document.getElementById('mod-pay-amount').textContent=final.toLocaleString()+'₽';
+}
+function payMethod(method){
+  const {plan,basePrice}=S.pendingPay||{};
+  const finalPrice=basePrice-S.promoDiscount;
+  if(method==='balance'){
+    if(S.user.ref_balance<finalPrice){toast(`Недостаточно баланса. Есть: ${S.user.ref_balance}₽, нужно: ${finalPrice}₽`);return;}
+    S.user.ref_balance-=finalPrice;
+    closeModal('mod-pay'); toast(`✅ Оплачено с баланса! Тариф ${plan} активирован`);
+    S.user.tariff=plan; renderProfile();
+    return;
+  }
+  if(method==='tinkoff'){
+    document.getElementById('receipt-sec').style.display='block';
+    toast(`Переведите ${finalPrice}₽ на карту ${PAYMENT.tinkoff_card}`);
+    return;
+  }
+  const url=method==='yoomoney'?`${PAYMENT.yoomoney}?sum=${finalPrice}`:PAYMENT.crypto;
+  if(window.Telegram?.WebApp) window.Telegram.WebApp.openLink(url);
+  else {
+    document.getElementById('receipt-sec').style.display='block';
+    toast('Загрузите чек после оплаты');
+  }
+}
+function handleReceipt(inp){
+  const file=inp.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const prev=document.getElementById('receipt-prev');
+    prev.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r)">`;
+  };
+  reader.readAsDataURL(file);
+}
+function submitPayment(){
+  // API: POST /submit_payment { plan, amount, promo, receipt_base64 }
+  closeModal('mod-pay');
+  toast('✅ Чек отправлен на проверку! Активация в течение нескольких часов.');
+}
+
+// ═══════════════════════════════════════
+// CREATE AD
+// ═══════════════════════════════════════
+function initCreate(){
+  S.createStep=0; S.newAd={}; S.photos=[]; S.deliveries=[];
+  document.querySelectorAll('.fst').forEach((s,i)=>s.classList.toggle('active',i===0));
+  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('ad-title').value='';
+  document.getElementById('ad-size').value='';
+  document.getElementById('ad-desc').value='';
+  document.getElementById('ad-city').value='';
+  document.getElementById('ad-price').value='';
+  document.getElementById('ad-contact').value='';
+  renderCondChips(); renderDelivChips(); renderPhotoGrid(); updateStepi();
+}
+function renderCondChips(){
+  const conds=['Новое','Б/у — отличное','Б/у — хорошее','Б/у — удовлетв.'];
+  document.getElementById('cond-ch').innerHTML=conds.map(c=>`<button class="ch" onclick="selChip(this,'cond','${c}')">${c}</button>`).join('');
+}
+function renderDelivChips(){
+  const ds=['СДЭК','Почта России','Яндекс','Самовывоз','Boxberry'];
+  document.getElementById('deliv-ch').innerHTML=ds.map(d=>`<button class="ch" onclick="togDeliv(this,'${d}')">${d}</button>`).join('');
+}
+function renderPhotoGrid(){
+  const g=document.getElementById('photo-grid');
+  let h=S.photos.map((p,i)=>`
+    <div class="psl"><img src="${p}"><div class="rmv" onclick="removePhoto(${i})">✕</div></div>`).join('');
+  if(S.photos.length<10) h+=`<div class="psl add" onclick="document.getElementById('photo-file').click()">📷</div>`;
+  g.innerHTML=h;
+}
+function removePhoto(i){S.photos.splice(i,1);renderPhotoGrid();}
+function handlePhotos(inp){
+  const files=Array.from(inp.files);
+  const remaining=10-S.photos.length;
+  files.slice(0,remaining).forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{S.photos.push(e.target.result);renderPhotoGrid();};
+    r.readAsDataURL(f);
+  });
+  if(files.length>remaining) toast(`Максимум 10 фото. Добавлено ${remaining}`);
+  inp.value='';
+}
+function selChip(el,field,val){
+  el.parentElement.querySelectorAll('.ch').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); S.newAd[field]=val;
+}
+function togDeliv(el,val){
+  el.classList.toggle('active');
+  if(el.classList.contains('active')) S.deliveries.push(val);
+  else S.deliveries=S.deliveries.filter(d=>d!==val);
+}
+function selCat(cat,el){
+  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel'); S.newAd.category=cat;
+  const hasSz=cat.includes('Одежда')||cat.includes('Обувь');
+  document.getElementById('size-gr').style.display=hasSz?'block':'none';
+  setTimeout(()=>nextStep(),280);
+}
+function updateStepi(){
+  document.getElementById('stepi').innerHTML=Array.from({length:4},(_,i)=>`
+    <div class="sdt ${i<S.createStep?'done':''}"></div>`).join('');
+}
+function nextStep(){
+  if(S.createStep===1){
+    if(!document.getElementById('ad-title').value.trim()){toast('Введите название товара');return;}
+    S.newAd.title=document.getElementById('ad-title').value.trim();
+    S.newAd.size=document.getElementById('ad-size').value.trim();
+    S.newAd.desc=document.getElementById('ad-desc').value.trim();
+  }
+  if(S.createStep===2){
+    if(!document.getElementById('ad-price').value){toast('Введите цену');return;}
+    S.newAd.city=document.getElementById('ad-city').value.trim();
+    S.newAd.delivery=S.deliveries.join(' / ');
+    S.newAd.price=parseInt(document.getElementById('ad-price').value);
+  }
+  document.getElementById(`step-${S.createStep}`).classList.remove('active');
+  S.createStep++;
+  document.getElementById(`step-${S.createStep}`).classList.add('active');
+  updateStepi(); window.scrollTo(0,0);
+}
+function backCreate(){
+  if(S.createStep>0){
+    document.getElementById(`step-${S.createStep}`).classList.remove('active');
+    S.createStep--;
+    document.getElementById(`step-${S.createStep}`).classList.add('active');
+    updateStepi();
+  } else { showSc('sc-home'); }
+}
+function submitAd(){
+  S.newAd.contact=document.getElementById('ad-contact').value.trim();
+  if(!S.newAd.contact){toast('Введите контакт для связи');return;}
+  S.newAd.photos=S.photos;
+  // API: POST /create_ad { ...S.newAd }
+  // Telegram.WebApp.sendData(JSON.stringify(S.newAd))
+  S.myAds.unshift({
+    id:Date.now(),title:S.newAd.title||'Новое',price:S.newAd.price||0,
+    category:S.newAd.category||'🎁 Другое',status:'moderation',views:0,
+    emoji:'📦',pinned_until:null,desc:S.newAd.desc||'',contact:S.newAd.contact
+  });
+  toast('✅ Объявление отправлено на модерацию!');
+  setTimeout(()=>{showSc('sc-my-ads');setTab('moderation');},1100);
+}
+
+// ═══════════════════════════════════════
+// REFERRAL
+// ═══════════════════════════════════════
+function renderReferral(){
+  document.getElementById('ref-bal').textContent=S.user.ref_balance+'₽';
+  document.getElementById('ref-list').innerHTML=REFS.map(r=>`
+    <div class="rc"><div class="rav">${r.active?'😊':'🙂'}</div>
+    <div class="ri"><div class="rn">${r.name}</div><div class="rd">${r.detail}</div></div>
+    <div class="rr" style="${!r.active?'color:var(--lg)':''}">${r.reward}</div></div>`).join('');
+}
+function copyRef(){
+  const link=document.getElementById('ref-link').textContent;
+  navigator.clipboard?.writeText(link).then(()=>toast('🔗 Ссылка скопирована!')).catch(()=>toast('Скопируйте ссылку вручную'));
+}
+function shareRef(){
+  const link=document.getElementById('ref-link').textContent;
+  if(window.Telegram?.WebApp) window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('Присоединяйся к PuppyPost!')}`);
+  else toast('Поделитесь ссылкой вручную');
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+let _tt;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// ═══════════════════════════════════════
+// INIT — Telegram Web App
+// ═══════════════════════════════════════
+window.addEventListener('load',()=>{
+  if(window.Telegram?.WebApp){
+    const tg=window.Telegram.WebApp;
+    tg.ready(); tg.expand();
+    const u=tg.initDataUnsafe?.user;
+    if(u){S.user.name=u.first_name+(u.last_name?' '+u.last_name:'');S.user.tg_id=u.id;}
+  }
+  renderHome(); renderCats(); doSearch('');
+  renderMyAds('active'); renderFavs(); renderProfile(); renderReferral();
+});
+</script>
+</body>
+</html>
