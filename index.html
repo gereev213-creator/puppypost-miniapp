@@ -26,6 +26,7 @@
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes screen-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes modal-in{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sugg-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden;color:var(--dk)}
 ::-webkit-scrollbar{width:0}
@@ -33,7 +34,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .screen.active{display:block}
 .hdr{position:sticky;top:0;z-index:100;background:var(--bg);padding:14px 18px 10px;display:flex;align-items:center;gap:10px}
 .hdr-logo{display:flex;align-items:center;gap:10px;flex:1}
-.logo-ic{width:40px;height:40px;background:var(--bg);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);font-size:18px;animation:float 3s ease-in-out infinite}
+.logo-ic{width:40px;height:40px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(255,87,34,.35);font-size:18px;animation:float 3s ease-in-out infinite}
 .logo-nm{font-size:20px;font-weight:900;color:var(--dk)}
 .logo-nm span{color:var(--acc)}
 .hbtn{width:40px;height:40px;background:var(--bg);border-radius:12px;border:none;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);cursor:pointer;transition:all .2s;position:relative;font-family:'Nunito',sans-serif;color:var(--gr);flex-shrink:0}
@@ -61,6 +62,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .inp{width:100%;padding:13px 16px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--ins);font-size:15px;font-weight:600;color:var(--dk);font-family:'Nunito',sans-serif;outline:none}
 .inp::placeholder{color:var(--lg)}
 .txta{width:100%;padding:13px 16px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--ins);font-size:14px;font-weight:600;color:var(--dk);font-family:'Nunito',sans-serif;outline:none;resize:none;min-height:88px}
+.txta::placeholder{color:var(--lg)}
 .flb{font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block}
 .fgr{margin-bottom:18px}
 .pc{padding:0 18px}
@@ -81,31 +83,34 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .acard:nth-child(4){animation:slide-up .28s ease .16s both}
 .acard:nth-child(5){animation:slide-up .28s ease .20s both}
 .acard:nth-child(6){animation:slide-up .28s ease .24s both}
-.aimg{width:100%;height:170px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;font-size:54px;position:relative;overflow:hidden}
+.aimg{width:100%;height:170px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.aimg svg{opacity:.25}
 .aimg img{width:100%;height:100%;object-fit:cover}
-.pinb{position:absolute;top:10px;left:10px;background:var(--dk);color:#fff;font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px}
+.pinb{position:absolute;top:10px;left:10px;background:var(--dk);color:#fff;font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:4px}
 .newb{position:absolute;top:10px;right:10px;background:var(--gn);color:#fff;font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px}
 .ab{padding:14px}
 .acat{font-size:11px;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .atl{font-size:16px;font-weight:800;color:var(--dk);margin-bottom:7px;line-height:1.3}
 .ame{display:flex;align-items:center;justify-content:space-between}
 .apr{font-size:21px;font-weight:900;color:var(--acc)}
-.ain{font-size:12px;font-weight:600;color:var(--gr)}
+.ain{font-size:12px;font-weight:600;color:var(--gr);display:flex;align-items:center;gap:3px}
 .ata{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .tag{padding:3px 9px;background:var(--bg);border-radius:18px;font-size:11px;font-weight:700;color:var(--gr);box-shadow:var(--sh)}
 .hsc{display:flex;gap:12px;padding:0 18px 4px;overflow-x:auto;scrollbar-width:none}
 .hac{flex-shrink:0;width:190px;background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1)}
 .hac:active{transform:scale(.97)}
-.hai{height:120px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;font-size:38px;overflow:hidden}
+.hai{height:120px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .hai img{width:100%;height:100%;object-fit:cover}
+.hai svg{opacity:.2}
 .hab{padding:10px}
 .hat{font-size:13px;font-weight:800;color:var(--dk);margin-bottom:3px;line-height:1.2}
 .hap{font-size:15px;font-weight:900;color:var(--acc)}
 .mac{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:14px;margin-bottom:12px;display:flex;gap:12px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1)}
 .mac:active{transform:scale(.98)}
 .mac:nth-child(n){animation:slide-up .28s ease both}
-.mat{width:68px;height:68px;border-radius:var(--rs);background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden}
+.mat{width:68px;height:68px;border-radius:var(--rs);background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .mat img{width:100%;height:100%;object-fit:cover}
+.mat svg{opacity:.25}
 .mai{flex:1;min-width:0}
 .matl{font-size:14px;font-weight:800;color:var(--dk);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .map{font-size:16px;font-weight:900;color:var(--acc);margin-bottom:4px}
@@ -114,7 +119,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .s-mod{background:rgba(255,193,7,.15);color:#b8860b}
 .s-rej{background:rgba(244,67,54,.12);color:var(--rd)}
 .s-ina{background:rgba(0,0,0,.06);color:var(--gr)}
-.mav{font-size:11px;font-weight:600;color:var(--lg);margin-top:3px}
+.mav{font-size:11px;font-weight:600;color:var(--lg);margin-top:3px;display:flex;align-items:center;gap:3px}
 .tabs{display:flex;gap:7px;padding:0 18px 18px}
 .tb{flex:1;padding:10px;background:var(--bg);border:none;border-radius:var(--rs);font-size:11px;font-weight:800;color:var(--gr);cursor:pointer;box-shadow:var(--sh);transition:all .2s;font-family:'Nunito',sans-serif}
 .tb.active{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 6px 14px rgba(255,87,34,.25)}
@@ -164,15 +169,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .cbtn{padding:18px 14px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--sh);display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);font-family:'Nunito',sans-serif}
 .cbtn:active{box-shadow:var(--ins);transform:scale(.96)}
 .cbtn.sel{background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 8px 18px rgba(255,87,34,.3)}
-.cbtn .ce{font-size:28px;display:flex;align-items:center;justify-content:center}
+.cbtn .ce{display:flex;align-items:center;justify-content:center;color:var(--gr)}
+.cbtn.sel .ce{color:#fff}
 .cbtn .cn{font-size:13px;font-weight:800;color:var(--dk)}
 .cbtn.sel .cn{color:#fff}
+/* category hints */
+.cat-hints{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.cat-hint{padding:6px 12px;background:var(--bg);border-radius:var(--rp);box-shadow:var(--sh);font-size:12px;font-weight:700;color:var(--gr);cursor:pointer;border:none;font-family:'Nunito',sans-serif;transition:all .18s;animation:sugg-in .2s ease both}
+.cat-hint:active{box-shadow:var(--ins);transform:scale(.96);color:var(--acc)}
 .pgr{display:flex;gap:8px;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;min-height:98px;align-items:center}
 .psl{width:90px;height:90px;border-radius:var(--rs);background:linear-gradient(135deg,#ddd,#c8c8c8);flex-shrink:0;position:relative;overflow:hidden}
 .psl img{width:100%;height:100%;object-fit:cover}
-.rmv{position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(0,0,0,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;cursor:pointer;font-weight:900;z-index:1}
-.padd{width:90px;height:90px;border-radius:var(--rs);background:var(--bg);box-shadow:var(--sh);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:28px;color:var(--acc)}
+.rmv{position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(0,0,0,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;z-index:1}
+.padd{width:90px;height:90px;border-radius:var(--rs);background:var(--bg);box-shadow:var(--sh);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--acc)}
 .aslider{width:100%;height:260px;background:linear-gradient(135deg,#ddd,#c8c8c8);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.aslider svg{opacity:.2}
 .aslider img{width:100%;height:100%;object-fit:cover}
 .asl-nav{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
 .asl-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);transition:all .2s}
@@ -182,7 +193,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .adt{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:14px}
 .adr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.05)}
 .adr:last-of-type{border-bottom:none}
-.adri{font-size:18px;flex-shrink:0}
+.adri{display:flex;align-items:center;flex-shrink:0;color:var(--acc)}
 .adrt{font-size:14px;font-weight:600;color:var(--dk)}
 .adrk{font-size:11px;font-weight:700;color:var(--gr)}
 .actr{display:flex;gap:10px;margin-top:18px}
@@ -192,7 +203,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.show{display:flex;animation:fadeIn .2s ease}
 .modal{background:var(--bg);border-radius:28px 28px 0 0;padding:24px 18px 36px;width:100%;max-height:88vh;overflow-y:auto;animation:modal-in .3s ease;position:relative}
-.mclose{position:absolute;right:18px;top:18px;width:34px;height:34px;background:var(--bg);border-radius:50%;border:none;box-shadow:var(--sh);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr);font-size:16px}
+.mclose{position:absolute;right:18px;top:18px;width:34px;height:34px;background:var(--bg);border-radius:50%;border:none;box-shadow:var(--sh);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gr)}
 .mclose:active{box-shadow:var(--ins)}
 .pm{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:15px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1)}
 .pm:active{transform:scale(.97)}
@@ -219,14 +230,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .stat-v{font-size:24px;font-weight:900;color:var(--acc);line-height:1;margin-bottom:2px}
 .stat-l{font-size:10px;font-weight:700;color:var(--gr);text-transform:uppercase;letter-spacing:.4px}
 .mod-card{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:14px}
-.mod-img{width:100%;height:180px;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:60px;overflow:hidden}
+.mod-img{width:100%;height:180px;background:#ddd;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .mod-img img{width:100%;height:100%;object-fit:cover}
 .mod-body{padding:14px}
 .mod-title{font-size:16px;font-weight:800;color:var(--dk);margin-bottom:4px}
 .mod-meta{font-size:12px;font-weight:600;color:var(--gr);margin-bottom:12px}
 .rfb{background:var(--bg);border-radius:var(--rs);box-shadow:var(--ins);padding:12px 14px;font-size:13px;font-weight:700;color:var(--dk);margin-bottom:12px;word-break:break-all}
 .rc{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,.04)}
-.rav{width:38px;height:38px;border-radius:50%;background:var(--bg);box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.rav{width:38px;height:38px;border-radius:50%;background:var(--bg);box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gr)}
 .rn{font-size:14px;font-weight:800;color:var(--dk)}
 .rd-row{font-size:12px;font-weight:600;color:var(--gr)}
 .rr{font-size:14px;font-weight:900;color:var(--acc)}
@@ -238,7 +249,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 #toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dk);color:#fff;padding:12px 22px;border-radius:var(--rp);font-size:14px;font-weight:700;opacity:0;transition:opacity .25s,transform .3s;pointer-events:none;white-space:nowrap;z-index:9999;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);animation:toast-in .35s ease}
 .empty{text-align:center;padding:48px 24px}
-.empty .ei{font-size:56px;margin-bottom:16px;display:block;animation:float 2.5s ease-in-out infinite}
+.empty .ei{margin-bottom:16px;display:flex;align-items:center;justify-content:center;animation:float 2.5s ease-in-out infinite;color:#ccc}
 .empty .et{font-size:18px;font-weight:900;color:var(--dk);margin-bottom:8px}
 .empty .es{font-size:14px;font-weight:600;color:var(--gr)}
 .sep{height:1px;background:rgba(0,0,0,.05)}
@@ -252,7 +263,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 <!-- HOME -->
 <div class="screen active" id="sc-home">
   <div class="hdr">
-    <div class="hdr-logo"><div class="logo-ic">🐾</div><div class="logo-nm">Puppy<span>Post</span></div></div>
+    <div class="hdr-logo"><div class="logo-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="17" rx="5" ry="4"/><ellipse cx="7" cy="13" rx="2" ry="2.5"/><ellipse cx="17" cy="13" rx="2" ry="2.5"/><circle cx="11" cy="5" r="1.8"/><circle cx="18" cy="8" r="1.5"/><circle cx="4" cy="8" r="1.5"/></svg></div><div class="logo-nm">Puppy<span>Post</span></div></div>
     <button class="hbtn" onclick="navTo('notifications')" style="position:relative">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <div class="bdot" id="notif-dot" style="display:none"></div>
@@ -264,13 +275,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
   </div>
   <div class="csc" id="home-cats">
     <button class="cc active" onclick="filterCat('',this)">Все</button>
-    <button class="cc" onclick="filterCat('👕 Одежда',this)">👕 Одежда</button>
-    <button class="cc" onclick="filterCat('👟 Обувь',this)">👟 Обувь</button>
-    <button class="cc" onclick="filterCat('📱 Техника',this)">📱 Техника</button>
-    <button class="cc" onclick="filterCat('🎁 Другое',this)">🎁 Другое</button>
+    <button class="cc" onclick="filterCat('Одежда',this)">Одежда</button>
+    <button class="cc" onclick="filterCat('Обувь',this)">Обувь</button>
+    <button class="cc" onclick="filterCat('Техника',this)">Техника</button>
+    <button class="cc" onclick="filterCat('Другое',this)">Другое</button>
   </div>
   <div id="pinned-section" style="display:none">
-    <div class="stl" style="margin-bottom:10px;display:flex;align-items:center;gap:6px">⭐ Закреплённые</div>
+    <div class="stl" style="margin-bottom:10px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--acc)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Закреплённые</div>
     <div class="hsc" id="pinned-list"></div>
   </div>
   <div class="stl" style="margin-top:10px;display:flex;align-items:center;justify-content:space-between;padding-right:18px">
@@ -291,10 +302,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
   <div id="search-sugg"></div>
   <div class="csc" id="search-cats">
     <button class="cc active" onclick="filterCat('',this)">Все</button>
-    <button class="cc" onclick="filterCat('👕 Одежда',this)">👕 Одежда</button>
-    <button class="cc" onclick="filterCat('👟 Обувь',this)">👟 Обувь</button>
-    <button class="cc" onclick="filterCat('📱 Техника',this)">📱 Техника</button>
-    <button class="cc" onclick="filterCat('🎁 Другое',this)">🎁 Другое</button>
+    <button class="cc" onclick="filterCat('Одежда',this)">Одежда</button>
+    <button class="cc" onclick="filterCat('Обувь',this)">Обувь</button>
+    <button class="cc" onclick="filterCat('Техника',this)">Техника</button>
+    <button class="cc" onclick="filterCat('Другое',this)">Другое</button>
   </div>
   <div class="pc" id="search-results"></div>
 </div>
@@ -306,7 +317,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
     <div class="hdr-logo"><div class="logo-nm" style="font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="ad-hdr">Объявление</div></div>
     <button class="hbtn" id="fav-hbtn" onclick="toggleFav()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
   </div>
-  <div class="aslider" id="ad-slider"><span id="ad-slider-emoji" style="font-size:74px"></span></div>
+  <div class="aslider" id="ad-slider"></div>
   <div class="adb">
     <div class="adp" id="ad-det-price"></div>
     <div class="adt" id="ad-det-title"></div>
@@ -332,24 +343,32 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
   <div class="fst active" id="step-0">
     <div class="stl">Категория</div>
     <div class="pc"><div class="cgr">
-      <button class="cbtn" onclick="selCat('👕 Одежда',this)"><div class="ce">👕</div><div class="cn">Одежда</div></button>
-      <button class="cbtn" onclick="selCat('👟 Обувь',this)"><div class="ce">👟</div><div class="cn">Обувь</div></button>
-      <button class="cbtn" onclick="selCat('📱 Техника',this)"><div class="ce">📱</div><div class="cn">Техника</div></button>
-      <button class="cbtn" onclick="selCat('🎁 Другое',this)"><div class="ce">🎁</div><div class="cn">Другое</div></button>
+      <button class="cbtn" onclick="selCat('Одежда',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div><div class="cn">Одежда</div></button>
+      <button class="cbtn" onclick="selCat('Обувь',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16h16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2z"/><path d="M4 16l2-8h8l3 5 3-1v4"/></svg></div><div class="cn">Обувь</div></button>
+      <button class="cbtn" onclick="selCat('Техника',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div><div class="cn">Техника</div></button>
+      <button class="cbtn" onclick="selCat('Другое',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div><div class="cn">Другое</div></button>
     </div></div>
   </div>
   <!-- step 1: details -->
   <div class="fst" id="step-1">
     <div class="pc">
-      <div class="fgr"><label class="flb">Название *</label><input class="inp" id="ad-title" placeholder="Например: Nike Air Max 90"></div>
-      <div class="fgr"><label class="flb">Описание</label><textarea class="txta" id="ad-desc" placeholder="Расскажите подробнее..."></textarea></div>
+      <div class="fgr">
+        <label class="flb">Название *</label>
+        <div class="cat-hints" id="title-hints" style="display:none;margin-bottom:8px"></div>
+        <input class="inp" id="ad-title" placeholder="Введите название товара">
+      </div>
+      <div class="fgr">
+        <label class="flb">Описание</label>
+        <textarea class="txta" id="ad-desc" placeholder="Расскажите подробнее..."></textarea>
+        <div class="cat-hints" id="desc-hints" style="display:none;margin-top:8px"></div>
+      </div>
       <div class="fgr" id="size-gr" style="display:none"><label class="flb">Размер</label><input class="inp" id="ad-size" placeholder="XS/S/M/L/XL или 42/43..."></div>
       <div class="fgr"><label class="flb">Состояние *</label>
         <div class="chrow">
-          <button class="ch" onclick="selChip(this,'condition','🆕 Новое')">🆕 Новое</button>
-          <button class="ch" onclick="selChip(this,'condition','✨ Отличное')">✨ Отличное</button>
-          <button class="ch" onclick="selChip(this,'condition','👍 Хорошее')">👍 Хорошее</button>
-          <button class="ch" onclick="selChip(this,'condition','🙂 Удовл.')">🙂 Удовл.</button>
+          <button class="ch" onclick="selChip(this,'condition','Новое')">Новое</button>
+          <button class="ch" onclick="selChip(this,'condition','Отличное')">Отличное</button>
+          <button class="ch" onclick="selChip(this,'condition','Хорошее')">Хорошее</button>
+          <button class="ch" onclick="selChip(this,'condition','Удовл.')">Удовл.</button>
         </div>
       </div>
       <button class="btn ba" onclick="nextStep()">Далее →</button>
@@ -362,9 +381,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
       <div class="fgr"><label class="flb">Город</label><input class="inp" id="ad-city" placeholder="Москва, СПб..."></div>
       <div class="fgr"><label class="flb">Доставка</label>
         <div class="chrow">
-          <button class="ch" onclick="togDeliv(this,'🚚 Доставка')">🚚 Доставка</button>
-          <button class="ch" onclick="togDeliv(this,'🤝 Самовывоз')">🤝 Самовывоз</button>
-          <button class="ch" onclick="togDeliv(this,'📦 Авито доставка')">📦 Авито</button>
+          <button class="ch" onclick="togDeliv(this,'Доставка')">Доставка</button>
+          <button class="ch" onclick="togDeliv(this,'Самовывоз')">Самовывоз</button>
+          <button class="ch" onclick="togDeliv(this,'Авито доставка')">Авито</button>
         </div>
       </div>
       <button class="btn ba" onclick="nextStep()">Далее →</button>
@@ -422,7 +441,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 
 <!-- FAVOURITES -->
 <div class="screen" id="sc-favs">
-  <div class="hdr"><div class="hdr-logo"><div class="logo-nm" style="font-size:17px">❤️ Избранное</div></div></div>
+  <div class="hdr"><div class="hdr-logo"><div class="logo-nm" style="font-size:17px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--acc)" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Избранное</div></div></div>
   <div class="pc" id="favs-list"></div>
 </div>
 
@@ -444,28 +463,33 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
     <div class="si2"><div class="sv" id="prof-views">0</div><div class="sl">Просмотров</div></div>
   </div>
   <div class="card" style="margin:0 18px 14px;padding:0">
+    <div class="ir" onclick="navTo('my-ads');setTab(S.curTab)">
+      <div class="irl"><div class="iric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.2" fill="currentColor"/><circle cx="3.5" cy="12" r="1.2" fill="currentColor"/><circle cx="3.5" cy="18" r="1.2" fill="currentColor"/></svg></div><div class="irlb">Мои объявления</div></div>
+      <div class="ira"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+    <div class="sep"></div>
     <div class="ir" onclick="navTo('subscriptions')">
-      <div class="irl"><div class="iric">💳</div><div class="irlb">Тарифы и подписки</div></div>
+      <div class="irl"><div class="iric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="irlb">Тарифы и подписки</div></div>
       <div class="ira"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
     <div class="sep"></div>
     <div class="ir" onclick="navTo('pin-ad')">
-      <div class="irl"><div class="iric">⭐</div><div class="irlb">Закрепить объявление</div></div>
+      <div class="irl"><div class="iric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div><div class="irlb">Закрепить объявление</div></div>
       <div class="ira"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
     <div class="sep"></div>
     <div class="ir" onclick="navTo('referral')">
-      <div class="irl"><div class="iric">👥</div><div class="irlb">Реферальная программа</div></div>
+      <div class="irl"><div class="iric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="irlb">Реферальная программа</div></div>
       <div class="ira" style="gap:5px"><div class="irv" id="ref-bal-prof" style="color:var(--acc)">0₽</div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
     <div class="sep"></div>
     <div class="ir" onclick="navTo('notifications')">
-      <div class="irl"><div class="iric">🔔</div><div class="irlb">Уведомления</div></div>
+      <div class="irl"><div class="iric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="irlb">Уведомления</div></div>
       <div class="ira" style="gap:5px"><div class="irv" id="notif-count-prof" style="color:var(--acc)"></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
     <div class="sep" id="admin-sep" style="display:none"></div>
     <div class="ir" id="admin-row" style="display:none" onclick="navTo('admin')">
-      <div class="irl"><div class="iric" style="color:var(--rd)">🛡</div><div class="irlb" style="color:var(--rd)">Администрирование</div></div>
+      <div class="irl"><div class="iric" style="color:var(--rd)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="irlb" style="color:var(--rd)">Администрирование</div></div>
       <div class="ira"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
   </div>
@@ -501,7 +525,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
       <button class="btn ba" onclick="openPayment('Standard')">Оформить</button>
     </div>
     <div class="prc ft">
-      <div class="pot">🔥 Хит</div>
+      <div class="pot">Хит</div>
       <div class="prb">PRO</div>
       <div class="prn">Профи</div>
       <div class="prp" id="pro-price">899₽ <span>/мес</span></div>
@@ -516,7 +540,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 <div class="screen" id="sc-referral">
   <div class="hdr">
     <button class="bb" onclick="navBack()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <div class="hdr-logo"><div class="logo-nm" style="font-size:17px">👥 Рефералы</div></div>
+    <div class="hdr-logo"><div class="logo-nm" style="font-size:17px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Рефералы</div></div>
   </div>
   <div class="pc">
     <div style="background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:var(--r);padding:22px;margin-bottom:18px;box-shadow:0 12px 28px rgba(255,87,34,.3)">
@@ -532,13 +556,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
       <label class="flb" style="margin-bottom:10px">Ваша реферальная ссылка</label>
       <div class="rfb" id="ref-link">https://t.me/postcrab_bot?start=ref_...</div>
       <div style="display:flex;gap:8px">
-        <button class="btn ba" style="flex:1" onclick="copyRef()">📋 Скопировать</button>
-        <button class="btn bn" style="flex:1" onclick="shareRef()">📤 Поделиться</button>
+        <button class="btn ba" style="flex:1" onclick="copyRef()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Скопировать</button>
+        <button class="btn bn" style="flex:1" onclick="shareRef()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Поделиться</button>
       </div>
     </div>
     <div style="font-size:13px;font-weight:800;color:var(--dk);margin-bottom:12px">Мои рефералы</div>
     <div id="ref-list"></div>
-    <button class="btn bn" style="margin-top:12px" onclick="openPayment('ref_balance')">💎 Потратить баланс на тариф</button>
+    <button class="btn bn" style="margin-top:12px" onclick="openPayment('ref_balance')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="3" x2="6" y2="9"/><line x1="12" y1="3" x2="18" y2="9"/><line x1="6" y1="9" x2="12" y2="22"/><line x1="18" y1="9" x2="12" y2="22"/></svg> Потратить баланс на тариф</button>
   </div>
 </div>
 
@@ -561,7 +585,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 <div class="screen" id="sc-notifications">
   <div class="hdr">
     <button class="bb" onclick="navBack()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <div class="hdr-logo"><div class="logo-nm" style="font-size:17px">🔔 Уведомления</div></div>
+    <div class="hdr-logo"><div class="logo-nm" style="font-size:17px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Уведомления</div></div>
     <button class="hbtn" onclick="markAllRead()" style="font-size:10px;font-weight:800;color:var(--acc);width:auto;padding:0 10px;box-shadow:none">Всё прочитано</button>
   </div>
   <div class="pc" id="notif-list"></div>
@@ -571,7 +595,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 <div class="screen" id="sc-admin">
   <div class="hdr">
     <button class="bb" onclick="navBack()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <div class="hdr-logo"><div class="logo-nm" style="font-size:17px;color:var(--rd)">🛡 Админ-панель</div></div>
+    <div class="hdr-logo"><div class="logo-nm" style="font-size:17px;color:var(--rd);display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Админ-панель</div></div>
   </div>
   <div class="pc">
     <div style="font-size:11px;font-weight:800;color:var(--gr);margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px">Статистика</div>
@@ -585,12 +609,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
     <div id="admin-mod-queue"></div>
     <div style="font-size:11px;font-weight:800;color:var(--gr);margin:18px 0 12px;text-transform:uppercase;letter-spacing:.4px">Платежи (ожидают)</div>
     <div id="admin-payments-list"></div>
-    <div style="font-size:11px;font-weight:800;color:var(--gr);margin:18px 0 12px;text-transform:uppercase;letter-spacing:.4px">📢 Рассылка</div>
+    <div style="font-size:11px;font-weight:800;color:var(--gr);margin:18px 0 12px;text-transform:uppercase;letter-spacing:.4px">Рассылка</div>
     <div class="fgr"><textarea class="txta" id="broadcast-text" placeholder="Сообщение для всех пользователей..." style="min-height:100px"></textarea></div>
-    <button class="btn ba" onclick="sendBroadcast()" style="margin-bottom:18px">📨 Отправить рассылку</button>
+    <button class="btn ba" onclick="sendBroadcast()" style="margin-bottom:18px">Отправить рассылку</button>
     <div style="font-size:11px;font-weight:800;color:var(--gr);margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px">Промокоды</div>
     <div id="promo-list-admin"></div>
-    <button class="btn bn" style="margin-top:10px" onclick="showPromoCreate()">➕ Создать промокод</button>
+    <button class="btn bn" style="margin-top:10px" onclick="showPromoCreate()">+ Создать промокод</button>
   </div>
 </div>
 
@@ -608,9 +632,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
     <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
     <span class="lb">Создать</span>
   </button>
-  <button class="ni" id="nav-my-ads" onclick="navTo('my-ads');setTab(S.curTab)">
-    <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.2" fill="currentColor"/><circle cx="3.5" cy="12" r="1.2" fill="currentColor"/><circle cx="3.5" cy="18" r="1.2" fill="currentColor"/></svg></span>
-    <span class="lb">Мои</span>
+  <button class="ni" id="nav-favs" onclick="navTo('favs')">
+    <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+    <span class="lb">Избранное</span>
   </button>
   <button class="ni" id="nav-profile" onclick="navTo('profile')">
     <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><div class="nbadge" id="nav-profile-badge" style="display:none"></div></span>
@@ -625,22 +649,116 @@ const TARIFFS={Free:{daily_ads:1,pins:0,pin_hours:0,price:0},Standard:{daily_ads
 const PAYMENT={yoomoney:'https://yoomoney.ru/to/4100119456604619',crypto_std:'https://t.me/send?start=IVRWI4KCIZoj',crypto_pro:'https://t.me/send?start=IVRMtMS6xa0a',tinkoff:'2200701043238127'};
 const ADMIN_IDS=[6115882628];
 const BOT='postcrab_bot';
-const SYNONYMS={'айфон':['iphone','apple'],'iphone':['айфон','apple'],'самсунг':['samsung','галакси'],'samsung':['самсунг','галакси'],'кроссовки':['кеды','обувь'],'ноутбук':['laptop','ноут'],'телефон':['смартфон','phone']};
+const SYNONYMS={
+  'айфон':['iphone','apple','iphone 15','iphone 14','iphone 13'],
+  'iphone':['айфон','apple','яблоко'],
+  'самсунг':['samsung','галакси','galaxy'],
+  'samsung':['самсунг','галакси','galaxy'],
+  'galaxy':['галакси','самсунг','samsung'],
+  'галакси':['galaxy','samsung','самсунг'],
+  'кроссовки':['кеды','обувь','sneakers','найк','adidas','nike'],
+  'кеды':['кроссовки','обувь','sneakers'],
+  'ноутбук':['laptop','ноут','macbook','mac','ноутбуки'],
+  'laptop':['ноутбук','ноут','macbook'],
+  'macbook':['ноутбук','mac','laptop','маcбук'],
+  'телефон':['смартфон','phone','мобильный','мобила'],
+  'смартфон':['телефон','phone','мобильный'],
+  'найк':['nike','кроссовки','найки'],
+  'nike':['найк','найки','кроссовки'],
+  'адидас':['adidas','кроссовки'],
+  'adidas':['адидас','кроссовки'],
+  'пуховик':['куртка','пуфер','пальто','зимняя куртка'],
+  'куртка':['пуховик','пуфер','ветровка','jacket'],
+  'джинсы':['брюки','штаны','jeans','деним'],
+  'jeans':['джинсы','деним','брюки'],
+  'платье':['юбка','сарафан','dress'],
+  'планшет':['tablet','ipad','айпад'],
+  'ipad':['айпад','планшет','tablet'],
+  'айпад':['ipad','планшет','tablet'],
+  'наушники':['airpods','наушник','headphones','earbuds'],
+  'airpods':['наушники','earbuds','эирподс'],
+  'эирподс':['airpods','наушники'],
+  'часы':['watch','умные часы','apple watch'],
+  'apple watch':['часы','умные часы'],
+  'xbox':['иксбокс','приставка','консоль','игры'],
+  'playstation':['ps4','ps5','приставка','консоль','плейстейшн'],
+  'ps4':['playstation','ps5','приставка'],
+  'ps5':['playstation','ps4','приставка'],
+  'плейстейшн':['playstation','ps4','ps5'],
+  'велосипед':['велик','bike','байк','bicycle'],
+  'велик':['велосипед','bike'],
+  'камера':['фотоаппарат','camera','фотик'],
+  'фотоаппарат':['камера','camera','фотик'],
+};
 
+// Транслитерация рус→англ для поиска
+const TRANSLIT_RU={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'zh','з':'z','и':'i','й':'j','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'};
+function translit(s){return s.split('').map(c=>TRANSLIT_RU[c.toLowerCase()]||c.toLowerCase()).join('');}
+function normSearch(q){return q.trim().toLowerCase();}
+function getSearchTerms(q){
+  q=normSearch(q);
+  const terms=new Set([q]);
+  // прямые синонимы
+  (SYNONYMS[q]||[]).forEach(s=>terms.add(s));
+  // частичное совпадение по ключам синонимов
+  Object.keys(SYNONYMS).forEach(k=>{
+    if(k.includes(q)||q.includes(k)){terms.add(k);(SYNONYMS[k]||[]).forEach(s=>terms.add(s));}
+  });
+  // транслит
+  const tq=translit(q);
+  if(tq!==q){terms.add(tq);(SYNONYMS[tq]||[]).forEach(s=>terms.add(s));}
+  return [...terms];
+}
+
+
+// ═══════════ CATEGORY TEMPLATES ═══════════
+const CAT_TEMPLATES={
+  'Одежда':{
+    title:'Например: Куртка зимняя H&M',
+    desc:'Например: Куртка в хорошем состоянии, надевал(а) пару раз. Размер подходит на 46-48. Без дефектов.',
+    size:'XS / S / M / L / XL / XXL',
+    hints:['Куртка','Пуховик','Джинсы','Платье','Футболка','Худи','Пальто','Спортивный костюм'],
+    descHints:['Размер подходит на...','Надевал(а) несколько раз','Без дефектов','Есть небольшой изъян (описание)'],
+  },
+  'Обувь':{
+    title:'Например: Кроссовки Nike Air Max 42р',
+    desc:'Например: Кроссовки в отличном состоянии. Размер 42. Подошва не стёрта, без потёртостей.',
+    size:'38 / 39 / 40 / 41 / 42 / 43 / 44 / 45',
+    hints:['Кроссовки','Ботинки','Кеды','Сапоги','Туфли','Сандали','Кроксы','Угги'],
+    descHints:['Размер...','Подошва целая','Без потёртостей','Носились мало'],
+  },
+  'Техника':{
+    title:'Например: iPhone 14 Pro 256GB',
+    desc:'Например: Телефон в идеальном состоянии. АКБ 89%. Комплект полный: коробка, зарядка. Торг уместен.',
+    size:'',
+    hints:['iPhone','Samsung','Ноутбук','MacBook','iPad','Наушники','Часы','Игровая приставка','Фотоаппарат','Планшет'],
+    descHints:['Состояние АКБ...%','Полный комплект','Есть/нет царапин','Торг уместен','Самовывоз или доставка'],
+  },
+  'Другое':{
+    title:'Например: Детский велосипед 20"',
+    desc:'Например: Продаю в связи с ненадобностью. Состояние хорошее, всё работает.',
+    size:'',
+    hints:['Мебель','Книги','Игрушки','Велосипед','Спортинвентарь','Растения','Посуда','Стройматериалы'],
+    descHints:['В связи с переездом','Состояние хорошее','Всё работает','Самовывоз'],
+  },
+};
 // ═══════════ STORAGE ═══════════
-const LS=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}};
-const SS=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+// Ключи хранилища привязаны к Telegram user_id для изоляции данных пользователей
+let _storagePrefix = 'pp_';
+function _getPrefix(){return _storagePrefix;}
+const LS=k=>{try{return JSON.parse(localStorage.getItem(_getPrefix()+k))}catch{return null}};
+const SS=(k,v)=>{try{localStorage.setItem(_getPrefix()+k,JSON.stringify(v))}catch{}};
 
 const S={
-  user: LS('pp_user')||{name:'Пользователь',tg_id:null,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,ref_total:0,daily_ads:0,last_daily_reset:null,views_total:0},
-  ads: LS('pp_ads')||[],
-  myAds: LS('pp_my_ads')||[],
-  favs: LS('pp_favs')||[],
-  notifs: LS('pp_notifs')||[],
-  promoCodes: LS('pp_promos')||[],
-  payments: LS('pp_payments')||[],
-  referrals: LS('pp_refs')||[],
-  searchHist: LS('pp_search_hist')||[],
+  user: LS('user')||{name:'Пользователь',tg_id:null,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,ref_total:0,daily_ads:0,last_daily_reset:null,views_total:0},
+  ads: LS('ads')||[],
+  myAds: LS('my_ads')||[],
+  favs: LS('favs')||[],
+  notifs: LS('notifs')||[],
+  promoCodes: LS('promos')||[],
+  payments: LS('payments')||[],
+  referrals: LS('refs')||[],
+  searchHist: LS('search_hist')||[],
   curAdId:null,prevSc:'home',curSc:'home',
   createStep:0,newAd:{},photos:[],deliveries:[],
   promoDiscount:0,promoCode:'',
@@ -648,32 +766,19 @@ const S={
   selPayTariff:'',selPayMethod:'',
   curSlide:0,
 };
-function save(){SS('pp_user',S.user);SS('pp_ads',S.ads);SS('pp_my_ads',S.myAds);SS('pp_favs',S.favs);SS('pp_notifs',S.notifs);SS('pp_promos',S.promoCodes);SS('pp_payments',S.payments);SS('pp_refs',S.referrals);SS('pp_search_hist',S.searchHist);}
+function save(){SS('user',S.user);SS('ads',S.ads);SS('my_ads',S.myAds);SS('favs',S.favs);SS('notifs',S.notifs);SS('promos',S.promoCodes);SS('payments',S.payments);SS('refs',S.referrals);SS('search_hist',S.searchHist);}
 
-// ═══════════ DEMO DATA ═══════════
+// ═══════════ INIT DATA ═══════════
 function initDemo(){
-  if(S.ads.length>0)return;
-  const n=Date.now();
-  S.ads=[
-    {id:1,user_id:999,title:'Nike Air Max 90 White',category:'👟 Обувь',price:7500,condition:'✨ Отличное',size:'43',city:'Москва',delivery:'🚚 Доставка / 🤝 Самовывоз',desc:'Кроссовки в отличном состоянии, носил 2 раза. Оригинал, коробка в наличии.',contact:'@seller1',photos:[],emoji:'👟',status:'active',pinned_until:n+86400000*3,views:148,created_at:n-86400000*2},
-    {id:2,user_id:998,title:'iPhone 13 Pro 256GB',category:'📱 Техника',price:59000,condition:'👍 Хорошее',city:'СПб',delivery:'🤝 Самовывоз',desc:'Продаю iPhone 13 Pro 256GB. Царапин нет, аккумулятор 89%.',contact:'@seller2',photos:[],emoji:'📱',status:'active',pinned_until:null,views:312,created_at:n-86400000},
-    {id:3,user_id:997,title:'Куртка Columbia осень',category:'👕 Одежда',price:3200,condition:'🆕 Новое',size:'M',city:'Казань',delivery:'📦 Авито доставка',desc:'Куртка Columbia, размер M, новая с биркой.',contact:'@seller3',photos:[],emoji:'🧥',status:'active',pinned_until:null,views:67,created_at:n-3600000*5},
-    {id:4,user_id:996,title:'MacBook Air M2 2022',category:'📱 Техника',price:89000,condition:'✨ Отличное',city:'Москва',delivery:'🤝 Самовывоз / 🚚 Доставка',desc:'MacBook Air M2, 8GB, 256GB. Использовался 6 месяцев.',contact:'@seller4',photos:[],emoji:'💻',status:'active',pinned_until:null,views:445,created_at:n-3600000*12},
-    {id:5,user_id:995,title:'AirPods Pro 2 (MQTP3)',category:'📱 Техника',price:14500,condition:'🆕 Новое',city:'Москва',delivery:'🚚 Доставка',desc:'AirPods Pro 2 поколения, новые запечатанные.',contact:'@seller5',photos:[],emoji:'🎧',status:'active',pinned_until:null,views:203,created_at:n-3600000*8},
-    {id:6,user_id:994,title:"Vintage Levi's 501 W32",category:'👕 Одежда',price:4800,condition:'👍 Хорошее',size:'32',city:'СПб',delivery:'📦 Авито доставка / 🤝 Самовывоз',desc:"Оригинальные Levi's 501 vintage 90-х. Без дыр.",contact:'@seller6',photos:[],emoji:'👖',status:'active',pinned_until:null,views:89,created_at:n-3600000*2},
-  ];
-  S.myAds=[
-    {id:100,user_id:0,title:'Мои AirPods Max',category:'📱 Техника',price:29000,condition:'👍 Хорошее',city:'Москва',delivery:'🤝 Самовывоз',desc:'Продаю свои AirPods Max.',contact:'@me',photos:[],emoji:'🎧',status:'active',views:34,pinned_until:null,created_at:n-86400000},
-    {id:101,user_id:0,title:'Старые Nike 42',category:'👟 Обувь',price:1500,condition:'🙂 Удовл.',size:'42',city:'Москва',delivery:'🤝 Самовывоз',desc:'Старые Nike, но крепкие.',contact:'@me',photos:[],emoji:'👟',status:'moderation',views:0,pinned_until:null,created_at:n-3600000*2},
-  ];
-  S.notifs=[
-    {id:1,type:'info',icon:'🎉',iconCls:'nic-acc',title:'Добро пожаловать!',body:'Вы успешно зарегистрировались в PuppyPost',time:n-86400000,read:true},
-  ];
-  S.promoCodes=[
-    {code:'PUPPY20',discount:20,duration:30,max_uses:50,uses:12,active:true,created_at:n-86400000*5},
-    {code:'NEWUSER',discount:15,duration:30,max_uses:100,uses:45,active:true,created_at:n-86400000*10},
-  ];
-  save();
+  // Демо-данные убраны. Объявления публикуются через бота и приходят из канала.
+  // Новый пользователь получает приветственное уведомление
+  if(S.notifs.length===0){
+    const n=Date.now();
+    S.notifs=[
+      {id:1,type:'info',icon:'★',iconCls:'nic-acc',title:'Добро пожаловать!',body:'Создайте первое объявление — оно пройдёт модерацию и появится в ленте!',time:n,read:false},
+    ];
+    save();
+  }
 }
 
 // ═══════════ UTILS ═══════════
@@ -695,7 +800,7 @@ function toast(msg,dur=2600){
 
 // ═══════════ NAVIGATION ═══════════
 const SCREENS={'home':'sc-home','search':'sc-search','create':'sc-create','my-ads':'sc-my-ads','my-ad-detail':'sc-my-ad-detail','favs':'sc-favs','profile':'sc-profile','subscriptions':'sc-subscriptions','referral':'sc-referral','pin-ad':'sc-pin-ad','notifications':'sc-notifications','admin':'sc-admin','ad-detail':'sc-ad-detail'};
-const NAVMAP={'home':'nav-home','search':'nav-search','create':'nav-create','my-ads':'nav-my-ads','profile':'nav-profile','my-ad-detail':'nav-my-ads','subscriptions':'nav-profile','referral':'nav-profile','pin-ad':'nav-profile','notifications':'nav-profile','admin':'nav-profile','ad-detail':null,'favs':null};
+const NAVMAP={'home':'nav-home','search':'nav-search','create':'nav-create','my-ads':'nav-profile','profile':'nav-profile','my-ad-detail':'nav-profile','subscriptions':'nav-profile','referral':'nav-profile','pin-ad':'nav-profile','notifications':'nav-profile','admin':'nav-profile','ad-detail':null,'favs':'nav-favs'};
 
 function navTo(sc){
   S.prevSc=S.curSc; S.curSc=sc;
@@ -726,9 +831,12 @@ function doSearch(q){clearTimeout(_st);_st=setTimeout(()=>_doSearch(q),180);}
 function _doSearch(q){
   q=q.trim().toLowerCase();
   if(q&&!S.searchHist.includes(q)){S.searchHist.unshift(q);S.searchHist=S.searchHist.slice(0,10);save();}
-  const terms=[q,...(SYNONYMS[q]||[])];
+  const terms=getSearchTerms(q);
   let res=S.ads.filter(a=>a.status==='active');
-  if(q)res=res.filter(a=>terms.some(t=>(`${a.title} ${a.desc} ${a.category}`).toLowerCase().includes(t)));
+  if(q)res=res.filter(a=>{
+    const hay=normSearch(`${a.title} ${a.desc||''} ${a.category}`);
+    return terms.some(t=>hay.includes(t))||terms.some(t=>translit(hay).includes(translit(t)));
+  });
   if(S.curCat)res=res.filter(a=>a.category===S.curCat);
   const now=Date.now();
   res.sort((a,b)=>{
@@ -743,12 +851,17 @@ function _doSearch(q){
 function renderSearchSugg(){
   const el=document.getElementById('search-sugg');if(!el)return;
   const hist=S.searchHist.slice(0,6);
-  const pop=['Nike','iPhone','MacBook','Куртка','Кроссовки','Samsung'];
+  // Популярное = реальные объявления с наибольшим кол-вом просмотров
+  const activeAds=S.ads.filter(a=>a.status==='active'&&a.views>0);
+  activeAds.sort((a,b)=>(b.views||0)-(a.views||0));
+  const popAds=activeAds.slice(0,6);
   let h='';
-  if(hist.length){h+=`<div class="sugg-wrap"><div class="sugg-tl">История</div><div class="sugg-list">`;hist.forEach(t=>h+=`<button class="sugg-tag" onclick="searchTag('${esc(t)}')">🕐 ${esc(t)}</button>`);h+=`</div></div>`;}
-  h+=`<div class="sugg-wrap"><div class="sugg-tl">Популярное</div><div class="sugg-list">`;
-  pop.forEach(t=>h+=`<button class="sugg-tag" onclick="searchTag('${t}')">🔥 ${t}</button>`);
-  h+=`</div></div>`;
+  if(hist.length){h+=`<div class="sugg-wrap"><div class="sugg-tl">История</div><div class="sugg-list">`;hist.forEach(t=>h+=`<button class="sugg-tag" onclick="searchTag('${esc(t)}')">${esc(t)}</button>`);h+=`</div></div>`;}
+  if(popAds.length){
+    h+=`<div class="sugg-wrap"><div class="sugg-tl">Популярное</div><div class="sugg-list">`;
+    popAds.forEach(a=>h+=`<button class="sugg-tag" onclick="openAd(${a.id})">${esc(a.title)}</button>`);
+    h+=`</div></div>`;
+  }
   el.innerHTML=h;
 }
 function searchTag(t){document.getElementById('search-inp').value=t;doSearch(t);}
@@ -775,18 +888,18 @@ function renderPinned(){
   const el=document.getElementById('pinned-list'),sec=document.getElementById('pinned-section');
   if(!pinned.length){sec.style.display='none';return;}
   sec.style.display='block';
-  el.innerHTML=pinned.map(a=>`<div class="hac" onclick="openAd(${a.id})"><div class="hai">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}" loading="lazy">`:`${a.emoji||'📦'}`}</div><div class="hab"><div class="hat">${esc(a.title)}</div><div class="hap">${fmtPrice(a.price)}</div><div style="font-size:10px;font-weight:700;color:var(--gr)">${esc(a.city||'')}</div></div></div>`).join('');
+  el.innerHTML=pinned.map(a=>`<div class="hac" onclick="openAd(${a.id})"><div class="hai">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}" loading="lazy">`:`<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div><div class="hab"><div class="hat">${esc(a.title)}</div><div class="hap">${fmtPrice(a.price)}</div><div style="font-size:10px;font-weight:700;color:var(--gr)">${esc(a.city||'')}</div></div></div>`).join('');
 }
 
 // ═══════════ AD LIST ═══════════
 function renderAdList(cid,ads){
   const el=document.getElementById(cid);if(!el)return;
-  if(!ads.length){el.innerHTML=`<div class="empty"><span class="ei">🔍</span><div class="et">Ничего не найдено</div><div class="es">Попробуйте другую категорию или запрос</div></div>`;return;}
+  if(!ads.length){el.innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><div class="et">Ничего не найдено</div><div class="es">Попробуйте другую категорию или запрос</div></div>`;return;}
   const now=Date.now();
   el.innerHTML=ads.map(a=>{
     const isPinned=a.pinned_until&&a.pinned_until>now;
     const isNew=(now-a.created_at)<3600000*12;
-    return `<div class="acard" onclick="openAd(${a.id})"><div class="aimg">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}" loading="lazy">`:`<span>${a.emoji||'📦'}</span>`}${isPinned?'<div class="pinb">⭐ Закреп</div>':''}${isNew&&!isPinned?'<div class="newb">НОВОЕ</div>':''}</div><div class="ab"><div class="acat">${esc(a.category)}</div><div class="atl">${esc(a.title)}</div><div class="ame"><div class="apr">${fmtPrice(a.price)}</div><div class="ain">👁 ${a.views||0}</div></div><div class="ata">${a.condition?`<div class="tag">${esc(a.condition)}</div>`:''}${a.city?`<div class="tag">📍 ${esc(a.city)}</div>`:''}${a.delivery?`<div class="tag">${esc(a.delivery.split('/')[0].trim())}</div>`:''}</div></div></div>`;
+    return `<div class="acard" onclick="openAd(${a.id})"><div class="aimg">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}" loading="lazy">`:`<div style="color:rgba(255,255,255,.15)"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}${isPinned?'<div class="pinb"><svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Закреп</div>':''}${isNew&&!isPinned?'<div class="newb">НОВОЕ</div>':''}</div><div class="ab"><div class="acat">${esc(a.category)}</div><div class="atl">${esc(a.title)}</div><div class="ame"><div class="apr">${fmtPrice(a.price)}</div><div class="ain"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${a.views||0}</div></div><div class="ata">${a.condition?`<div class="tag">${esc(a.condition)}</div>`:''}${a.city?`<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${esc(a.city)}</div>`:''}${a.delivery?`<div class="tag">${esc(a.delivery.split('/')[0].trim())}</div>`:''}</div></div></div>`;
   }).join('');
 }
 
@@ -803,20 +916,20 @@ function openAd(id){
   if(ad.photos&&ad.photos.length){
     slider.innerHTML=`<img src="${esc(ad.photos[0])}" style="width:100%;height:100%;object-fit:cover">`+(ad.photos.length>1?`<div class="asl-nav">${ad.photos.map((_,i)=>`<div class="asl-dot ${i===0?'active':''}"></div>`).join('')}</div>`:'');
   } else {
-    slider.innerHTML=`<span style="font-size:74px">${ad.emoji||'📦'}</span>`;
+    slider.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`;
   }
   document.getElementById('ad-hdr').textContent=ad.title;
   document.getElementById('ad-det-price').textContent=fmtPrice(ad.price);
   document.getElementById('ad-det-title').textContent=ad.title;
   const rows=[
-    {icon:'🏷️',l:'Категория',v:ad.category},
-    {icon:'✨',l:'Состояние',v:ad.condition},
-    ad.size?{icon:'📏',l:'Размер',v:ad.size}:null,
-    ad.city?{icon:'📍',l:'Город',v:ad.city}:null,
-    ad.delivery?{icon:'🚚',l:'Доставка',v:ad.delivery}:null,
-    {icon:'👁',l:'Просмотры',v:ad.views||0},
-    ad.desc?{icon:'📝',l:'Описание',v:ad.desc}:null,
-    {icon:'📞',l:'Контакт',v:ad.contact},
+    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>',l:'Категория',v:ad.category},
+    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',l:'Состояние',v:ad.condition},
+    ad.size?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0z"/><line x1="5" y1="14" x2="9" y2="10"/></svg>',l:'Размер',v:ad.size}:null,
+    ad.city?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',l:'Город',v:ad.city}:null,
+    ad.delivery?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',l:'Доставка',v:ad.delivery}:null,
+    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',l:'Просмотры',v:ad.views||0},
+    ad.desc?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>',l:'Описание',v:ad.desc}:null,
+    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>',l:'Контакт',v:ad.contact},
   ].filter(Boolean);
   document.getElementById('ad-det-rows').innerHTML=rows.map(r=>`<div class="adr"><div class="adri">${r.icon}</div><div><div class="adrk">${r.l}</div><div class="adrt">${esc(String(r.v))}</div></div></div>`).join('');
   updateFavBtn();window.scrollTo(0,0);
@@ -834,7 +947,7 @@ function toggleFav(){
   if(!S.curAdId)return;
   const idx=S.favs.indexOf(S.curAdId);
   if(idx>=0){S.favs.splice(idx,1);toast('Удалено из избранного');}
-  else{S.favs.push(S.curAdId);toast('Добавлено в избранное ❤️');}
+  else{S.favs.push(S.curAdId);toast('Добавлено в избранное');}
   save();updateFavBtn();
 }
 function updateFavBtn(){
@@ -845,7 +958,7 @@ function updateFavBtn(){
 }
 function renderFavs(){
   const favAds=S.ads.filter(a=>S.favs.includes(a.id));
-  if(!favAds.length){document.getElementById('favs-list').innerHTML=`<div class="empty"><span class="ei">❤️</span><div class="et">Нет избранных</div><div class="es">Нажмите ❤️ на объявлении</div></div>`;return;}
+  if(!favAds.length){document.getElementById('favs-list').innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><div class="et">Нет избранных</div><div class="es">Нажмите на сердечко в объявлении</div></div>`;return;}
   renderAdList('favs-list',favAds);
 }
 
@@ -858,36 +971,37 @@ function setTab(tab,el){
   const ads=S.myAds.filter(a=>tab==='archive'?a.status==='inactive'||a.status==='rejected':a.status===(tab==='active'?'active':'moderation'));
   const el2=document.getElementById('my-ads-list');
   if(!ads.length){
-    const em={active:['📝','Нет активных','Создайте первое!'],moderation:['⏳','На модерации нет','Создайте объявление'],archive:['📦','Архив пуст','Деактивируйте объявление']};
-    const [ic,tl,sb]=em[tab]||['📋','Пусто',''];
+    const emIcons={active:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',moderation:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',archive:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>'};
+    const em={active:[emIcons.active,'Нет активных','Создайте первое!'],moderation:[emIcons.moderation,'На модерации нет','Создайте объявление'],archive:[emIcons.archive,'Архив пуст','Деактивируйте объявление']};
+    const [ic,tl,sb]=em[tab]||['<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>','Пусто',''];
     el2.innerHTML=`<div class="empty"><span class="ei">${ic}</span><div class="et">${tl}</div><div class="es">${sb}</div></div>`;return;
   }
   const smap={active:'s-act',moderation:'s-mod',inactive:'s-ina',rejected:'s-rej'};
-  const slb={active:'✅ Активно',moderation:'⏳ Модерация',inactive:'📦 Архив',rejected:'❌ Отклонено'};
-  el2.innerHTML=ads.map(a=>`<div class="mac" onclick="openMyAd(${a.id})"><div class="mat">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:a.emoji||'📦'}</div><div class="mai"><div class="matl">${esc(a.title)}</div><div class="map">${fmtPrice(a.price)}</div><div class="mas ${smap[a.status]||'s-ina'}">${slb[a.status]||a.status}</div><div class="mav">👁 ${a.views||0} · ${timeAgo(a.created_at)}</div></div></div>`).join('');
+  const slb={active:'Активно',moderation:'На модерации',inactive:'В архиве',rejected:'Отклонено'};
+  el2.innerHTML=ads.map(a=>`<div class="mac" onclick="openMyAd(${a.id})"><div class="mat">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.2)"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div><div class="mai"><div class="matl">${esc(a.title)}</div><div class="map">${fmtPrice(a.price)}</div><div class="mas ${smap[a.status]||'s-ina'}">${slb[a.status]||a.status}</div><div class="mav"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${a.views||0} · ${timeAgo(a.created_at)}</div></div></div>`).join('');
 }
 function openMyAd(id){
   const ad=S.myAds.find(a=>a.id===id);if(!ad)return;
   S.actionAdId=id;S.prevSc=S.curSc;navTo('my-ad-detail');
   document.getElementById('my-ad-hdr').textContent=ad.title;
-  const slb={active:'✅ Активно',moderation:'⏳ На модерации',inactive:'📦 В архиве',rejected:'❌ Отклонено'};
+  const slb={active:'Активно',moderation:'На модерации',inactive:'В архиве',rejected:'Отклонено'};
   const body=document.getElementById('my-ad-detail-body');
   body.innerHTML=`
     <div class="acard" style="margin-bottom:18px">
-      <div class="aimg">${ad.photos&&ad.photos.length?`<img src="${esc(ad.photos[0])}">`:`<span style="font-size:54px">${ad.emoji||'📦'}</span>`}</div>
+      <div class="aimg">${ad.photos&&ad.photos.length?`<img src="${esc(ad.photos[0])}">`:`<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}</div>
       <div class="ab"><div class="acat">${esc(ad.category)}</div><div class="atl">${esc(ad.title)}</div><div class="apr">${fmtPrice(ad.price)}</div>
-        <div class="ata"><div class="tag">${slb[ad.status]||ad.status}</div>${ad.city?`<div class="tag">📍 ${esc(ad.city)}</div>`:''}<div class="tag">👁 ${ad.views||0}</div></div>
+        <div class="ata"><div class="tag">${slb[ad.status]||ad.status}</div>${ad.city?`<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${esc(ad.city)}</div>`:''}<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${ad.views||0}</div></div>
       </div>
     </div>
     ${ad.status==='rejected'&&ad.reject_reason?`<div class="card" style="margin-bottom:14px;border-left:3px solid var(--rd)"><div style="font-size:12px;font-weight:800;color:var(--rd);margin-bottom:4px">Причина отказа</div><div style="font-size:13px;font-weight:600;color:var(--dk)">${esc(ad.reject_reason)}</div></div>`:''}
     ${ad.status==='active'?`
-      <button class="btn ba" style="margin-bottom:10px" onclick="pinMyAd(${id})">⭐ Закрепить объявление</button>
-      <button class="btn bn" style="margin-bottom:10px" onclick="deactivateAd(${id})">📦 Перенести в архив</button>
-      <button class="btn" style="background:rgba(244,67,54,.1);color:var(--rd);box-shadow:none" onclick="deleteAd(${id})">🗑 Удалить</button>`:''}
+      <button class="btn ba" style="margin-bottom:10px" onclick="pinMyAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Закрепить</button>
+      <button class="btn bn" style="margin-bottom:10px" onclick="deactivateAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg> В архив</button>
+      <button class="btn" style="background:rgba(255,69,58,.1);color:var(--rd);box-shadow:none;border:1px solid rgba(255,69,58,.2)" onclick="deleteAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Удалить</button>`:''}
     ${ad.status==='inactive'||ad.status==='rejected'?`
-      <button class="btn ba" style="margin-bottom:10px" onclick="reactivateAd(${id})">🔄 Восстановить</button>
-      <button class="btn" style="background:rgba(244,67,54,.1);color:var(--rd);box-shadow:none" onclick="deleteAd(${id})">🗑 Удалить</button>`:''}
-    ${ad.status==='moderation'?`<div class="card" style="text-align:center"><div style="font-size:40px">⏳</div><div style="font-size:15px;font-weight:800;margin-top:10px">Объявление на проверке</div><div style="font-size:13px;font-weight:600;color:var(--gr);margin-top:4px">Обычно занимает 1–2 часа</div></div>`:''}
+      <button class="btn ba" style="margin-bottom:10px" onclick="reactivateAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.04"/></svg> Восстановить</button>
+      <button class="btn" style="background:rgba(255,69,58,.1);color:var(--rd);box-shadow:none;border:1px solid rgba(255,69,58,.2)" onclick="deleteAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Удалить</button>`:''}
+    ${ad.status==='moderation'?`<div class="card" style="text-align:center;padding:32px 18px"><div style="color:rgba(255,255,255,.2);display:flex;justify-content:center;margin-bottom:16px"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div style="font-size:15px;font-weight:700;margin-top:0;letter-spacing:-.2px">Объявление на проверке</div><div style="font-size:13px;font-weight:400;color:var(--gr);margin-top:6px">Обычно занимает 1–2 часа</div></div>`:''}
   `;
 }
 function pinMyAd(id){
@@ -897,7 +1011,7 @@ function pinMyAd(id){
   const ad=S.myAds.find(a=>a.id===id);
   if(ad){ad.pinned_until=Date.now()+t.pin_hours*3600000;S.user.pins_used=(S.user.pins_used||0)+1;
     const pub=S.ads.find(a=>a.id===id);if(pub)pub.pinned_until=ad.pinned_until;
-    save();toast(`⭐ Закреплено на ${t.pin_hours}ч!`);addNotif('gn','⭐','Объявление закреплено!',`"${ad.title}" теперь в топе ${t.pin_hours}ч`);navBack();}
+    save();toast(`⭐ Закреплено на ${t.pin_hours}ч!`);addNotif('gn','★','Объявление закреплено!',`"${ad.title}" теперь в топе ${t.pin_hours}ч`);navBack();}
 }
 function deactivateAd(id){const ad=S.myAds.find(a=>a.id===id);if(ad){ad.status='inactive';save();toast('Перенесено в архив');navBack();setTab('archive');}}
 function reactivateAd(id){
@@ -926,6 +1040,12 @@ function initCreate(){
   document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('sel'));
   document.querySelectorAll('.ch').forEach(c=>c.classList.remove('active'));
   ['ad-title','ad-desc','ad-size','ad-city','ad-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  // Reset placeholders
+  const ti=document.getElementById('ad-title');if(ti)ti.placeholder='Введите название товара';
+  const di=document.getElementById('ad-desc');if(di)di.placeholder='Расскажите подробнее...';
+  // Hide hint bars
+  const th=document.getElementById('title-hints');if(th)th.style.display='none';
+  const dh=document.getElementById('desc-hints');if(dh)dh.style.display='none';
   const p=document.getElementById('ad-price');if(p)p.value='';
   renderPhotoGrid();updateStepi();
 }
@@ -935,9 +1055,41 @@ function updateStepi(){
 function selCat(cat,el){
   document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel');S.newAd.category=cat;
-  const hasSz=cat.includes('Одежда')||cat.includes('Обувь');
+  const tpl=CAT_TEMPLATES[cat]||CAT_TEMPLATES['Другое'];
+  // Apply placeholders
+  const ti=document.getElementById('ad-title');
+  const di=document.getElementById('ad-desc');
+  const si=document.getElementById('ad-size');
+  if(ti)ti.placeholder=tpl.title;
+  if(di)di.placeholder=tpl.desc;
+  const hasSz=tpl.size!=='';
   document.getElementById('size-gr').style.display=hasSz?'block':'none';
+  if(si&&tpl.size)si.placeholder=tpl.size;
+  // Render title hints
+  const hc=document.getElementById('title-hints');
+  if(hc){
+    hc.innerHTML=tpl.hints.map((h,i)=>`<button class="cat-hint" style="animation-delay:${i*0.04}s" onclick="applyHint('title','${h}')">${h}</button>`).join('');
+    hc.style.display='flex';
+  }
+  // Render desc hints
+  const dhc=document.getElementById('desc-hints');
+  if(dhc){
+    dhc.innerHTML=tpl.descHints.map((h,i)=>`<button class="cat-hint" style="animation-delay:${i*0.04}s" onclick="applyDescHint('${h.replace(/'/g,"\\'")}')">+ ${h}</button>`).join('');
+    dhc.style.display='flex';
+  }
   setTimeout(()=>nextStep(),280);
+}
+function applyHint(field,val){
+  const el=document.getElementById('ad-'+field);
+  if(el){el.value=val;el.focus();}
+}
+function applyDescHint(val){
+  const el=document.getElementById('ad-desc');
+  if(!el)return;
+  const cur=el.value.trim();
+  el.value=cur?(cur+' '+val):val;
+  el.focus();
+  el.setSelectionRange(el.value.length,el.value.length);
 }
 function selChip(el,field,val){el.parentElement.querySelectorAll('.ch').forEach(c=>c.classList.remove('active'));el.classList.add('active');S.newAd[field]=val;}
 function togDeliv(el,val){el.classList.toggle('active');if(el.classList.contains('active'))S.deliveries.push(val);else S.deliveries=S.deliveries.filter(d=>d!==val);}
@@ -971,8 +1123,8 @@ function backCreate(){
 }
 function renderPhotoGrid(){
   const g=document.getElementById('photo-grid');if(!g)return;
-  let h=S.photos.map((p,i)=>`<div class="psl"><img src="${p}"><div class="rmv" onclick="removePhoto(${i})">✕</div></div>`).join('');
-  if(S.photos.length<10)h+=`<div class="padd" onclick="document.getElementById('photo-file').click()">📷</div>`;
+  let h=S.photos.map((p,i)=>`<div class="psl"><img src="${p}"><div class="rmv" onclick="removePhoto(${i})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>`).join('');
+  if(S.photos.length<10)h+=`<div class="padd" onclick="document.getElementById('photo-file').click()"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/><line x1="16" y1="5" x2="16" y2="11"/><line x1="13" y1="8" x2="19" y2="8"/></svg></div>`;
   g.innerHTML=h;
 }
 function removePhoto(i){S.photos.splice(i,1);renderPhotoGrid();}
@@ -998,11 +1150,11 @@ function submitAd(){
   const newAd={
     id:Date.now(),user_id:S.user.tg_id||0,
     title:S.newAd.title||'Новое',price:S.newAd.price||0,
-    category:S.newAd.category||'🎁 Другое',
+    category:S.newAd.category||'Другое',
     condition:S.newAd.condition||'',size:S.newAd.size||'',
     city:S.newAd.city||'',delivery:S.newAd.delivery||'',
     desc:S.newAd.desc||'',contact:S.newAd.contact,
-    photos:S.photos.slice(),emoji:'📦',
+    photos:S.photos.slice(),
     status:'moderation',views:0,
     pinned_until:null,created_at:Date.now()
   };
@@ -1034,26 +1186,16 @@ function submitAd(){
   S.myAds.unshift(newAd);
   S.user.daily_ads=(S.user.daily_ads||0)+1;
   save();
-  // Simulate posting to channel
-  simulateChannelPost(newAd);
   addNotif('yl','⏳','Объявление на модерации',`"${newAd.title}" отправлено на проверку`);
   toast('Объявление отправлено на модерацию!');
-  setTimeout(()=>{navTo('my-ads');setTab('moderation');},1100);
-}
-function simulateChannelPost(ad){
-  // In prod: call bot API to post to channel
-  // Simulated: after 3s auto-approve for demo
+  // После отправки боту — закрываем Mini App, бот ответит в чат
   setTimeout(()=>{
-    const a=S.myAds.find(x=>x.id===ad.id);
-    if(a&&a.status==='moderation'){
-      a.status='active';
-      S.ads.unshift({...a});
-      save();
-      addNotif('gn','✅','Объявление опубликовано!',`"${a.title}" появилось в ленте`);
-      showPushNotif('gn','✅','Объявление опубликовано!',`"${a.title}" появилось в ленте`);
-      updateNavBadge();
+    if(window.Telegram?.WebApp){
+      window.Telegram.WebApp.close();
+    }else{
+      navTo('my-ads');setTab('moderation');
     }
-  },4000);
+  },1200);
 }
 
 // ═══════════ PROFILE ═══════════
@@ -1085,7 +1227,7 @@ function applyPromo(){
   S.promoDiscount=promo.discount;S.promoCode=code;
   promo.uses++;save();
   document.getElementById('promo-applied').style.display='block';
-  document.getElementById('promo-applied').innerHTML=`<div style="background:rgba(156,39,176,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">🎉 Промокод <b>${code}</b> применён — скидка ${promo.discount}%!</div>`;
+  document.getElementById('promo-applied').innerHTML=`<div style="background:rgba(191,90,242,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">Промокод <b>${code}</b> применён — скидка ${promo.discount}%!</div>`;
   renderSubs();toast(`Промокод применён! Скидка ${promo.discount}%`);
 }
 
@@ -1097,12 +1239,12 @@ function openPayment(tariff){
   const disc=S.promoDiscount;
   const finalPrice=disc?Math.round(basePrice*(1-disc/100)):basePrice;
   const html=`
-    <button class="mclose" onclick="closeModal()">✕</button>
+    <button class="mclose" onclick="closeModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div style="font-size:18px;font-weight:900;color:var(--dk);margin-bottom:6px;padding-right:40px">Оплата тарифа ${tariff}</div>
     <div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:18px">Сумма: <b style="color:var(--acc);font-size:16px">${finalPrice}₽</b>${disc?` <s style="opacity:.5">${basePrice}₽</s> (−${disc}%)`:''}</div>
     <div style="font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">Способ оплаты</div>
     <div class="pm" onclick="selPayMethod('yoomoney',this)">
-      <div class="pmic" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">💜</div>
+      <div class="pmic" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg></div>
       <div><div class="pmt">ЮMoney</div><div class="pmst">Мгновенно</div></div>
     </div>
     <div class="pm" onclick="selPayMethod('crypto',this)">
@@ -1110,7 +1252,7 @@ function openPayment(tariff){
       <div><div class="pmt">Крипто (USDT)</div><div class="pmst">через @wallet</div></div>
     </div>
     <div class="pm" onclick="selPayMethod('tinkoff',this)">
-      <div class="pmic" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)">🏦</div>
+      <div class="pmic" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
       <div><div class="pmt">Тинькофф</div><div class="pmst">Номер карты: ${PAYMENT.tinkoff}</div></div>
     </div>
     <div style="margin-top:18px">
@@ -1162,9 +1304,9 @@ function confirmPayStep(){
   // Show receipt instruction with bot redirect
   const mb=document.getElementById('modal-body');
   mb.innerHTML=`
-    <button class="mclose" onclick="closeModal()">✕</button>
+    <button class="mclose" onclick="closeModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div style="text-align:center;padding:10px 0 20px">
-      <div style="font-size:48px;margin-bottom:12px">📸</div>
+      <div style="margin-bottom:12px;display:flex;justify-content:center;color:rgba(255,255,255,.2)"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
       <div style="font-size:18px;font-weight:900;color:var(--dk);margin-bottom:8px">Отправьте чек</div>
       <div style="font-size:14px;font-weight:600;color:var(--gr);margin-bottom:20px">После оплаты отправьте скриншот чека боту @${BOT} — мы проверим и активируем тариф в течение часа</div>
       <button class="btn ba" onclick="openBotForPayment('${paymentInfo.id}')">Отправить чек в бот →</button>
@@ -1195,8 +1337,8 @@ function renderReferral(){
   document.getElementById('ref-act').textContent=S.referrals.filter(r=>r.bought).length;
   document.getElementById('ref-link').textContent=`https://t.me/${BOT}?start=ref_${S.user.tg_id||'0'}`;
   const el=document.getElementById('ref-list');
-  if(!S.referrals.length){el.innerHTML=`<div class="empty" style="padding:24px"><span class="ei" style="font-size:36px">👥</span><div class="et" style="font-size:15px">Нет рефералов</div><div class="es">Поделитесь ссылкой!</div></div>`;return;}
-  el.innerHTML=S.referrals.map(r=>`<div class="rc"><div class="rav">${r.bought?'😊':'😶'}</div><div style="flex:1"><div class="rn">${esc(r.name)}</div><div class="rd-row">${r.bought?'Купил подписку':'Зарегистрировался'}</div></div><div class="rr">${r.bought?'+'+Math.round((S.user.tariff==='PRO'?899:299)*0.05)+'₽':'—'}</div></div>`).join('');
+  if(!S.referrals.length){el.innerHTML=`<div class="empty" style="padding:24px"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div class="et" style="font-size:15px">Нет рефералов</div><div class="es">Поделитесь ссылкой!</div></div>`;return;}
+  el.innerHTML=S.referrals.map(r=>`<div class="rc"><div class="rav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg></div><div style="flex:1"><div class="rn">${esc(r.name)}</div><div class="rd-row">${r.bought?'Купил подписку':'Зарегистрировался'}</div></div><div class="rr">${r.bought?'+'+Math.round((S.user.tariff==='PRO'?899:299)*0.05)+'₽':'—'}</div></div>`).join('');
 }
 function copyRef(){
   const link=document.getElementById('ref-link').textContent;
@@ -1213,14 +1355,14 @@ function renderPinAd(){
   const t=TARIFFS[S.user.tariff||'Free'];
   const el=document.getElementById('pin-ad-list');
   const activeAds=S.myAds.filter(a=>a.status==='active');
-  if(t.pins===0){el.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:36px">🔒</div><div style="font-size:15px;font-weight:800;margin:10px 0 6px">Нет доступных закрепов</div><div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:14px">Оформите подписку чтобы закреплять объявления</div><button class="btn ba" onclick="navTo('subscriptions')">Смотреть тарифы</button></div>`;return;}
-  if(!activeAds.length){el.innerHTML=`<div class="empty"><span class="ei">📝</span><div class="et">Нет активных объявлений</div></div>`;return;}
+  if(t.pins===0){el.innerHTML=`<div class="card" style="text-align:center;padding:28px 18px"><div style="margin-bottom:14px;display:flex;justify-content:center;color:rgba(255,255,255,.15)"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div style="font-size:15px;font-weight:700;margin:10px 0 6px;letter-spacing:-.1px">Нет доступных закрепов</div><div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:14px">Оформите подписку чтобы закреплять объявления</div><button class="btn ba" onclick="navTo('subscriptions')">Смотреть тарифы</button></div>`;return;}
+  if(!activeAds.length){el.innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><div class="et">Нет активных объявлений</div></div>`;return;}
   const used=S.user.pins_used||0;
   el.innerHTML=`<div style="background:rgba(255,87,34,.08);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--acc)">Использовано закрепов: ${used}/${t.pins} этот месяц</div>`+
   activeAds.map(a=>{
     const pinned=a.pinned_until&&a.pinned_until>Date.now();
     return `<div class="mac" onclick="${pinned?`toast('Уже закреплено до '+new Date(${a.pinned_until}).toLocaleDateString(\"ru\"))`:`pinMyAd(${a.id})`}">
-      <div class="mat">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:(a.emoji||'📦')}</div>
+      <div class="mat">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div>
       <div class="mai"><div class="matl">${esc(a.title)}</div><div class="map">${fmtPrice(a.price)}</div>
         <div class="mas ${pinned?'s-act':'s-ina'}">${pinned?`⭐ Закреп до ${new Date(a.pinned_until).toLocaleDateString('ru')}`:'Не закреплено'}</div>
       </div>
@@ -1235,7 +1377,7 @@ function addNotif(cls,icon,title,body){
 }
 function renderNotifications(){
   const el=document.getElementById('notif-list');
-  if(!S.notifs.length){el.innerHTML=`<div class="empty"><span class="ei">🔔</span><div class="et">Нет уведомлений</div></div>`;return;}
+  if(!S.notifs.length){el.innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span><div class="et">Нет уведомлений</div></div>`;return;}
   el.innerHTML=S.notifs.map(n=>`
     <div class="notif-item ${n.read?'':'unread'}" onclick="readNotif(${n.id})">
       <div class="notif-ic ${n.iconCls||'nic-bl'}">${n.icon}</div>
@@ -1278,11 +1420,11 @@ function renderAdmin(){
   const mq=document.getElementById('admin-mod-queue');
   if(!modAds.length){mq.innerHTML=`<div style="font-size:13px;font-weight:600;color:var(--gr);padding:12px 0">Нет объявлений на модерации</div>`;}
   else{mq.innerHTML=modAds.map(a=>`
-    <div class="mod-card"><div class="mod-img">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<span>${a.emoji||'📦'}</span>`}</div>
+    <div class="mod-card"><div class="mod-img">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<div style="color:rgba(255,255,255,.15)"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}</div>
     <div class="mod-body"><div class="mod-title">${esc(a.title)}</div><div class="mod-meta">${fmtPrice(a.price)} · ${esc(a.category)} · ${esc(a.city||'—')}</div>
     <div style="display:flex;gap:8px">
-      <button class="btn ba" style="flex:1;padding:11px" onclick="moderateAd(${a.id},true)">✅ Одобрить</button>
-      <button class="btn" style="flex:1;padding:11px;background:rgba(244,67,54,.1);color:var(--rd);box-shadow:none" onclick="moderateAd(${a.id},false)">❌ Отклонить</button>
+      <button class="btn ba" style="flex:1;padding:11px" onclick="moderateAd(${a.id},true)">Одобрить</button>
+      <button class="btn" style="flex:1;padding:11px;background:rgba(255,69,58,.1);border:1px solid rgba(255,69,58,.2);color:var(--rd);box-shadow:none" onclick="moderateAd(${a.id},false)">Отклонить</button>
     </div></div></div>`).join('');}
   // Payments
   const pendPay=S.payments.filter(p=>p.status==='pending');
@@ -1292,8 +1434,8 @@ function renderAdmin(){
     <div class="admin-card"><div style="font-size:14px;font-weight:800;margin-bottom:4px">Тариф ${p.tariff} · ${p.amount}₽</div>
     <div style="font-size:12px;font-weight:600;color:var(--gr);margin-bottom:10px">${p.method} · ${timeAgo(p.created_at)}${p.promo?` · Промокод: ${p.promo}`:''}</div>
     <div style="display:flex;gap:8px">
-      <button class="btn ba" style="flex:1;padding:11px" onclick="approvePayment(${p.id})">✅ Подтвердить</button>
-      <button class="btn" style="flex:1;padding:11px;background:rgba(244,67,54,.1);color:var(--rd);box-shadow:none" onclick="rejectPayment(${p.id})">❌ Отклонить</button>
+      <button class="btn ba" style="flex:1;padding:11px" onclick="approvePayment(${p.id})">Подтвердить</button>
+      <button class="btn" style="flex:1;padding:11px;background:rgba(255,69,58,.1);border:1px solid rgba(255,69,58,.2);color:var(--rd);box-shadow:none" onclick="rejectPayment(${p.id})">Отклонить</button>
     </div></div>`).join('');}
   // Promos
   const pl2=document.getElementById('promo-list-admin');
@@ -1352,7 +1494,7 @@ function sendBroadcast(){
 }
 function showPromoCreate(){
   const html=`
-    <button class="mclose" onclick="closeModal()">✕</button>
+    <button class="mclose" onclick="closeModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div style="font-size:18px;font-weight:900;margin-bottom:18px">Создать промокод</div>
     <div class="fgr"><label class="flb">Код промокода</label><input class="inp" id="new-promo-code" placeholder="PUPPY20" style="text-transform:uppercase"></div>
     <div class="fgr"><label class="flb">Скидка (%)</label><input class="inp" id="new-promo-disc" type="number" min="5" max="80" placeholder="20"></div>
@@ -1385,42 +1527,48 @@ function closeOverlay(e){if(e.target===document.getElementById('overlay'))closeM
 
 // ═══════════ INIT ═══════════
 window.addEventListener('load',()=>{
-  // ✅ ИНТЕГРАЦИЯ: Обработка URL параметров для обновления тарифа
+  // Telegram init — должен быть ДО загрузки данных
+  if(window.Telegram?.WebApp){
+    const tg=window.Telegram.WebApp;
+    tg.ready();tg.expand();
+    const u=tg.initDataUnsafe?.user;
+    if(u){
+      // Устанавливаем prefix хранилища по tg user_id ДО чтения данных
+      _storagePrefix='pp_'+u.id+'_';
+      // Перезагружаем состояние с правильным prefix (данные конкретного пользователя)
+      S.user=LS('user')||{name:u.first_name+(u.last_name?' '+u.last_name:''),tg_id:u.id,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,ref_total:0,daily_ads:0,last_daily_reset:null,views_total:0};
+      S.ads=LS('ads')||[];
+      S.myAds=LS('my_ads')||[];
+      S.favs=LS('favs')||[];
+      S.notifs=LS('notifs')||[];
+      S.promoCodes=LS('promos')||[];
+      S.payments=LS('payments')||[];
+      S.referrals=LS('refs')||[];
+      S.searchHist=LS('search_hist')||[];
+      // Обновляем данные пользователя из Telegram
+      S.user.name=u.first_name+(u.last_name?' '+u.last_name:'');
+      S.user.tg_id=u.id;
+      S.user.username=u.username||'';
+      console.log('✅ Telegram user:',S.user.tg_id,S.user.name,'prefix:',_storagePrefix);
+    }
+  }
+  
+  // Обработка URL параметров для обновления тарифа (после загрузки данных пользователя)
   const urlParams=new URLSearchParams(window.location.search);
   if(urlParams.get('refresh')==='1'){
     const tariff=urlParams.get('tariff');
     const tariffEnd=urlParams.get('tariff_end');
     if(tariff){
       S.user.tariff=tariff;
-      if(tariffEnd){
-        S.user.tariff_end=new Date(tariffEnd).getTime();
-      }else{
-        S.user.tariff_end=Date.now()+30*86400000;
-      }
+      S.user.tariff_end=tariffEnd?new Date(tariffEnd).getTime():Date.now()+30*86400000;
       S.user.pins_used=0;
       save();
-      toast(`🎉 Тариф ${tariff} активирован!`);
+      toast(`Тариф ${tariff} активирован!`);
       console.log('✅ Тариф обновлён из URL:',tariff);
-      setTimeout(()=>{
-        renderProfile();
-        renderSubs();
-        navTo('profile');
-      },800);
+      setTimeout(()=>{renderProfile();renderSubs();navTo('profile');},800);
     }
   }
   
-  // Telegram init
-  if(window.Telegram?.WebApp){
-    const tg=window.Telegram.WebApp;
-    tg.ready();tg.expand();
-    const u=tg.initDataUnsafe?.user;
-    if(u){
-      S.user.name=u.first_name+(u.last_name?' '+u.last_name:'');
-      S.user.tg_id=u.id;
-      S.user.username=u.username||'';
-      console.log('✅ Telegram user:',S.user.tg_id,S.user.name);
-    }
-  }
   initDemo();
   renderHome();renderPinned();
   updateNavBadge();
