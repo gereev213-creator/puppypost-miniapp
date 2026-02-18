@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>PuppyPost</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+// Подавляем cross-origin Script error от внешних скриптов (telegram-web-app.js)
+window.addEventListener('error', function(e) {
+  if (!e.filename || e.filename === '' || e.message === 'Script error.') {
+    e.preventDefault();
+    return true;
+  }
+});
+window.addEventListener('unhandledrejection', function(e) {
+  if (e.reason && String(e.reason).includes('Script error')) {
+    e.preventDefault();
+  }
+});
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -66,6 +80,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .flb{font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block}
 .fgr{margin-bottom:18px}
 .pc{padding:0 18px}
+/* Контейнеры со свечением - добавляем padding чтобы тени не обрезались */
+.prc{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin-bottom:18px;position:relative;overflow:visible}
 .stl{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:14px;padding:0 18px}
 .sinp{width:100%;padding:13px 16px 13px 44px;background:var(--bg);border:none;border-radius:var(--rp);box-shadow:var(--ins);font-size:15px;font-weight:600;color:var(--dk);font-family:'Nunito',sans-serif;outline:none}
 .sinp::placeholder{color:var(--lg)}
@@ -139,7 +155,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .irlb{font-size:15px;font-weight:700;color:var(--dk)}
 .irv{font-size:14px;font-weight:700;color:var(--gr)}
 .ira{color:var(--lg);display:flex;align-items:center}
-.prc{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
 .prc.ft{background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 12px 28px rgba(255,87,34,.3)}
 .prb{display:inline-block;padding:4px 11px;border-radius:18px;font-size:10px;font-weight:800;text-transform:uppercase;background:rgba(255,87,34,.12);color:var(--acc);margin-bottom:10px}
 .prc.ft .prb{background:rgba(255,255,255,.25);color:#fff}
@@ -263,7 +278,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 <!-- HOME -->
 <div class="screen active" id="sc-home">
   <div class="hdr">
-    <div class="hdr-logo"><div class="logo-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="17" rx="5" ry="4"/><ellipse cx="7" cy="13" rx="2" ry="2.5"/><ellipse cx="17" cy="13" rx="2" ry="2.5"/><circle cx="11" cy="5" r="1.8"/><circle cx="18" cy="8" r="1.5"/><circle cx="4" cy="8" r="1.5"/></svg></div><div class="logo-nm">Puppy<span>Post</span></div></div>
+    <div class="hdr-logo"><div class="logo-ic" style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px;font-family:'Nunito',sans-serif">PP</div><div class="logo-nm">Puppy<span>Post</span></div></div>
     <button class="hbtn" onclick="navTo('notifications')" style="position:relative">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <div class="bdot" id="notif-dot" style="display:none"></div>
@@ -337,16 +352,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
   <div class="hdr">
     <button class="bb" onclick="backCreate()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="hdr-logo"><div class="logo-nm" style="font-size:16px">Создать объявление</div></div>
+    <div id="create-limit-badge" style="font-size:11px;font-weight:800;color:var(--acc);background:rgba(255,87,34,.1);padding:4px 10px;border-radius:14px;flex-shrink:0"></div>
   </div>
   <div class="sti" id="stepi"></div>
   <!-- step 0: category -->
   <div class="fst active" id="step-0">
     <div class="stl">Категория</div>
     <div class="pc"><div class="cgr">
-      <button class="cbtn" onclick="selCat('Одежда',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div><div class="cn">Одежда</div></button>
-      <button class="cbtn" onclick="selCat('Обувь',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16h16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2z"/><path d="M4 16l2-8h8l3 5 3-1v4"/></svg></div><div class="cn">Обувь</div></button>
-      <button class="cbtn" onclick="selCat('Техника',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div><div class="cn">Техника</div></button>
-      <button class="cbtn" onclick="selCat('Другое',this)"><div class="ce"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div><div class="cn">Другое</div></button>
+      <button class="cbtn" onclick="selCat('Одежда',this)"><div class="ce"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div><div class="cn">Одежда</div></button>
+      <button class="cbtn" onclick="selCat('Обувь',this)"><div class="ce"><svg width="34" height="26" viewBox="0 0 34 26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18 Q2 22 6 22 L29 22 Q32 22 32 19 L32 18 Q32 16 29 16 L22 16 Q18 15 15 13 L9 10 Q6 9 4 10 Q2 12 2 16 Z"/><path d="M4 10 Q5 5 11 5 L16 5 L20 10"/><line x1="14" y1="5" x2="13" y2="12"/><line x1="12" y1="7.5" x2="19" y2="7.5"/><line x1="11.5" y1="5.8" x2="18" y2="5.8"/></svg></div><div class="cn">Обувь</div></button>
+      <button class="cbtn" onclick="selCat('Техника',this)"><div class="ce"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="cn">Техника</div></button>
+      <button class="cbtn" onclick="selCat('Другое',this)"><div class="ce"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3L5 3h14l2 7z"/><path d="M3 10l2 11h14l2-11"/><path d="M12 3v7"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="cn">Другое</div></button>
     </div></div>
   </div>
   <!-- step 1: details -->
@@ -379,11 +395,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
     <div class="pc">
       <div class="fgr"><label class="flb">Цена ₽ *</label><input class="inp" id="ad-price" type="number" min="0" placeholder="0 = бесплатно"></div>
       <div class="fgr"><label class="flb">Город</label><input class="inp" id="ad-city" placeholder="Москва, СПб..."></div>
-      <div class="fgr"><label class="flb">Доставка</label>
-        <div class="chrow">
-          <button class="ch" onclick="togDeliv(this,'Доставка')">Доставка</button>
+      <div class="fgr"><label class="flb">Способы доставки</label>
+        <div class="chrow" id="deliv-chips">
+          <button class="ch" onclick="togDeliv(this,'СДЭК')">СДЭК</button>
+          <button class="ch" onclick="togDeliv(this,'Почта России')">Почта России</button>
+          <button class="ch" onclick="togDeliv(this,'Boxberry')">Boxberry</button>
+          <button class="ch" onclick="togDeliv(this,'DPD')">DPD</button>
+          <button class="ch" onclick="togDeliv(this,'ПЭК')">ПЭК</button>
+          <button class="ch" onclick="togDeliv(this,'КСЭ')">КСЭ</button>
+          <button class="ch" onclick="togDeliv(this,'Яндекс Доставка')">Яндекс Доставка</button>
+          <button class="ch" onclick="togDeliv(this,'Авито')">Авито</button>
           <button class="ch" onclick="togDeliv(this,'Самовывоз')">Самовывоз</button>
-          <button class="ch" onclick="togDeliv(this,'Авито доставка')">Авито</button>
+          <button class="ch" onclick="togDelivOther(this)">Другое</button>
+        </div>
+        <div id="deliv-other-wrap" style="display:none;margin-top:10px">
+          <input class="inp" id="deliv-other-inp" placeholder="Укажите способ доставки..." oninput="updateDelivOther(this.value)">
         </div>
       </div>
       <button class="btn ba" onclick="nextStep()">Далее →</button>
@@ -392,10 +418,31 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
   <!-- step 3: photos -->
   <div class="fst" id="step-3">
     <div class="pc">
-      <div class="fgr"><label class="flb" style="margin-bottom:10px">Фото (до 10)</label>
-        <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
-        <div class="pgr" id="photo-grid"></div>
-        <p style="font-size:12px;font-weight:600;color:var(--gr);margin-top:8px">Первое фото — главное</p>
+      <div class="stl" style="padding:0;margin-bottom:6px">Фотографии</div>
+      <p style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:18px">До 10 фото · Первое — главное</p>
+      <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
+      <!-- Drop zone (показывается когда фото нет) -->
+      <div id="photo-dropzone" onclick="document.getElementById('photo-file').click()" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%;min-height:200px;border-radius:20px;background:var(--bg);box-shadow:var(--ins);cursor:pointer;transition:all .2s;margin-bottom:14px">
+        <div style="width:72px;height:72px;border-radius:20px;background:rgba(255,87,34,.08);display:flex;align-items:center;justify-content:center">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:15px;font-weight:800;color:var(--dk);margin-bottom:4px">Добавить фото</div>
+          <div style="font-size:12px;font-weight:600;color:var(--gr)">Нажмите чтобы выбрать из галереи</div>
+        </div>
+      </div>
+      <!-- Грид добавленных фото -->
+      <div class="pgr" id="photo-grid"></div>
+      <!-- Кнопка добавить ещё (когда есть хотя бы одно фото) -->
+      <div id="photo-add-more" style="display:none;margin-top:8px;margin-bottom:14px">
+        <button onclick="document.getElementById('photo-file').click()" style="width:100%;padding:12px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--sh);font-size:13px;font-weight:800;color:var(--acc);cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Добавить ещё фото
+        </button>
       </div>
       <button class="btn ba" style="margin-bottom:10px" onclick="nextStep()">Далее →</button>
       <button class="btn bg" onclick="nextStep()">Пропустить</button>
@@ -420,7 +467,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 <div class="screen" id="sc-my-ads">
   <div class="hdr">
     <div class="hdr-logo"><div class="logo-nm" style="font-size:17px">Мои объявления</div></div>
-    <button class="hbtn" onclick="navTo('create');initCreate()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+    <button class="hbtn" onclick="tryCreate()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
   </div>
   <div class="tabs">
     <button class="tb active" id="tab-active" onclick="setTab('active',this)">Активные</button>
@@ -628,7 +675,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
     <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
     <span class="lb">Поиск</span>
   </button>
-  <button class="ni" id="nav-create" onclick="navTo('create');initCreate()">
+  <button class="ni" id="nav-create" onclick="tryCreate()">
     <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
     <span class="lb">Создать</span>
   </button>
@@ -1025,30 +1072,61 @@ function deleteAd(id){
 }
 
 // ═══════════ CREATE AD ═══════════
-function canPostAd(){
-  const now=new Date().toDateString();
-  if(S.user.last_daily_reset!==now){S.user.daily_ads=0;S.user.last_daily_reset=now;}
-  const lim=TARIFFS[S.user.tariff||'Free'].daily_ads;
-  if(S.user.daily_ads>=lim){toast(`Лимит объявлений в день: ${lim}`);return false;}
-  return true;
-}
-function initCreate(){
+function tryCreate(){
+  // Сначала проверяем лимит — если не пройдено, вообще не открываем экран
   if(!canPostAd())return;
+  // Полностью сбрасываем форму к шагу 0 (категории)
   S.createStep=0;S.newAd={};S.photos=[];S.deliveries=[];
   document.querySelectorAll('.fst').forEach(s=>s.classList.remove('active'));
   document.getElementById('step-0').classList.add('active');
   document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('sel'));
   document.querySelectorAll('.ch').forEach(c=>c.classList.remove('active'));
   ['ad-title','ad-desc','ad-size','ad-city','ad-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  // Reset placeholders
   const ti=document.getElementById('ad-title');if(ti)ti.placeholder='Введите название товара';
   const di=document.getElementById('ad-desc');if(di)di.placeholder='Расскажите подробнее...';
-  // Hide hint bars
   const th=document.getElementById('title-hints');if(th)th.style.display='none';
   const dh=document.getElementById('desc-hints');if(dh)dh.style.display='none';
   const p=document.getElementById('ad-price');if(p)p.value='';
+  const dw=document.getElementById('deliv-other-wrap');if(dw)dw.style.display='none';
+  const di2=document.getElementById('deliv-other-inp');if(di2)di2.value='';
+  const badge=document.getElementById('create-limit-badge');
+  if(badge){
+    const now=new Date().toDateString();
+    if(S.user.last_daily_reset!==now){S.user.daily_ads=0;}
+    const tariffName=S.user.tariff||'Free';
+    const lim=TARIFFS[tariffName]?TARIFFS[tariffName].daily_ads:1;
+    const used=S.user.daily_ads||0;
+    const left=lim-used;
+    badge.textContent=`${left} из ${lim>=50?'∞':lim}`;
+    badge.style.color=left<=0?'var(--rd)':'var(--acc)';
+    badge.style.background=left<=0?'rgba(244,67,54,.12)':'rgba(255,87,34,.1)';
+  }
   renderPhotoGrid();updateStepi();
+  // Только после сброса — переходим на экран
+  navTo('create');
 }
+function canPostAd(){
+  // Проверяем истечение тарифа
+  if(S.user.tariff!=='Free'&&S.user.tariff_end&&Date.now()>S.user.tariff_end){
+    S.user.tariff='Free';S.user.tariff_end=null;save();
+  }
+  const now=new Date().toDateString();
+  if(S.user.last_daily_reset!==now){S.user.daily_ads=0;S.user.last_daily_reset=now;save();}
+  const tariffName=S.user.tariff||'Free';
+  const lim=TARIFFS[tariffName]?TARIFFS[tariffName].daily_ads:1;
+  const used=S.user.daily_ads||0;
+  if(used>=lim){
+    if(tariffName==='Free'){
+      toast('Лимит Free: 1 объявление в день. Оформите подписку!');
+      setTimeout(()=>navTo('subscriptions'),1200);
+    } else {
+      toast(`Лимит объявлений в день: ${lim}`);
+    }
+    return false;
+  }
+  return true;
+}
+function initCreate(){tryCreate();}
 function updateStepi(){
   document.getElementById('stepi').innerHTML=Array.from({length:4},(_,i)=>`<div class="sdt ${i<S.createStep?'done':''}"></div>`).join('');
 }
@@ -1093,6 +1171,16 @@ function applyDescHint(val){
 }
 function selChip(el,field,val){el.parentElement.querySelectorAll('.ch').forEach(c=>c.classList.remove('active'));el.classList.add('active');S.newAd[field]=val;}
 function togDeliv(el,val){el.classList.toggle('active');if(el.classList.contains('active'))S.deliveries.push(val);else S.deliveries=S.deliveries.filter(d=>d!==val);}
+function togDelivOther(el){
+  el.classList.toggle('active');
+  const wrap=document.getElementById('deliv-other-wrap');
+  if(el.classList.contains('active')){wrap.style.display='block';}
+  else{wrap.style.display='none';S.deliveries=S.deliveries.filter(d=>!d.startsWith('Другое'));}
+}
+function updateDelivOther(val){
+  S.deliveries=S.deliveries.filter(d=>!d.startsWith('Другое'));
+  if(val.trim())S.deliveries.push('Другое: '+val.trim());
+}
 function nextStep(){
   if(S.createStep===1){
     if(!document.getElementById('ad-title').value.trim()){toast('Введите название товара');return;}
@@ -1123,9 +1211,22 @@ function backCreate(){
 }
 function renderPhotoGrid(){
   const g=document.getElementById('photo-grid');if(!g)return;
-  let h=S.photos.map((p,i)=>`<div class="psl"><img src="${p}"><div class="rmv" onclick="removePhoto(${i})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>`).join('');
-  if(S.photos.length<10)h+=`<div class="padd" onclick="document.getElementById('photo-file').click()"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/><line x1="16" y1="5" x2="16" y2="11"/><line x1="13" y1="8" x2="19" y2="8"/></svg></div>`;
-  g.innerHTML=h;
+  const dropzone=document.getElementById('photo-dropzone');
+  const addMore=document.getElementById('photo-add-more');
+  
+  if(S.photos.length===0){
+    // Показываем дроп-зону, скрываем грид
+    if(dropzone)dropzone.style.display='flex';
+    if(addMore)addMore.style.display='none';
+    g.innerHTML='';
+    g.style.display='none';
+  } else {
+    // Скрываем дроп-зону, показываем грид и кнопку добавить
+    if(dropzone)dropzone.style.display='none';
+    g.style.display='flex';
+    g.innerHTML=S.photos.map((p,i)=>`<div class="psl"><img src="${p}"><div class="rmv" onclick="removePhoto(${i})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>${i===0?'<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,87,34,.75);font-size:9px;font-weight:900;color:#fff;text-align:center;padding:3px 0;letter-spacing:.5px">ГЛАВНОЕ</div>':''}</div>`).join('');
+    if(addMore)addMore.style.display=S.photos.length<10?'block':'none';
+  }
 }
 function removePhoto(i){S.photos.splice(i,1);renderPhotoGrid();}
 function handlePhotos(inp){
@@ -1146,6 +1247,8 @@ function renderCreatePreview(){
 function submitAd(){
   S.newAd.contact=document.getElementById('ad-contact').value.trim();
   if(!S.newAd.contact){toast('Введите контакт для связи');return;}
+  // Повторная проверка лимита перед отправкой
+  if(!canPostAd())return;
   S.newAd.photos=S.photos;
   const newAd={
     id:Date.now(),user_id:S.user.tg_id||0,
@@ -1177,7 +1280,7 @@ function submitAd(){
           contact_info:newAd.contact
         }
       }));
-      console.log('✅ Объявление отправлено боту');
+      console.log('✅ Объявление отправлено боту на модерацию');
     }catch(e){
       console.error('Ошибка отправки боту:',e);
     }
@@ -1484,13 +1587,24 @@ function rejectPayment(id){
 function sendBroadcast(){
   const text=document.getElementById('broadcast-text').value.trim();
   if(!text){toast('Введите текст рассылки');return;}
-  // Show broadcast as notification to all
-  addNotif('bl','📢','Сообщение от администратора',text);
-  showPushNotif('bl','📢','Рассылка от администратора',text);
+  // Отправляем через бот пользователям (реальная рассылка в Telegram)
+  if(window.Telegram?.WebApp){
+    try{
+      window.Telegram.WebApp.sendData(JSON.stringify({action:'broadcast',text}));
+      toast('Рассылка отправлена через бот!');
+    }catch(e){
+      console.error('Ошибка рассылки:',e);
+      toast('Ошибка отправки рассылки');
+      return;
+    }
+  } else {
+    // Dev mode: локальное уведомление
+    addNotif('bl','📢','Сообщение от администратора',text);
+    showPushNotif('bl','📢','Рассылка от администратора',text);
+    toast('Рассылка отправлена (дев-режим)');
+  }
   document.getElementById('broadcast-text').value='';
-  toast('Рассылка отправлена!');
   // In prod: send via bot to all users
-  if(window.Telegram?.WebApp)window.Telegram.WebApp.sendData(JSON.stringify({action:'broadcast',text}));
 }
 function showPromoCreate(){
   const html=`
