@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>PuppyPost</title>
+<title>Postcrab</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-// Подавляем cross-origin Script error от внешних скриптов (telegram-web-app.js)
+// Подавляем cross-origin Script error от внешних скриптов
 window.addEventListener('error', function(e) {
   if (!e.filename || e.filename === '' || e.message === 'Script error.') {
     e.preventDefault();
@@ -21,6 +21,7 @@ window.addEventListener('unhandledrejection', function(e) {
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+/* --- СТИЛИ (без изменений, можно оставить как в исходном файле) --- */
 :root{
   --bg:#E8E8E8;--acc:#FF5722;--acc2:#FF7043;--dk:#2C2C2C;--gr:#888;--lg:#bbb;
   --gn:#4CAF50;--yl:#FFC107;--rd:#F44336;--bl:#2196F3;--pu:#9C27B0;
@@ -80,7 +81,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .flb{font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block}
 .fgr{margin-bottom:18px}
 .pc{padding:0 18px}
-/* Контейнеры со свечением - добавляем padding чтобы тени не обрезались */
 .prc{background:var(--bg);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin-bottom:18px;position:relative;overflow:visible}
 .stl{font-size:20px;font-weight:900;color:var(--dk);margin-bottom:14px;padding:0 18px}
 .sinp{width:100%;padding:13px 16px 13px 44px;background:var(--bg);border:none;border-radius:var(--rp);box-shadow:var(--ins);font-size:15px;font-weight:600;color:var(--dk);font-family:'Nunito',sans-serif;outline:none}
@@ -188,7 +188,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .cbtn.sel .ce{color:#fff}
 .cbtn .cn{font-size:13px;font-weight:800;color:var(--dk)}
 .cbtn.sel .cn{color:#fff}
-/* category hints */
 .cat-hints{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .cat-hint{padding:6px 12px;background:var(--bg);border-radius:var(--rp);box-shadow:var(--sh);font-size:12px;font-weight:700;color:var(--gr);cursor:pointer;border:none;font-family:'Nunito',sans-serif;transition:all .18s;animation:sugg-in .2s ease both}
 .cat-hint:active{box-shadow:var(--ins);transform:scale(.96);color:var(--acc)}
@@ -278,7 +277,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 <!-- HOME -->
 <div class="screen active" id="sc-home">
   <div class="hdr">
-    <div class="hdr-logo"><div class="logo-ic" style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px;font-family:'Nunito',sans-serif">PP</div><div class="logo-nm">Puppy<span>Post</span></div></div>
+    <div class="hdr-logo"><div class="logo-ic" style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px;font-family:'Nunito',sans-serif">PC</div><div class="logo-nm">Post<span>crab</span></div></div>
     <button class="hbtn" onclick="navTo('notifications')" style="position:relative">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <div class="bdot" id="notif-dot" style="display:none"></div>
@@ -421,7 +420,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
       <div class="stl" style="padding:0;margin-bottom:6px">Фотографии</div>
       <p style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:18px">До 10 фото · Первое — главное</p>
       <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
-      <!-- Drop zone (показывается когда фото нет) -->
       <div id="photo-dropzone" onclick="document.getElementById('photo-file').click()" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%;min-height:200px;border-radius:20px;background:var(--bg);box-shadow:var(--ins);cursor:pointer;transition:all .2s;margin-bottom:14px">
         <div style="width:72px;height:72px;border-radius:20px;background:rgba(255,87,34,.08);display:flex;align-items:center;justify-content:center">
           <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -435,9 +433,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
           <div style="font-size:12px;font-weight:600;color:var(--gr)">Нажмите чтобы выбрать из галереи</div>
         </div>
       </div>
-      <!-- Грид добавленных фото -->
       <div class="pgr" id="photo-grid"></div>
-      <!-- Кнопка добавить ещё (когда есть хотя бы одно фото) -->
       <div id="photo-add-more" style="display:none;margin-top:8px;margin-bottom:14px">
         <button onclick="document.getElementById('photo-file').click()" style="width:100%;padding:12px;background:var(--bg);border:none;border-radius:var(--r);box-shadow:var(--sh);font-size:13px;font-weight:800;color:var(--acc);cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -510,7 +506,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
     <div class="si2"><div class="sv" id="prof-views">0</div><div class="sl">Просмотров</div></div>
   </div>
   <div class="card" style="margin:0 18px 14px;padding:0">
-    <div class="ir" onclick="navTo('my-ads');setTab(S.curTab)">
+    <div class="ir" onclick="navTo('my-ads');setTab('active')">
       <div class="irl"><div class="iric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.2" fill="currentColor"/><circle cx="3.5" cy="12" r="1.2" fill="currentColor"/><circle cx="3.5" cy="18" r="1.2" fill="currentColor"/></svg></div><div class="irlb">Мои объявления</div></div>
       <div class="ira"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
@@ -691,74 +687,95 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 
 <script>
 'use strict';
-// ═══════════ КОНФИГУРАЦИЯ ═══════════
-const API_URL = 'https://your-app.amvera.io'; // ЗАМЕНИТЕ НА РЕАЛЬНЫЙ АДРЕС ВАШЕГО СЕРВЕРА
+// ═══════════ КОНФИГУРАЦИЯ ИЗ БОТА ═══════════
+const BOT_TOKEN = "8200896974:AAHdB0_Jbi5ykiRcJd5nEApbba_uz3Od004";
+const ADMIN_CHANNEL_ID = "@postcrab";
+const ADMIN_USER_IDS = [6115882628];
+const TARIFFS = {
+  Free: { daily_ads: 1, pins_per_month: 0, pin_hours: 0, photo_limit: 10, price: 0 },
+  Standard: { daily_ads: 3, pins_per_month: 1, pin_hours: 24, photo_limit: 10, price: 299 },
+  PRO: { daily_ads: Infinity, pins_per_month: 3, pin_hours: 168, photo_limit: 10, price: 899 }
+};
+const PAYMENT_DETAILS = {
+  yoomoney_standard: "https://yoomoney.ru/to/4100119456604619",
+  yoomoney_pro: "https://yoomoney.ru/to/4100119456604619",
+  crypto_standard: "t.me/send?start=IVRWI4KCIZoj",
+  crypto_pro: "t.me/send?start=IVRMtMS6xa0a",
+  tinkoff_account: "2200701043238127"
+};
+const CRYPTO_LINKS = {
+  5: "https://crypto-link-5percent.com",
+  10: "https://crypto-link-10percent.com",
+  15: "https://crypto-link-15percent.com",
+  20: "https://crypto-link-20percent.com",
+  25: "https://crypto-link-25percent.com",
+  30: "https://crypto-link-30percent.com",
+  35: "https://crypto-link-35percent.com",
+  40: "https://crypto-link-40percent.com",
+  45: "https://crypto-link-45percent.com",
+  50: "https://crypto-link-50percent.com",
+  55: "https://crypto-link-55percent.com",
+  60: "https://crypto-link-60percent.com",
+  65: "https://crypto-link-65percent.com",
+  70: "https://crypto-link-70percent.com",
+  75: "https://crypto-link-75percent.com",
+  80: "https://crypto-link-80percent.com"
+};
+const REFERRAL_PERCENT = 5;
+const BOT_NAME = "postcrab_bot";
 
-const TARIFFS={Free:{daily_ads:1,pins:0,pin_hours:0,price:0},Standard:{daily_ads:3,pins:1,pin_hours:24,price:299},PRO:{daily_ads:50,pins:3,pin_hours:168,price:899}};
-const PAYMENT={yoomoney:'https://yoomoney.ru/to/4100119456604619',crypto_std:'https://t.me/send?start=IVRWI4KCIZoj',crypto_pro:'https://t.me/send?start=IVRMtMS6xa0a',tinkoff:'2200701043238127'};
-const ADMIN_IDS=[6115882628];
-const BOT='postcrab_bot';
-const SYNONYMS={
-  'айфон':['iphone','apple','iphone 15','iphone 14','iphone 13'],
-  'iphone':['айфон','apple','яблоко'],
-  'самсунг':['samsung','галакси','galaxy'],
-  'samsung':['самсунг','галакси','galaxy'],
-  'galaxy':['галакси','самсунг','samsung'],
-  'галакси':['galaxy','samsung','самсунг'],
-  'кроссовки':['кеды','обувь','sneakers','найк','adidas','nike'],
-  'кеды':['кроссовки','обувь','sneakers'],
-  'ноутбук':['laptop','ноут','macbook','mac','ноутбуки'],
-  'laptop':['ноутбук','ноут','macbook'],
-  'macbook':['ноутбук','mac','laptop','маcбук'],
-  'телефон':['смартфон','phone','мобильный','мобила'],
-  'смартфон':['телефон','phone','мобильный'],
-  'найк':['nike','кроссовки','найки'],
-  'nike':['найк','найки','кроссовки'],
-  'адидас':['adidas','кроссовки'],
-  'adidas':['адидас','кроссовки'],
-  'пуховик':['куртка','пуфер','пальто','зимняя куртка'],
-  'куртка':['пуховик','пуфер','ветровка','jacket'],
-  'джинсы':['брюки','штаны','jeans','деним'],
-  'jeans':['джинсы','деним','брюки'],
-  'платье':['юбка','сарафан','dress'],
-  'планшет':['tablet','ipad','айпад'],
-  'ipad':['айпад','планшет','tablet'],
-  'айпад':['ipad','планшет','tablet'],
-  'наушники':['airpods','наушник','headphones','earbuds'],
-  'airpods':['наушники','earbuds','эирподс'],
-  'эирподс':['airpods','наушники'],
-  'часы':['watch','умные часы','apple watch'],
-  'apple watch':['часы','умные часы'],
-  'xbox':['иксбокс','приставка','консоль','игры'],
-  'playstation':['ps4','ps5','приставка','консоль','плейстейшн'],
-  'ps4':['playstation','ps5','приставка'],
-  'ps5':['playstation','ps4','приставка'],
-  'плейстейшн':['playstation','ps4','ps5'],
-  'велосипед':['велик','bike','байк','bicycle'],
-  'велик':['велосипед','bike'],
-  'камера':['фотоаппарат','camera','фотик'],
-  'фотоаппарат':['камера','camera','фотик'],
+// СИНОНИМЫ ИЗ БОТА
+const SEARCH_SYNONYMS = {
+  'айфон': ['iphone', 'айфон', 'apple', 'ифон'],
+  'iphone': ['iphone', 'айфон', 'apple', 'ифон'],
+  'ифон': ['iphone', 'айфон', 'apple'],
+  'apple': ['iphone', 'айфон', 'apple'],
+  'самсунг': ['samsung', 'самсунг', 'галакси'],
+  'samsung': ['samsung', 'самсунг', 'галакси'],
+  'галакси': ['samsung', 'галакси', 'galaxy'],
+  'кроссовки': ['кроссовки', 'кеды', 'обувь', 'sneakers', 'keds'],
+  'кеды': ['кроссовки', 'кеды', 'обувь', 'sneakers'],
+  'sneakers': ['кроссовки', 'кеды', 'обувь', 'sneakers'],
+  'техника': ['техника', 'электроника', 'gadgets', 'electronics'],
+  'ноутбук': ['ноутбук', 'laptop', 'ноут', 'лэптоп'],
+  'laptop': ['ноутбук', 'laptop', 'ноут'],
+  'телефон': ['телефон', 'смартфон', 'phone', 'smartphone'],
+  'phone': ['телефон', 'смартфон', 'phone'],
+  'диван': ['диван', 'sofa', 'диванчик'],
+  'sofa': ['диван', 'sofa', 'диванчик'],
+  'машина': ['машина', 'автомобиль', 'car', 'auto'],
+  'car': ['машина', 'автомобиль', 'car'],
+  'квартира': ['квартира', 'apartment', 'flat', 'жилье'],
+  'apartment': ['квартира', 'apartment', 'flat'],
 };
 
-// Транслитерация рус→англ для поиска
-const TRANSLIT_RU={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'zh','з':'z','и':'i','й':'j','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'};
-function translit(s){return s.split('').map(c=>TRANSLIT_RU[c.toLowerCase()]||c.toLowerCase()).join('');}
-function normSearch(q){return q.trim().toLowerCase();}
-function getSearchTerms(q){
-  q=normSearch(q);
-  const terms=new Set([q]);
-  (SYNONYMS[q]||[]).forEach(s=>terms.add(s));
-  Object.keys(SYNONYMS).forEach(k=>{
-    if(k.includes(q)||q.includes(k)){terms.add(k);(SYNONYMS[k]||[]).forEach(s=>terms.add(s));}
+// Транслитерация
+const TRANSLIT_MAP = {
+  'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'zh','з':'z','и':'i','й':'j',
+  'к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f',
+  'х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'
+};
+function translit(s) {
+  return s.split('').map(c => TRANSLIT_MAP[c.toLowerCase()] || c.toLowerCase()).join('');
+}
+function normSearch(q) { return q.trim().toLowerCase(); }
+function getSearchTerms(q) {
+  q = normSearch(q);
+  const terms = new Set([q]);
+  Object.keys(SEARCH_SYNONYMS).forEach(k => {
+    if (k.includes(q) || q.includes(k)) {
+      terms.add(k);
+      SEARCH_SYNONYMS[k].forEach(s => terms.add(s));
+    }
   });
-  const tq=translit(q);
-  if(tq!==q){terms.add(tq);(SYNONYMS[tq]||[]).forEach(s=>terms.add(s));}
+  const tq = translit(q);
+  if (tq !== q) terms.add(tq);
   return [...terms];
 }
 
-// ═══════════ CATEGORY TEMPLATES ═══════════
-const CAT_TEMPLATES={
-  'Одежда':{
+// Шаблоны категорий
+const CAT_TEMPLATES = {
+  'Одежда': {
     title:'Например: Куртка зимняя H&M',
     desc:'Например: Куртка в хорошем состоянии, надевал(а) пару раз. Размер подходит на 46-48. Без дефектов.',
     size:'XS / S / M / L / XL / XXL',
@@ -788,657 +805,717 @@ const CAT_TEMPLATES={
   },
 };
 
-// ═══════════ STORAGE ═══════════
-let _storagePrefix = 'pp_';
-function _getPrefix(){return _storagePrefix;}
-const LS=k=>{try{return JSON.parse(localStorage.getItem(_getPrefix()+k))}catch{return null}};
-const SS=(k,v)=>{try{localStorage.setItem(_getPrefix()+k,JSON.stringify(v))}catch{}};
+// ═══════════ STORAGE (изолированный по пользователю) ═══════════
+let _storagePrefix = 'pc_';
+const LS = k => { try { return JSON.parse(localStorage.getItem(_storagePrefix + k)); } catch { return null; } };
+const SS = (k, v) => { try { localStorage.setItem(_storagePrefix + k, JSON.stringify(v)); } catch {} };
 
-const S={
-  user: LS('user')||{name:'Пользователь',tg_id:null,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,ref_total:0,daily_ads:0,last_daily_reset:null,views_total:0},
-  ads: LS('ads')||[],
-  myAds: LS('my_ads')||[],
-  favs: LS('favs')||[],
-  notifs: LS('notifs')||[],
-  promoCodes: LS('promos')||[],
-  payments: LS('payments')||[],
-  referrals: LS('refs')||[],
-  searchHist: LS('search_hist')||[],
-  curAdId:null,prevSc:'home',curSc:'home',
-  createStep:0,newAd:{},photos:[],deliveries:[],
-  promoDiscount:0,promoCode:'',
-  curCat:'',curTab:'active',
-  selPayTariff:'',selPayMethod:'',
-  curSlide:0,
+const S = {
+  user: LS('user') || { name: 'Пользователь', tg_id: null, tariff: 'Free', tariff_end: null, pins_used: 0, ref_balance: 0, ref_total: 0, daily_ads: 0, last_daily_reset: null, views_total: 0 },
+  ads: LS('ads') || [],              // все активные объявления (из канала)
+  myAds: LS('my_ads') || [],         // мои объявления (включая на модерации)
+  favs: LS('favs') || [],            // id избранных
+  notifs: LS('notifs') || [],
+  promoCodes: LS('promos') || [],    // список промокодов (для админа)
+  payments: LS('payments') || [],    // история платежей
+  referrals: LS('refs') || [],       // список рефералов
+  searchHist: LS('search_hist') || [],
+  curAdId: null,
+  prevSc: 'home',
+  curSc: 'home',
+  createStep: 0,
+  newAd: {},
+  photos: [],
+  deliveries: [],
+  promoDiscount: 0,
+  promoCode: '',
+  curCat: '',
+  curTab: 'active',
+  selPayTariff: '',
+  selPayMethod: '',
+  curSlide: 0,
 };
-function save(){SS('user',S.user);SS('ads',S.ads);SS('my_ads',S.myAds);SS('favs',S.favs);SS('notifs',S.notifs);SS('promos',S.promoCodes);SS('payments',S.payments);SS('refs',S.referrals);SS('search_hist',S.searchHist);}
+function save() {
+  SS('user', S.user);
+  SS('ads', S.ads);
+  SS('my_ads', S.myAds);
+  SS('favs', S.favs);
+  SS('notifs', S.notifs);
+  SS('promos', S.promoCodes);
+  SS('payments', S.payments);
+  SS('refs', S.referrals);
+  SS('search_hist', S.searchHist);
+}
 
-// ═══════════ INIT DATA ═══════════
-function initDemo(){
-  if(S.notifs.length===0){
-    const n=Date.now();
-    S.notifs=[
-      {id:1,type:'info',icon:'★',iconCls:'nic-acc',title:'Добро пожаловать!',body:'Создайте первое объявление — оно пройдёт модерацию и появится в ленте!',time:n,read:false},
-    ];
+// ========== НОВЫЕ ФУНКЦИИ ДЛЯ ИНТЕГРАЦИИ С БОТОМ ==========
+async function sendBotAction(action, payload = {}) {
+    return new Promise((resolve, reject) => {
+        const tg = window.Telegram.WebApp;
+        const reqId = Date.now() + Math.random();
+        const handler = (event) => {
+            if (event.data && event.data.webAppData) {
+                try {
+                    const response = JSON.parse(event.data.webAppData);
+                    if (response.reqId === reqId) {
+                        tg.offEvent('webAppData', handler);
+                        resolve(response);
+                    }
+                } catch (e) {}
+            }
+        };
+        tg.onEvent('webAppData', handler);
+        tg.sendData(JSON.stringify({
+            reqId: reqId,
+            action: action,
+            ...payload
+        }));
+        setTimeout(() => {
+            tg.offEvent('webAppData', handler);
+            reject(new Error('Timeout'));
+        }, 10000);
+    });
+}
+
+async function loadInitialData() {
+    try {
+        const data = await sendBotAction('get_initial_data');
+        if (data.ok) {
+            S.user = data.user;
+            S.ads = data.ads;
+            S.myAds = data.my_ads;
+            S.favs = data.favorites;
+            S.notifs = data.notifications || [];
+            S.referrals = data.referrals || {};
+            if (data.promocodes) S.promoCodes = data.promocodes;
+            if (data.crypto_links) S.cryptoLinks = data.crypto_links;
+            save();
+            return true;
+        }
+    } catch (e) {
+        console.warn('Failed to load from bot, using local storage', e);
+    }
+    return false;
+}
+
+// ═══════════ INITIALIZATION ═══════════
+function initDemo() {
+  if (S.notifs.length === 0) {
+    S.notifs.push({
+      id: Date.now(),
+      type: 'info',
+      icon: '★',
+      iconCls: 'nic-acc',
+      title: 'Добро пожаловать в Postcrab!',
+      body: 'Создайте первое объявление — оно пройдёт модерацию и появится в ленте!',
+      time: Date.now(),
+      read: false,
+    });
     save();
   }
 }
 
-// ═══════════ ЗАГРУЗКА ДАННЫХ С СЕРВЕРА ═══════════
-async function loadServerData() {
-  try {
-    // Загружаем активные объявления
-    const adsRes = await fetch(`${API_URL}/api/ads`);
-    if (adsRes.ok) {
-      const ads = await adsRes.json();
-      S.ads = ads;
-      S.myAds = ads.filter(a => a.user_id === S.user.tg_id);
-    }
-
-    // Загружаем данные пользователя
-    const userRes = await fetch(`${API_URL}/api/user?user_id=${S.user.tg_id}`);
-    if (userRes.ok) {
-      const userData = await userRes.json();
-      S.user.tariff = userData.tariff;
-      S.user.tariff_end = userData.tariff_end;
-      S.user.pins_used = userData.pins_used;
-      S.user.daily_ads = userData.daily_ads;
-      S.user.ref_balance = userData.ref_balance;
-    }
-
-    save(); // сохраняем в localStorage как кеш
-    renderHome();
-    renderPinned();
-    updateNavBadge();
-    if (S.curSc === 'profile') renderProfile();
-    if (S.curSc === 'my-ads') setTab(S.curTab);
-  } catch (e) {
-    console.error('Ошибка загрузки данных с сервера:', e);
-    // Используем кеш из localStorage
-    renderHome();
-    renderPinned();
-  }
-}
-
 // ═══════════ UTILS ═══════════
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function fmtPrice(p){return p>0?p.toLocaleString('ru')+'₽':'Бесплатно'}
-function timeAgo(ts){
-  const d=Math.floor((Date.now()-ts)/1000);
-  if(d<60)return'только что';
-  if(d<3600)return Math.floor(d/60)+'м назад';
-  if(d<86400)return Math.floor(d/3600)+'ч назад';
-  return Math.floor(d/86400)+'д назад';
+function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function fmtPrice(p) { return p > 0 ? p.toLocaleString('ru') + '₽' : 'Бесплатно'; }
+function timeAgo(ts) {
+  const d = Math.floor((Date.now() - ts) / 1000);
+  if (d < 60) return 'только что';
+  if (d < 3600) return Math.floor(d / 60) + 'м назад';
+  if (d < 86400) return Math.floor(d / 3600) + 'ч назад';
+  return Math.floor(d / 86400) + 'д назад';
 }
 let _tt;
-function toast(msg,dur=2600){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),dur);
+function toast(msg, dur = 2600) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt = setTimeout(() => t.classList.remove('show'), dur);
 }
 
 // ═══════════ NAVIGATION ═══════════
-const SCREENS={'home':'sc-home','search':'sc-search','create':'sc-create','my-ads':'sc-my-ads','my-ad-detail':'sc-my-ad-detail','favs':'sc-favs','profile':'sc-profile','subscriptions':'sc-subscriptions','referral':'sc-referral','pin-ad':'sc-pin-ad','notifications':'sc-notifications','admin':'sc-admin','ad-detail':'sc-ad-detail'};
-const NAVMAP={'home':'nav-home','search':'nav-search','create':'nav-create','my-ads':'nav-profile','profile':'nav-profile','my-ad-detail':'nav-profile','subscriptions':'nav-profile','referral':'nav-profile','pin-ad':'nav-profile','notifications':'nav-profile','admin':'nav-profile','ad-detail':null,'favs':'nav-favs'};
+const SCREENS = {
+  home: 'sc-home',
+  search: 'sc-search',
+  create: 'sc-create',
+  'my-ads': 'sc-my-ads',
+  'my-ad-detail': 'sc-my-ad-detail',
+  favs: 'sc-favs',
+  profile: 'sc-profile',
+  subscriptions: 'sc-subscriptions',
+  referral: 'sc-referral',
+  'pin-ad': 'sc-pin-ad',
+  notifications: 'sc-notifications',
+  admin: 'sc-admin',
+  'ad-detail': 'sc-ad-detail',
+};
+const NAVMAP = {
+  home: 'nav-home',
+  search: 'nav-search',
+  create: 'nav-create',
+  'my-ads': 'nav-profile',
+  profile: 'nav-profile',
+  'my-ad-detail': 'nav-profile',
+  subscriptions: 'nav-profile',
+  referral: 'nav-profile',
+  'pin-ad': 'nav-profile',
+  notifications: 'nav-profile',
+  admin: 'nav-profile',
+  'ad-detail': null,
+  favs: 'nav-favs',
+};
 
-function navTo(sc){
-  S.prevSc=S.curSc; S.curSc=sc;
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const sid=SCREENS[sc]; if(sid) document.getElementById(sid).classList.add('active');
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  const nid=NAVMAP[sc]; if(nid) document.getElementById(nid).classList.add('active');
-  window.scrollTo(0,0);
-  const r={
-    'home':()=>{renderHome();renderPinned();},
-    'search':()=>{const inp=document.getElementById('search-inp');inp.value='';renderSearchSugg();doSearch('');setTimeout(()=>inp.focus(),200);},
-    'favs':renderFavs,
-    'profile':renderProfile,
-    'my-ads':()=>setTab(S.curTab),
-    'subscriptions':renderSubs,
-    'referral':renderReferral,
-    'pin-ad':renderPinAd,
-    'notifications':renderNotifications,
-    'admin':renderAdmin,
+function navTo(sc) {
+  S.prevSc = S.curSc;
+  S.curSc = sc;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const sid = SCREENS[sc];
+  if (sid) document.getElementById(sid).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  const nid = NAVMAP[sc];
+  if (nid) document.getElementById(nid).classList.add('active');
+  window.scrollTo(0, 0);
+  const r = {
+    home: () => { renderHome(); renderPinned(); },
+    search: () => { const inp = document.getElementById('search-inp'); inp.value = ''; renderSearchSugg(); doSearch(''); setTimeout(() => inp.focus(), 200); },
+    favs: renderFavs,
+    profile: renderProfile,
+    'my-ads': () => setTab(S.curTab),
+    subscriptions: renderSubs,
+    referral: renderReferral,
+    'pin-ad': renderPinAd,
+    notifications: renderNotifications,
+    admin: renderAdmin,
   };
-  if(r[sc])r[sc]();
+  if (r[sc]) r[sc]();
 }
-function navBack(){navTo(S.prevSc||'home');}
+function navBack() { navTo(S.prevSc || 'home'); }
 
 // ═══════════ SEARCH ═══════════
 let _st;
-function doSearch(q){clearTimeout(_st);_st=setTimeout(()=>_doSearch(q),180);}
-function _doSearch(q){
-  q=q.trim().toLowerCase();
-  if(q&&!S.searchHist.includes(q)){S.searchHist.unshift(q);S.searchHist=S.searchHist.slice(0,10);save();}
-  const terms=getSearchTerms(q);
-  let res=S.ads.filter(a=>a.status==='active');
-  if(q)res=res.filter(a=>{
-    const hay=normSearch(`${a.title} ${a.desc||''} ${a.category}`);
-    return terms.some(t=>hay.includes(t))||terms.some(t=>translit(hay).includes(translit(t)));
+function doSearch(q) { clearTimeout(_st); _st = setTimeout(() => _doSearch(q), 180); }
+function _doSearch(q) {
+  q = q.trim().toLowerCase();
+  if (q && !S.searchHist.includes(q)) { S.searchHist.unshift(q); S.searchHist = S.searchHist.slice(0, 10); save(); }
+  const terms = getSearchTerms(q);
+  let res = S.ads.filter(a => a.status === 'active');
+  if (q) {
+    res = res.filter(a => {
+      const hay = normSearch(`${a.title} ${a.desc || ''} ${a.category}`);
+      return terms.some(t => hay.includes(t)) || terms.some(t => translit(hay).includes(translit(t)));
+    });
+  }
+  if (S.curCat) res = res.filter(a => a.category === S.curCat);
+  const now = Date.now();
+  res.sort((a, b) => {
+    const ap = a.pinned_until && a.pinned_until > now ? 0 : 1;
+    const bp = b.pinned_until && b.pinned_until > now ? 0 : 1;
+    if (ap !== bp) return ap - bp;
+    return b.created_at - a.created_at;
   });
-  if(S.curCat)res=res.filter(a=>a.category===S.curCat);
-  const now=Date.now();
-  res.sort((a,b)=>{
-    const ap=a.pinned_until&&a.pinned_until>now?0:1;
-    const bp=b.pinned_until&&b.pinned_until>now?0:1;
-    if(ap!==bp)return ap-bp;
-    return b.created_at-a.created_at;
-  });
-  renderAdList('search-results',res);
+  renderAdList('search-results', res);
   renderSearchSugg();
 }
-function renderSearchSugg(){
-  const el=document.getElementById('search-sugg');if(!el)return;
-  const hist=S.searchHist.slice(0,6);
-  const activeAds=S.ads.filter(a=>a.status==='active'&&a.views>0);
-  activeAds.sort((a,b)=>(b.views||0)-(a.views||0));
-  const popAds=activeAds.slice(0,6);
-  let h='';
-  if(hist.length){h+=`<div class="sugg-wrap"><div class="sugg-tl">История</div><div class="sugg-list">`;hist.forEach(t=>h+=`<button class="sugg-tag" onclick="searchTag('${esc(t)}')">${esc(t)}</button>`);h+=`</div></div>`;}
-  if(popAds.length){
-    h+=`<div class="sugg-wrap"><div class="sugg-tl">Популярное</div><div class="sugg-list">`;
-    popAds.forEach(a=>h+=`<button class="sugg-tag" onclick="openAd(${a.id})">${esc(a.title)}</button>`);
-    h+=`</div></div>`;
+function renderSearchSugg() {
+  const el = document.getElementById('search-sugg'); if (!el) return;
+  const hist = S.searchHist.slice(0, 6);
+  const activeAds = S.ads.filter(a => a.status === 'active' && a.views > 0);
+  activeAds.sort((a, b) => (b.views || 0) - (a.views || 0));
+  const popAds = activeAds.slice(0, 6);
+  let h = '';
+  if (hist.length) {
+    h += `<div class="sugg-wrap"><div class="sugg-tl">История</div><div class="sugg-list">`;
+    hist.forEach(t => h += `<button class="sugg-tag" onclick="searchTag('${esc(t)}')">${esc(t)}</button>`);
+    h += `</div></div>`;
   }
-  el.innerHTML=h;
+  if (popAds.length) {
+    h += `<div class="sugg-wrap"><div class="sugg-tl">Популярное</div><div class="sugg-list">`;
+    popAds.forEach(a => h += `<button class="sugg-tag" onclick="openAd(${a.id})">${esc(a.title)}</button>`);
+    h += `</div></div>`;
+  }
+  el.innerHTML = h;
 }
-function searchTag(t){document.getElementById('search-inp').value=t;doSearch(t);}
-function filterCat(cat,el){
-  S.curCat=cat;
-  const cats=el.closest('.csc');
-  if(cats)cats.querySelectorAll('.cc').forEach(c=>c.classList.remove('active'));
+function searchTag(t) { document.getElementById('search-inp').value = t; doSearch(t); }
+function filterCat(cat, el) {
+  S.curCat = cat;
+  const cats = el.closest('.csc');
+  if (cats) cats.querySelectorAll('.cc').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  if(S.curSc==='home'){renderHome();renderPinned();}
-  else if(S.curSc==='search')doSearch(document.getElementById('search-inp')?.value||'');
+  if (S.curSc === 'home') { renderHome(); renderPinned(); }
+  else if (S.curSc === 'search') doSearch(document.getElementById('search-inp')?.value || '');
 }
 
-// ═══════════ HOME ═══════════
-function renderHome(){
-  const now=Date.now();
-  let ads=S.ads.filter(a=>a.status==='active');
-  if(S.curCat)ads=ads.filter(a=>a.category===S.curCat);
-  ads.sort((a,b)=>{const ap=a.pinned_until&&a.pinned_until>now?0:1,bp=b.pinned_until&&b.pinned_until>now?0:1;if(ap!==bp)return ap-bp;return b.created_at-a.created_at;});
-  document.getElementById('ads-count').textContent=ads.length+' объявлений';
-  renderAdList('ads-list',ads);
+// ═══════════ HOME & AD LIST ═══════════
+function renderHome() {
+  const now = Date.now();
+  let ads = S.ads.filter(a => a.status === 'active');
+  if (S.curCat) ads = ads.filter(a => a.category === S.curCat);
+  ads.sort((a, b) => {
+    const ap = a.pinned_until && a.pinned_until > now ? 0 : 1;
+    const bp = b.pinned_until && b.pinned_until > now ? 0 : 1;
+    if (ap !== bp) return ap - bp;
+    return b.created_at - a.created_at;
+  });
+  document.getElementById('ads-count').textContent = ads.length + ' объявлений';
+  renderAdList('ads-list', ads);
 }
-function renderPinned(){
-  const now=Date.now(),pinned=S.ads.filter(a=>a.status==='active'&&a.pinned_until&&a.pinned_until>now);
-  const el=document.getElementById('pinned-list'),sec=document.getElementById('pinned-section');
-  if(!pinned.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  el.innerHTML=pinned.map(a=>`<div class="hac" onclick="openAd(${a.id})"><div class="hai">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}" loading="lazy">`:`<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div><div class="hab"><div class="hat">${esc(a.title)}</div><div class="hap">${fmtPrice(a.price)}</div><div style="font-size:10px;font-weight:700;color:var(--gr)">${esc(a.city||'')}</div></div></div>`).join('');
+function renderPinned() {
+  const now = Date.now();
+  const pinned = S.ads.filter(a => a.status === 'active' && a.pinned_until && a.pinned_until > now);
+  const el = document.getElementById('pinned-list');
+  const sec = document.getElementById('pinned-section');
+  if (!pinned.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  el.innerHTML = pinned.map(a => `
+    <div class="hac" onclick="openAd(${a.id})">
+      <div class="hai">${a.photos && a.photos.length ? `<img src="${esc(a.photos[0])}" loading="lazy">` : `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div>
+      <div class="hab">
+        <div class="hat">${esc(a.title)}</div>
+        <div class="hap">${fmtPrice(a.price)}</div>
+        <div style="font-size:10px;font-weight:700;color:var(--gr)">${esc(a.city || '')}</div>
+      </div>
+    </div>`).join('');
 }
-
-// ═══════════ AD LIST ═══════════
-function renderAdList(cid,ads){
-  const el=document.getElementById(cid);if(!el)return;
-  if(!ads.length){el.innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><div class="et">Ничего не найдено</div><div class="es">Попробуйте другую категорию или запрос</div></div>`;return;}
-  const now=Date.now();
-  el.innerHTML=ads.map(a=>{
-    const isPinned=a.pinned_until&&a.pinned_until>now;
-    const isNew=(now-a.created_at)<3600000*12;
-    return `<div class="acard" onclick="openAd(${a.id})"><div class="aimg">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}" loading="lazy">`:`<div style="color:rgba(255,255,255,.15)"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}${isPinned?'<div class="pinb"><svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Закреп</div>':''}${isNew&&!isPinned?'<div class="newb">НОВОЕ</div>':''}</div><div class="ab"><div class="acat">${esc(a.category)}</div><div class="atl">${esc(a.title)}</div><div class="ame"><div class="apr">${fmtPrice(a.price)}</div><div class="ain"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${a.views||0}</div></div><div class="ata">${a.condition?`<div class="tag">${esc(a.condition)}</div>`:''}${a.city?`<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${esc(a.city)}</div>`:''}${a.delivery?`<div class="tag">${esc(a.delivery.split('/')[0].trim())}</div>`:''}</div></div></div>`;
+function renderAdList(cid, ads) {
+  const el = document.getElementById(cid); if (!el) return;
+  if (!ads.length) {
+    el.innerHTML = `<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><div class="et">Ничего не найдено</div><div class="es">Попробуйте другую категорию или запрос</div></div>`;
+    return;
+  }
+  const now = Date.now();
+  el.innerHTML = ads.map(a => {
+    const isPinned = a.pinned_until && a.pinned_until > now;
+    const isNew = (now - a.created_at) < 3600000 * 12;
+    return `<div class="acard" onclick="openAd(${a.id})">
+      <div class="aimg">${a.photos && a.photos.length ? `<img src="${esc(a.photos[0])}" loading="lazy">` : `<div style="color:rgba(255,255,255,.15)"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}
+      ${isPinned ? '<div class="pinb"><svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Закреп</div>' : ''}
+      ${isNew && !isPinned ? '<div class="newb">НОВОЕ</div>' : ''}
+      </div>
+      <div class="ab">
+        <div class="acat">${esc(a.category)}</div>
+        <div class="atl">${esc(a.title)}</div>
+        <div class="ame"><div class="apr">${fmtPrice(a.price)}</div><div class="ain"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${a.views || 0}</div></div>
+        <div class="ata">
+          ${a.condition ? `<div class="tag">${esc(a.condition)}</div>` : ''}
+          ${a.city ? `<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${esc(a.city)}</div>` : ''}
+          ${a.delivery ? `<div class="tag">${esc(a.delivery.split('/')[0].trim())}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
   }).join('');
 }
 
 // ═══════════ AD DETAIL ═══════════
-function openAd(id){
-  const ad=[...S.ads,...S.myAds].find(a=>a.id===id);if(!ad)return;
-  // Отправляем просмотр на сервер
-  fetch(`${API_URL}/api/view`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ad_id: id, user_id: S.user.tg_id})
-  }).catch(e => console.error('Ошибка отправки просмотра', e));
-  
-  ad.views=(ad.views||0)+1;save();
-  S.curAdId=id;S.prevSc=S.curSc;
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+async function openAd(id) {
+  const ad = [...S.ads, ...S.myAds].find(a => a.id === id); if (!ad) return;
+  // Отправляем просмотр на сервер (не ждём ответа)
+  sendBotAction('view_ad', { ad_id: id }).catch(() => {});
+  ad.views = (ad.views || 0) + 1; save();
+  S.curAdId = id; S.prevSc = S.curSc;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('sc-ad-detail').classList.add('active');
-  S.curSc='ad-detail';
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  const slider=document.getElementById('ad-slider');
-  if(ad.photos&&ad.photos.length){
-    let slides = '';
-    for (let i = 0; i < ad.photos.length; i++) {
-      slides += `<img src="${ad.photos[i]}" style="width:100%; height:100%; object-fit:cover; display:${i===0?'block':'none'}" data-index="${i}">`;
-    }
-    slider.innerHTML = slides + `<div class="asl-nav">${ad.photos.map((_, i) => `<div class="asl-dot ${i===0?'active':''}" data-index="${i}"></div>`).join('')}</div>`;
-    setTimeout(() => {
-      slider.querySelectorAll('.asl-dot').forEach(dot => {
-        dot.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const index = parseInt(e.target.dataset.index);
-          slider.querySelectorAll('img').forEach(img => img.style.display = 'none');
-          slider.querySelector(`img[data-index="${index}"]`).style.display = 'block';
-          slider.querySelectorAll('.asl-dot').forEach(d => d.classList.remove('active'));
-          e.target.classList.add('active');
-        });
-      });
-    }, 100);
+  S.curSc = 'ad-detail';
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  const slider = document.getElementById('ad-slider');
+  if (ad.photos && ad.photos.length) {
+    slider.innerHTML = `<img src="${esc(ad.photos[0])}" style="width:100%;height:100%;object-fit:cover">` +
+      (ad.photos.length > 1 ? `<div class="asl-nav">${ad.photos.map((_, i) => `<div class="asl-dot ${i === 0 ? 'active' : ''}"></div>`).join('')}</div>` : '');
   } else {
-    slider.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`;
+    slider.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`;
   }
-  document.getElementById('ad-hdr').textContent=ad.title;
-  document.getElementById('ad-det-price').textContent=fmtPrice(ad.price);
-  document.getElementById('ad-det-title').textContent=ad.title;
-  const rows=[
-    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>',l:'Категория',v:ad.category},
-    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',l:'Состояние',v:ad.condition},
-    ad.size?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0z"/><line x1="5" y1="14" x2="9" y2="10"/></svg>',l:'Размер',v:ad.size}:null,
-    ad.city?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',l:'Город',v:ad.city}:null,
-    ad.delivery?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',l:'Доставка',v:ad.delivery}:null,
-    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',l:'Просмотры',v:ad.views||0},
-    ad.desc?{icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>',l:'Описание',v:ad.desc}:null,
-    {icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>',l:'Контакт',v:ad.contact},
+  document.getElementById('ad-hdr').textContent = ad.title;
+  document.getElementById('ad-det-price').textContent = fmtPrice(ad.price);
+  document.getElementById('ad-det-title').textContent = ad.title;
+  const rows = [
+    { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>', l: 'Категория', v: ad.category },
+    { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>', l: 'Состояние', v: ad.condition },
+    ad.size ? { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0z"/><line x1="5" y1="14" x2="9" y2="10"/></svg>', l: 'Размер', v: ad.size } : null,
+    ad.city ? { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', l: 'Город', v: ad.city } : null,
+    ad.delivery ? { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>', l: 'Доставка', v: ad.delivery } : null,
+    { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>', l: 'Просмотры', v: ad.views || 0 },
+    ad.desc ? { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>', l: 'Описание', v: ad.desc } : null,
+    { icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>', l: 'Контакт', v: ad.contact },
   ].filter(Boolean);
-  document.getElementById('ad-det-rows').innerHTML=rows.map(r=>`<div class="adr"><div class="adri">${r.icon}</div><div><div class="adrk">${r.l}</div><div class="adrt">${esc(String(r.v))}</div></div></div>`).join('');
-  updateFavBtn();window.scrollTo(0,0);
+  document.getElementById('ad-det-rows').innerHTML = rows.map(r => `<div class="adr"><div class="adri">${r.icon}</div><div><div class="adrk">${r.l}</div><div class="adrt">${esc(String(r.v))}</div></div></div>`).join('');
+  updateFavBtn(); window.scrollTo(0, 0);
 }
-function contactSeller(){
-  const ad=[...S.ads,...S.myAds].find(a=>a.id===S.curAdId);if(!ad)return;
-  const c=ad.contact||'';
-  if(c.startsWith('@')&&window.Telegram?.WebApp)window.Telegram.WebApp.openTelegramLink(`https://t.me/${c.slice(1)}`);
-  else if(window.Telegram?.WebApp)window.Telegram.WebApp.openLink(`tel:${c}`);
+function contactSeller() {
+  const ad = [...S.ads, ...S.myAds].find(a => a.id === S.curAdId); if (!ad) return;
+  const c = ad.contact || '';
+  if (c.startsWith('@') && window.Telegram?.WebApp) window.Telegram.WebApp.openTelegramLink(`https://t.me/${c.slice(1)}`);
+  else if (window.Telegram?.WebApp) window.Telegram.WebApp.openLink(`tel:${c}`);
   else toast(`Контакт: ${c}`);
 }
 
-// ═══════════ FAVS ═══════════
-function toggleFav(){
-  if(!S.curAdId)return;
-  const idx=S.favs.indexOf(S.curAdId);
-  if(idx>=0){S.favs.splice(idx,1);toast('Удалено из избранного');}
-  else{S.favs.push(S.curAdId);toast('Добавлено в избранное');}
-  save();updateFavBtn();
+// ═══════════ FAVORITES ═══════════
+async function toggleFav() {
+  if (!S.curAdId) return;
+  const isFav = S.favs.includes(S.curAdId);
+  try {
+    await sendBotAction('toggle_favorite', { ad_id: S.curAdId, add: !isFav });
+    if (isFav) {
+      S.favs = S.favs.filter(id => id !== S.curAdId);
+      toast('Удалено из избранного');
+    } else {
+      S.favs.push(S.curAdId);
+      toast('Добавлено в избранное');
+    }
+    save();
+    updateFavBtn();
+  } catch (e) {
+    toast('Ошибка при изменении избранного');
+  }
 }
-function updateFavBtn(){
-  const f=S.favs.includes(S.curAdId);
-  const h=document.getElementById('fav-hbtn'),fab=document.getElementById('fav-fab');
-  if(h)h.style.color=f?'var(--acc)':'var(--gr)';
-  if(fab)fab.classList.toggle('faved',f);
+function updateFavBtn() {
+  const f = S.favs.includes(S.curAdId);
+  const h = document.getElementById('fav-hbtn'), fab = document.getElementById('fav-fab');
+  if (h) h.style.color = f ? 'var(--acc)' : 'var(--gr)';
+  if (fab) fab.classList.toggle('faved', f);
 }
-function renderFavs(){
-  const favAds=S.ads.filter(a=>S.favs.includes(a.id));
-  if(!favAds.length){document.getElementById('favs-list').innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><div class="et">Нет избранных</div><div class="es">Нажмите на сердечко в объявлении</div></div>`;return;}
-  renderAdList('favs-list',favAds);
+function renderFavs() {
+  const favAds = S.ads.filter(a => S.favs.includes(a.id));
+  if (!favAds.length) {
+    document.getElementById('favs-list').innerHTML = `<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><div class="et">Нет избранных</div><div class="es">Нажмите на сердечко в объявлении</div></div>`;
+    return;
+  }
+  renderAdList('favs-list', favAds);
 }
 
 // ═══════════ MY ADS ═══════════
-function setTab(tab,el){
-  S.curTab=tab;
-  document.querySelectorAll('.tb').forEach(t=>t.classList.remove('active'));
-  if(el)el.classList.add('active');
-  else{const m={active:'tab-active',moderation:'tab-moderation',archive:'tab-archive'};const b=document.getElementById(m[tab]);if(b)b.classList.add('active');}
-  const ads=S.myAds.filter(a=>tab==='archive'?a.status==='inactive'||a.status==='rejected':a.status===(tab==='active'?'active':'moderation'));
-  const el2=document.getElementById('my-ads-list');
-  if(!ads.length){
-    const emIcons={active:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',moderation:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',archive:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>'};
-    const em={active:[emIcons.active,'Нет активных','Создайте первое!'],moderation:[emIcons.moderation,'На модерации нет','Создайте объявление'],archive:[emIcons.archive,'Архив пуст','Деактивируйте объявление']};
-    const [ic,tl,sb]=em[tab]||['<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>','Пусто',''];
-    el2.innerHTML=`<div class="empty"><span class="ei">${ic}</span><div class="et">${tl}</div><div class="es">${sb}</div></div>`;return;
+function setTab(tab, el) {
+  S.curTab = tab;
+  document.querySelectorAll('.tb').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else { const m = { active: 'tab-active', moderation: 'tab-moderation', archive: 'tab-archive' }; const b = document.getElementById(m[tab]); if (b) b.classList.add('active'); }
+  const ads = S.myAds.filter(a => tab === 'archive' ? a.status === 'inactive' || a.status === 'rejected' : a.status === (tab === 'active' ? 'active' : 'moderation'));
+  const el2 = document.getElementById('my-ads-list');
+  if (!ads.length) {
+    const emIcons = {
+      active: '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+      moderation: '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      archive: '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>'
+    };
+    const em = {
+      active: [emIcons.active, 'Нет активных', 'Создайте первое!'],
+      moderation: [emIcons.moderation, 'На модерации нет', 'Создайте объявление'],
+      archive: [emIcons.archive, 'Архив пуст', 'Деактивируйте объявление']
+    };
+    const [ic, tl, sb] = em[tab] || ['<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>', 'Пусто', ''];
+    el2.innerHTML = `<div class="empty"><span class="ei">${ic}</span><div class="et">${tl}</div><div class="es">${sb}</div></div>`;
+    return;
   }
-  const smap={active:'s-act',moderation:'s-mod',inactive:'s-ina',rejected:'s-rej'};
-  const slb={active:'Активно',moderation:'На модерации',inactive:'В архиве',rejected:'Отклонено'};
-  el2.innerHTML=ads.map(a=>`<div class="mac" onclick="openMyAd(${a.id})"><div class="mat">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.2)"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div><div class="mai"><div class="matl">${esc(a.title)}</div><div class="map">${fmtPrice(a.price)}</div><div class="mas ${smap[a.status]||'s-ina'}">${slb[a.status]||a.status}</div><div class="mav"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${a.views||0} · ${timeAgo(a.created_at)}</div></div></div>`).join('');
+  const smap = { active: 's-act', moderation: 's-mod', inactive: 's-ina', rejected: 's-rej' };
+  const slb = { active: 'Активно', moderation: 'На модерации', inactive: 'В архиве', rejected: 'Отклонено' };
+  el2.innerHTML = ads.map(a => `
+    <div class="mac" onclick="openMyAd(${a.id})">
+      <div class="mat">${a.photos && a.photos.length ? `<img src="${esc(a.photos[0])}">` : `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.2)"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div>
+      <div class="mai">
+        <div class="matl">${esc(a.title)}</div>
+        <div class="map">${fmtPrice(a.price)}</div>
+        <div class="mas ${smap[a.status] || 's-ina'}">${slb[a.status] || a.status}</div>
+        <div class="mav"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${a.views || 0} · ${timeAgo(a.created_at)}</div>
+      </div>
+    </div>`).join('');
 }
-function openMyAd(id){
-  const ad=S.myAds.find(a=>a.id===id);if(!ad)return;
-  S.actionAdId=id;S.prevSc=S.curSc;navTo('my-ad-detail');
-  document.getElementById('my-ad-hdr').textContent=ad.title;
-  const slb={active:'Активно',moderation:'На модерации',inactive:'В архиве',rejected:'Отклонено'};
-  const body=document.getElementById('my-ad-detail-body');
-  body.innerHTML=`
+function openMyAd(id) {
+  const ad = S.myAds.find(a => a.id === id); if (!ad) return;
+  S.curAdId = id; S.prevSc = S.curSc; navTo('my-ad-detail');
+  document.getElementById('my-ad-hdr').textContent = ad.title;
+  const slb = { active: 'Активно', moderation: 'На модерации', inactive: 'В архиве', rejected: 'Отклонено' };
+  const body = document.getElementById('my-ad-detail-body');
+  body.innerHTML = `
     <div class="acard" style="margin-bottom:18px">
-      <div class="aimg">${ad.photos&&ad.photos.length?`<img src="${esc(ad.photos[0])}">`:`<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}</div>
-      <div class="ab"><div class="acat">${esc(ad.category)}</div><div class="atl">${esc(ad.title)}</div><div class="apr">${fmtPrice(ad.price)}</div>
-        <div class="ata"><div class="tag">${slb[ad.status]||ad.status}</div>${ad.city?`<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${esc(ad.city)}</div>`:''}<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${ad.views||0}</div></div>
+      <div class="aimg">${ad.photos && ad.photos.length ? `<img src="${esc(ad.photos[0])}">` : `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}</div>
+      <div class="ab">
+        <div class="acat">${esc(ad.category)}</div>
+        <div class="atl">${esc(ad.title)}</div>
+        <div class="apr">${fmtPrice(ad.price)}</div>
+        <div class="ata"><div class="tag">${slb[ad.status] || ad.status}</div>${ad.city ? `<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${esc(ad.city)}</div>` : ''}<div class="tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${ad.views || 0}</div></div>
       </div>
     </div>
-    ${ad.status==='rejected'&&ad.reject_reason?`<div class="card" style="margin-bottom:14px;border-left:3px solid var(--rd)"><div style="font-size:12px;font-weight:800;color:var(--rd);margin-bottom:4px">Причина отказа</div><div style="font-size:13px;font-weight:600;color:var(--dk)">${esc(ad.reject_reason)}</div></div>`:''}
-    ${ad.status==='active'?`
+    ${ad.status === 'rejected' && ad.reject_reason ? `<div class="card" style="margin-bottom:14px;border-left:3px solid var(--rd)"><div style="font-size:12px;font-weight:800;color:var(--rd);margin-bottom:4px">Причина отказа</div><div style="font-size:13px;font-weight:600;color:var(--dk)">${esc(ad.reject_reason)}</div></div>` : ''}
+    ${ad.status === 'active' ? `
       <button class="btn ba" style="margin-bottom:10px" onclick="pinMyAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Закрепить</button>
       <button class="btn bn" style="margin-bottom:10px" onclick="deactivateAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg> В архив</button>
-      <button class="btn" style="background:rgba(255,69,58,.1);color:var(--rd);box-shadow:none;border:1px solid rgba(255,69,58,.2)" onclick="deleteAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Удалить</button>`:''}
-    ${ad.status==='inactive'||ad.status==='rejected'?`
+      <button class="btn" style="background:rgba(255,69,58,.1);color:var(--rd);box-shadow:none;border:1px solid rgba(255,69,58,.2)" onclick="deleteAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Удалить</button>` : ''}
+    ${ad.status === 'inactive' || ad.status === 'rejected' ? `
       <button class="btn ba" style="margin-bottom:10px" onclick="reactivateAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.04"/></svg> Восстановить</button>
-      <button class="btn" style="background:rgba(255,69,58,.1);color:var(--rd);box-shadow:none;border:1px solid rgba(255,69,58,.2)" onclick="deleteAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Удалить</button>`:''}
-    ${ad.status==='moderation'?`<div class="card" style="text-align:center;padding:32px 18px"><div style="color:rgba(255,255,255,.2);display:flex;justify-content:center;margin-bottom:16px"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div style="font-size:15px;font-weight:700;margin-top:0;letter-spacing:-.2px">Объявление на проверке</div><div style="font-size:13px;font-weight:400;color:var(--gr);margin-top:6px">Обычно занимает 1–2 часа</div></div>`:''}
+      <button class="btn" style="background:rgba(255,69,58,.1);color:var(--rd);box-shadow:none;border:1px solid rgba(255,69,58,.2)" onclick="deleteAd(${id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Удалить</button>` : ''}
+    ${ad.status === 'moderation' ? `<div class="card" style="text-align:center;padding:32px 18px"><div style="color:rgba(255,255,255,.2);display:flex;justify-content:center;margin-bottom:16px"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div style="font-size:15px;font-weight:700;margin-top:0;letter-spacing:-.2px">Объявление на проверке</div><div style="font-size:13px;font-weight:400;color:var(--gr);margin-top:6px">Обычно занимает 1–2 часа</div></div>` : ''}
   `;
 }
-async function pinMyAd(id) {
-    const t = TARIFFS[S.user.tariff];
-    if (!t || t.pins === 0) {
-        toast('Закреп доступен только по подписке');
-        setTimeout(() => navTo('subscriptions'), 800);
-        return;
-    }
-    if ((S.user.pins_used || 0) >= t.pins) {
-        toast(`Лимит закрепов исчерпан (${t.pins}/мес)`);
-        return;
-    }
-
-    const pinUntil = new Date(Date.now() + t.pin_hours * 3600000).toISOString();
-
-    try {
-        const res = await fetch(`${API_URL}/api/pin`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ad_id: id, user_id: S.user.tg_id, pin_until: pinUntil})
-        });
-        if (res.ok) {
-            S.user.pins_used++;
-            const ad = S.myAds.find(a => a.id === id);
-            if (ad) ad.pinned_until = new Date(pinUntil).getTime();
-            const pubAd = S.ads.find(a => a.id === id);
-            if (pubAd) pubAd.pinned_until = new Date(pinUntil).getTime();
-            save();
-            toast(`⭐ Закреплено на ${t.pin_hours} ч!`);
-            addNotif('gn', '★', 'Объявление закреплено!', `"${ad.title}" теперь в топе ${t.pin_hours} ч`);
-            navBack();
-        } else {
-            toast('Ошибка закрепления');
-        }
-    } catch (e) {
-        console.error(e);
-        toast('Ошибка сети');
-    }
+function pinMyAd(id) {
+  const t = TARIFFS[S.user.tariff];
+  if (!t || t.pins_per_month === 0) { toast('Закреп доступен только по подписке'); setTimeout(() => navTo('subscriptions'), 800); return; }
+  if ((S.user.pins_used || 0) >= t.pins_per_month) { toast(`Лимит закрепов исчерпан (${t.pins_per_month}/мес)`); return; }
+  const ad = S.myAds.find(a => a.id === id);
+  if (ad) {
+    ad.pinned_until = Date.now() + t.pin_hours * 3600000;
+    S.user.pins_used = (S.user.pins_used || 0) + 1;
+    const pub = S.ads.find(a => a.id === id);
+    if (pub) pub.pinned_until = ad.pinned_until;
+    save(); toast(`⭐ Закреплено на ${t.pin_hours}ч!`);
+    addNotif('gn', '★', 'Объявление закреплено!', `"${ad.title}" теперь в топе ${t.pin_hours}ч`);
+    navBack();
+  }
 }
-async function deactivateAd(id){
-    if(!confirm('Перенести в архив?')) return;
-    try {
-        const res = await fetch(`${API_URL}/api/deactivate`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ad_id: id, user_id: S.user.tg_id})
-        });
-        if (res.ok) {
-            const ad = S.myAds.find(a => a.id === id);
-            if (ad) ad.status = 'inactive';
-            const pubAd = S.ads.find(a => a.id === id);
-            if (pubAd) pubAd.status = 'inactive';
-            save();
-            toast('Объявление в архиве');
-            setTab('archive');
-        } else {
-            toast('Ошибка деактивации');
-        }
-    } catch (e) {
-        console.error(e);
-        toast('Ошибка сети');
-    }
+function deactivateAd(id) {
+  const ad = S.myAds.find(a => a.id === id);
+  if (ad) { ad.status = 'inactive'; save(); toast('Перенесено в архив'); navBack(); setTab('archive'); }
 }
-function reactivateAd(id){
-  const ad=S.myAds.find(a=>a.id===id);
-  if(ad){ad.status='moderation';save();toast('Отправлено на модерацию');addNotif('yl','⏳','На модерации',`"${ad.title}" ждёт проверки`);navBack();setTab('moderation');}
+function reactivateAd(id) {
+  const ad = S.myAds.find(a => a.id === id);
+  if (ad) { ad.status = 'moderation'; save(); toast('Отправлено на модерацию'); addNotif('yl', '⏳', 'На модерации', `"${ad.title}" ждёт проверки`); navBack(); setTab('moderation'); }
 }
-function deleteAd(id){
-  if(!confirm('Удалить объявление?'))return;
-  S.myAds=S.myAds.filter(a=>a.id!==id);S.ads=S.ads.filter(a=>a.id!==id);
-  save();toast('Удалено');navBack();setTab('active');
+function deleteAd(id) {
+  if (!confirm('Удалить объявление?')) return;
+  S.myAds = S.myAds.filter(a => a.id !== id); S.ads = S.ads.filter(a => a.id !== id);
+  save(); toast('Удалено'); navBack(); setTab('active');
 }
 
 // ═══════════ CREATE AD ═══════════
-function tryCreate(){
-  if(!canPostAd())return;
-  S.createStep=0;S.newAd={};S.photos=[];S.deliveries=[];
-  document.querySelectorAll('.fst').forEach(s=>s.classList.remove('active'));
+function tryCreate() {
+  if (!canPostAd()) return;
+  S.createStep = 0; S.newAd = {}; S.photos = []; S.deliveries = [];
+  document.querySelectorAll('.fst').forEach(s => s.classList.remove('active'));
   document.getElementById('step-0').classList.add('active');
-  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('sel'));
-  document.querySelectorAll('.ch').forEach(c=>c.classList.remove('active'));
-  ['ad-title','ad-desc','ad-size','ad-city','ad-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  const ti=document.getElementById('ad-title');if(ti)ti.placeholder='Введите название товара';
-  const di=document.getElementById('ad-desc');if(di)di.placeholder='Расскажите подробнее...';
-  const th=document.getElementById('title-hints');if(th)th.style.display='none';
-  const dh=document.getElementById('desc-hints');if(dh)dh.style.display='none';
-  const p=document.getElementById('ad-price');if(p)p.value='';
-  const dw=document.getElementById('deliv-other-wrap');if(dw)dw.style.display='none';
-  const di2=document.getElementById('deliv-other-inp');if(di2)di2.value='';
-  const badge=document.getElementById('create-limit-badge');
-  if(badge){
-    const now=new Date().toDateString();
-    if(S.user.last_daily_reset!==now){S.user.daily_ads=0;}
-    const tariffName=S.user.tariff||'Free';
-    const lim=TARIFFS[tariffName]?TARIFFS[tariffName].daily_ads:1;
-    const used=S.user.daily_ads||0;
-    const left=lim-used;
-    badge.textContent=`${left} из ${lim>=50?'∞':lim}`;
-    badge.style.color=left<=0?'var(--rd)':'var(--acc)';
-    badge.style.background=left<=0?'rgba(244,67,54,.12)':'rgba(255,87,34,.1)';
+  document.querySelectorAll('.cbtn').forEach(b => b.classList.remove('sel'));
+  document.querySelectorAll('.ch').forEach(c => c.classList.remove('active'));
+  ['ad-title','ad-desc','ad-size','ad-city','ad-contact'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+  const ti = document.getElementById('ad-title'); if (ti) ti.placeholder = 'Введите название товара';
+  const di = document.getElementById('ad-desc'); if (di) di.placeholder = 'Расскажите подробнее...';
+  const th = document.getElementById('title-hints'); if (th) th.style.display = 'none';
+  const dh = document.getElementById('desc-hints'); if (dh) dh.style.display = 'none';
+  const p = document.getElementById('ad-price'); if (p) p.value = '';
+  const dw = document.getElementById('deliv-other-wrap'); if (dw) dw.style.display = 'none';
+  const di2 = document.getElementById('deliv-other-inp'); if (di2) di2.value = '';
+  const badge = document.getElementById('create-limit-badge');
+  if (badge) {
+    const now = new Date().toDateString();
+    if (S.user.last_daily_reset !== now) { S.user.daily_ads = 0; S.user.last_daily_reset = now; save(); }
+    const tariffName = S.user.tariff || 'Free';
+    const lim = TARIFFS[tariffName] ? TARIFFS[tariffName].daily_ads : 1;
+    const used = S.user.daily_ads || 0;
+    const left = lim >= 50 ? '∞' : (lim - used);
+    badge.textContent = `${used}/${lim === Infinity ? '∞' : lim}`;
+    badge.style.color = used >= lim ? 'var(--rd)' : 'var(--acc)';
+    badge.style.background = used >= lim ? 'rgba(244,67,54,.12)' : 'rgba(255,87,34,.1)';
   }
-  renderPhotoGrid();updateStepi();
-  navTo('create');
+  renderPhotoGrid(); updateStepi(); navTo('create');
 }
-function canPostAd(){
-  if(S.user.tariff!=='Free'&&S.user.tariff_end&&Date.now()>S.user.tariff_end){
-    S.user.tariff='Free';S.user.tariff_end=null;save();
+function canPostAd() {
+  if (S.user.tariff !== 'Free' && S.user.tariff_end && Date.now() > S.user.tariff_end) {
+    S.user.tariff = 'Free'; S.user.tariff_end = null; save();
   }
-  const now=new Date().toDateString();
-  if(S.user.last_daily_reset!==now){S.user.daily_ads=0;S.user.last_daily_reset=now;save();}
-  const tariffName=S.user.tariff||'Free';
-  const lim=TARIFFS[tariffName]?TARIFFS[tariffName].daily_ads:1;
-  const used=S.user.daily_ads||0;
-  if(used>=lim){
-    if(tariffName==='Free'){
+  const now = new Date().toDateString();
+  if (S.user.last_daily_reset !== now) { S.user.daily_ads = 0; S.user.last_daily_reset = now; save(); }
+  const tariffName = S.user.tariff || 'Free';
+  const lim = TARIFFS[tariffName] ? TARIFFS[tariffName].daily_ads : 1;
+  const used = S.user.daily_ads || 0;
+  if (used >= lim) {
+    if (tariffName === 'Free') {
       toast('Лимит Free: 1 объявление в день. Оформите подписку!');
-      setTimeout(()=>navTo('subscriptions'),1200);
+      setTimeout(() => navTo('subscriptions'), 1200);
     } else {
-      toast(`Лимит объявлений в день: ${lim}`);
+      toast(`Лимит объявлений в день: ${lim === Infinity ? 'безлимит' : lim}`);
     }
     return false;
   }
   return true;
 }
-function initCreate(){tryCreate();}
-function updateStepi(){
-  document.getElementById('stepi').innerHTML=Array.from({length:4},(_,i)=>`<div class="sdt ${i<S.createStep?'done':''}"></div>`).join('');
+function updateStepi() {
+  document.getElementById('stepi').innerHTML = Array.from({ length: 4 }, (_, i) => `<div class="sdt ${i < S.createStep ? 'done' : ''}"></div>`).join('');
 }
-function selCat(cat,el){
-  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel');S.newAd.category=cat;
-  const tpl=CAT_TEMPLATES[cat]||CAT_TEMPLATES['Другое'];
-  const ti=document.getElementById('ad-title');
-  const di=document.getElementById('ad-desc');
-  const si=document.getElementById('ad-size');
-  if(ti)ti.placeholder=tpl.title;
-  if(di)di.placeholder=tpl.desc;
-  const hasSz=tpl.size!=='';
-  document.getElementById('size-gr').style.display=hasSz?'block':'none';
-  if(si&&tpl.size)si.placeholder=tpl.size;
-  const hc=document.getElementById('title-hints');
-  if(hc){
-    hc.innerHTML=tpl.hints.map((h,i)=>`<button class="cat-hint" style="animation-delay:${i*0.04}s" onclick="applyHint('title','${h}')">${h}</button>`).join('');
-    hc.style.display='flex';
+function selCat(cat, el) {
+  document.querySelectorAll('.cbtn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel'); S.newAd.category = cat;
+  const tpl = CAT_TEMPLATES[cat] || CAT_TEMPLATES['Другое'];
+  const ti = document.getElementById('ad-title');
+  const di = document.getElementById('ad-desc');
+  const si = document.getElementById('ad-size');
+  if (ti) ti.placeholder = tpl.title;
+  if (di) di.placeholder = tpl.desc;
+  const hasSz = tpl.size !== '';
+  document.getElementById('size-gr').style.display = hasSz ? 'block' : 'none';
+  if (si && tpl.size) si.placeholder = tpl.size;
+  const hc = document.getElementById('title-hints');
+  if (hc) {
+    hc.innerHTML = tpl.hints.map((h, i) => `<button class="cat-hint" style="animation-delay:${i * 0.04}s" onclick="applyHint('title','${h}')">${h}</button>`).join('');
+    hc.style.display = 'flex';
   }
-  const dhc=document.getElementById('desc-hints');
-  if(dhc){
-    dhc.innerHTML=tpl.descHints.map((h,i)=>`<button class="cat-hint" style="animation-delay:${i*0.04}s" onclick="applyDescHint('${h.replace(/'/g,"\\'")}')">+ ${h}</button>`).join('');
-    dhc.style.display='flex';
+  const dhc = document.getElementById('desc-hints');
+  if (dhc) {
+    dhc.innerHTML = tpl.descHints.map((h, i) => `<button class="cat-hint" style="animation-delay:${i * 0.04}s" onclick="applyDescHint('${h.replace(/'/g, "\\'")}')">+ ${h}</button>`).join('');
+    dhc.style.display = 'flex';
   }
-  setTimeout(()=>nextStep(),280);
+  setTimeout(() => nextStep(), 280);
 }
-function applyHint(field,val){
-  const el=document.getElementById('ad-'+field);
-  if(el){el.value=val;el.focus();}
-}
-function applyDescHint(val){
-  const el=document.getElementById('ad-desc');
-  if(!el)return;
-  const cur=el.value.trim();
-  el.value=cur?(cur+' '+val):val;
+function applyHint(field, val) { const el = document.getElementById('ad-' + field); if (el) { el.value = val; el.focus(); } }
+function applyDescHint(val) {
+  const el = document.getElementById('ad-desc'); if (!el) return;
+  const cur = el.value.trim();
+  el.value = cur ? (cur + ' ' + val) : val;
   el.focus();
-  el.setSelectionRange(el.value.length,el.value.length);
+  el.setSelectionRange(el.value.length, el.value.length);
 }
-function selChip(el,field,val){el.parentElement.querySelectorAll('.ch').forEach(c=>c.classList.remove('active'));el.classList.add('active');S.newAd[field]=val;}
-function togDeliv(el,val){el.classList.toggle('active');if(el.classList.contains('active'))S.deliveries.push(val);else S.deliveries=S.deliveries.filter(d=>d!==val);}
-function togDelivOther(el){
+function selChip(el, field, val) {
+  el.parentElement.querySelectorAll('.ch').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); S.newAd[field] = val;
+}
+function togDeliv(el, val) {
   el.classList.toggle('active');
-  const wrap=document.getElementById('deliv-other-wrap');
-  if(el.classList.contains('active')){wrap.style.display='block';}
-  else{wrap.style.display='none';S.deliveries=S.deliveries.filter(d=>!d.startsWith('Другое'));}
+  if (el.classList.contains('active')) S.deliveries.push(val);
+  else S.deliveries = S.deliveries.filter(d => d !== val);
 }
-function updateDelivOther(val){
-  S.deliveries=S.deliveries.filter(d=>!d.startsWith('Другое'));
-  if(val.trim())S.deliveries.push('Другое: '+val.trim());
+function togDelivOther(el) {
+  el.classList.toggle('active');
+  const wrap = document.getElementById('deliv-other-wrap');
+  if (el.classList.contains('active')) { wrap.style.display = 'block'; }
+  else { wrap.style.display = 'none'; S.deliveries = S.deliveries.filter(d => !d.startsWith('Другое')); }
 }
-function nextStep(){
-  if(S.createStep===1){
-    if(!document.getElementById('ad-title').value.trim()){toast('Введите название товара');return;}
-    if(!S.newAd.condition){toast('Выберите состояние товара');return;}
-    S.newAd.title=document.getElementById('ad-title').value.trim();
-    S.newAd.size=document.getElementById('ad-size').value.trim();
-    S.newAd.desc=document.getElementById('ad-desc').value.trim();
+function updateDelivOther(val) {
+  S.deliveries = S.deliveries.filter(d => !d.startsWith('Другое'));
+  if (val.trim()) S.deliveries.push('Другое: ' + val.trim());
+}
+function nextStep() {
+  if (S.createStep === 1) {
+    if (!document.getElementById('ad-title').value.trim()) { toast('Введите название товара'); return; }
+    if (!S.newAd.condition) { toast('Выберите состояние товара'); return; }
+    S.newAd.title = document.getElementById('ad-title').value.trim();
+    S.newAd.size = document.getElementById('ad-size').value.trim();
+    S.newAd.desc = document.getElementById('ad-desc').value.trim();
   }
-  if(S.createStep===2){
-    const priceEl=document.getElementById('ad-price');
-    S.newAd.price=priceEl.value?parseInt(priceEl.value):0;
-    S.newAd.city=document.getElementById('ad-city').value.trim();
-    S.newAd.delivery=S.deliveries.join(' / ');
+  if (S.createStep === 2) {
+    const priceEl = document.getElementById('ad-price');
+    S.newAd.price = priceEl.value ? parseInt(priceEl.value) : 0;
+    S.newAd.city = document.getElementById('ad-city').value.trim();
+    S.newAd.delivery = S.deliveries.join(' / ');
   }
-  if(S.createStep===4){renderCreatePreview();}
+  if (S.createStep === 4) { renderCreatePreview(); }
   document.getElementById(`step-${S.createStep}`).classList.remove('active');
   S.createStep++;
   document.getElementById(`step-${S.createStep}`).classList.add('active');
-  updateStepi();window.scrollTo(0,0);
+  updateStepi(); window.scrollTo(0, 0);
 }
-function backCreate(){
-  if(S.createStep>0){
+function backCreate() {
+  if (S.createStep > 0) {
     document.getElementById(`step-${S.createStep}`).classList.remove('active');
     S.createStep--;
     document.getElementById(`step-${S.createStep}`).classList.add('active');
     updateStepi();
-  } else {navTo('home');}
+  } else { navTo('home'); }
 }
-function renderPhotoGrid(){
-  const g=document.getElementById('photo-grid');if(!g)return;
-  const dropzone=document.getElementById('photo-dropzone');
-  const addMore=document.getElementById('photo-add-more');
-  
-  if(S.photos.length===0){
-    if(dropzone)dropzone.style.display='flex';
-    if(addMore)addMore.style.display='none';
-    g.innerHTML='';
-    g.style.display='none';
+function renderPhotoGrid() {
+  const g = document.getElementById('photo-grid'); if (!g) return;
+  const dropzone = document.getElementById('photo-dropzone');
+  const addMore = document.getElementById('photo-add-more');
+  if (S.photos.length === 0) {
+    if (dropzone) dropzone.style.display = 'flex';
+    if (addMore) addMore.style.display = 'none';
+    g.innerHTML = ''; g.style.display = 'none';
   } else {
-    if(dropzone)dropzone.style.display='none';
-    g.style.display='flex';
-    g.innerHTML=S.photos.map((p,i)=>`<div class="psl"><img src="${p}"><div class="rmv" onclick="removePhoto(${i})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>${i===0?'<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,87,34,.75);font-size:9px;font-weight:900;color:#fff;text-align:center;padding:3px 0;letter-spacing:.5px">ГЛАВНОЕ</div>':''}</div>`).join('');
-    if(addMore)addMore.style.display=S.photos.length<10?'block':'none';
+    if (dropzone) dropzone.style.display = 'none';
+    g.style.display = 'flex';
+    g.innerHTML = S.photos.map((p, i) => `<div class="psl"><img src="${p}"><div class="rmv" onclick="removePhoto(${i})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>${i === 0 ? '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,87,34,.75);font-size:9px;font-weight:900;color:#fff;text-align:center;padding:3px 0;letter-spacing:.5px">ГЛАВНОЕ</div>' : ''}</div>`).join('');
+    if (addMore) addMore.style.display = S.photos.length < 10 ? 'block' : 'none';
   }
 }
-function removePhoto(i){S.photos.splice(i,1);renderPhotoGrid();}
-function handlePhotos(inp){
-  const files=Array.from(inp.files),rem=10-S.photos.length;
-  files.slice(0,rem).forEach(f=>{const r=new FileReader();r.onload=e=>{S.photos.push(e.target.result);renderPhotoGrid();};r.readAsDataURL(f);});
-  if(files.length>rem)toast(`Макс. 10 фото. Добавлено ${rem}`);
-  inp.value='';
+function removePhoto(i) { S.photos.splice(i, 1); renderPhotoGrid(); }
+function handlePhotos(inp) {
+  const files = Array.from(inp.files), rem = 10 - S.photos.length;
+  files.slice(0, rem).forEach(f => {
+    const r = new FileReader();
+    r.onload = e => { S.photos.push(e.target.result); renderPhotoGrid(); };
+    r.readAsDataURL(f);
+  });
+  if (files.length > rem) toast(`Макс. 10 фото. Добавлено ${rem}`);
+  inp.value = '';
 }
-function renderCreatePreview(){
-  const p=document.getElementById('create-preview');if(!p)return;
-  p.innerHTML=`<div class="card"><div style="font-size:13px;font-weight:800;color:var(--gr);margin-bottom:10px">ПРЕДПРОСМОТР</div>
-    <div style="font-size:11px;font-weight:800;color:var(--acc)">${esc(S.newAd.category||'')}</div>
-    <div style="font-size:16px;font-weight:800;margin:4px 0">${esc(S.newAd.title||'')}</div>
-    <div style="font-size:20px;font-weight:900;color:var(--acc)">${fmtPrice(S.newAd.price||0)}</div>
-    <div style="font-size:13px;color:var(--gr);margin-top:6px">${esc(S.newAd.condition||'')} ${S.newAd.city?'· '+S.newAd.city:''}</div>
+function renderCreatePreview() {
+  const p = document.getElementById('create-preview'); if (!p) return;
+  p.innerHTML = `<div class="card"><div style="font-size:13px;font-weight:800;color:var(--gr);margin-bottom:10px">ПРЕДПРОСМОТР</div>
+    <div style="font-size:11px;font-weight:800;color:var(--acc)">${esc(S.newAd.category || '')}</div>
+    <div style="font-size:16px;font-weight:800;margin:4px 0">${esc(S.newAd.title || '')}</div>
+    <div style="font-size:20px;font-weight:900;color:var(--acc)">${fmtPrice(S.newAd.price || 0)}</div>
+    <div style="font-size:13px;color:var(--gr);margin-top:6px">${esc(S.newAd.condition || '')} ${S.newAd.city ? '· ' + S.newAd.city : ''}</div>
   </div>`;
 }
-function submitAd(){
-  S.newAd.contact=document.getElementById('ad-contact').value.trim();
-  if(!S.newAd.contact){toast('Введите контакт для связи');return;}
-  if(!canPostAd())return;
-  S.newAd.photos=S.photos;
-  const newAd={
-    id:Date.now(),user_id:S.user.tg_id||0,
-    title:S.newAd.title||'Новое',price:S.newAd.price||0,
-    category:S.newAd.category||'Другое',
-    condition:S.newAd.condition||'',size:S.newAd.size||'',
-    city:S.newAd.city||'',delivery:S.newAd.delivery||'',
-    desc:S.newAd.desc||'',contact:S.newAd.contact,
-    photos:S.photos.slice(),
-    status:'moderation',views:0,
-    pinned_until:null,created_at:Date.now()
+async function submitAd() {
+  S.newAd.contact = document.getElementById('ad-contact').value.trim();
+  if (!S.newAd.contact) { toast('Введите контакт для связи'); return; }
+  if (!canPostAd()) return;
+
+  const adData = {
+    title: S.newAd.title || 'Новое',
+    price: S.newAd.price || 0,
+    category: S.newAd.category || 'Другое',
+    condition: S.newAd.condition || '',
+    size: S.newAd.size || '',
+    city: S.newAd.city || '',
+    delivery: S.newAd.delivery || '',
+    description: S.newAd.desc || '',
+    contact_info: S.newAd.contact,
+    photos: S.photos.slice()
   };
-  
-  if(window.Telegram?.WebApp){
-    try{
-      window.Telegram.WebApp.sendData(JSON.stringify({
-        action:'create_ad',
-        ad_data:{
-          title:newAd.title,
-          price:newAd.price,
-          category:newAd.category,
-          description:newAd.desc,
-          condition:newAd.condition,
-          size:newAd.size,
-          city:newAd.city,
-          delivery:newAd.delivery,
-          photos:newAd.photos,
-          contact_info:newAd.contact
-        }
-      }));
-      console.log('✅ Объявление отправлено боту на модерацию');
-    }catch(e){
-      console.error('Ошибка отправки боту:',e);
+
+  try {
+    const response = await sendBotAction('create_ad', { ad_data: adData });
+    if (response.ok) {
+      toast('Объявление отправлено на модерацию!');
+      setTimeout(() => navTo('home'), 1200);
+    } else {
+      toast('Ошибка: ' + (response.error || 'Неизвестная ошибка'));
     }
+  } catch (e) {
+    toast('Ошибка соединения с сервером');
+    console.error(e);
   }
-  
-  S.myAds.unshift(newAd);
-  S.user.daily_ads=(S.user.daily_ads||0)+1;
-  save();
-  addNotif('yl','⏳','Объявление на модерации',`"${newAd.title}" отправлено на проверку`);
-  toast('Объявление отправлено на модерацию!');
-  setTimeout(()=>{
-    if(window.Telegram?.WebApp){
-      window.Telegram.WebApp.close();
-    }else{
-      navTo('my-ads');setTab('moderation');
-    }
-  },1200);
 }
 
 // ═══════════ PROFILE ═══════════
-function renderProfile(){
-  document.getElementById('prof-name').textContent=S.user.name;
-  document.getElementById('prof-sub').textContent=`Тариф: ${S.user.tariff}${S.user.tariff_end?` · до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}`:' (бесплатный)'}`;
-  document.getElementById('prof-tariff').textContent=S.user.tariff;
-  document.getElementById('prof-ads').textContent=S.myAds.filter(a=>a.status==='active').length;
-  document.getElementById('prof-views').textContent=S.myAds.reduce((s,a)=>s+(a.views||0),0);
-  document.getElementById('ref-bal-prof').textContent=(S.user.ref_balance||0)+'₽';
-  const unread=S.notifs.filter(n=>!n.read).length;
-  document.getElementById('notif-count-prof').textContent=unread?unread+' новых':'';
-  if(S.user.tg_id)document.getElementById('prof-id').textContent='ID: '+S.user.tg_id;
-  const isAdmin=ADMIN_IDS.includes(S.user.tg_id);
-  document.getElementById('admin-row').style.display=isAdmin?'flex':'none';
-  document.getElementById('admin-sep').style.display=isAdmin?'block':'none';
+function renderProfile() {
+  document.getElementById('prof-name').textContent = S.user.name;
+  document.getElementById('prof-sub').textContent = `Тариф: ${S.user.tariff}${S.user.tariff_end ? ` · до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}` : ' (бесплатный)'}`;
+  document.getElementById('prof-tariff').textContent = S.user.tariff;
+  document.getElementById('prof-ads').textContent = S.myAds.filter(a => a.status === 'active').length;
+  document.getElementById('prof-views').textContent = S.myAds.reduce((s, a) => s + (a.views || 0), 0);
+  document.getElementById('ref-bal-prof').textContent = (S.user.ref_balance || 0) + '₽';
+  const unread = S.notifs.filter(n => !n.read).length;
+  document.getElementById('notif-count-prof').textContent = unread ? unread + ' новых' : '';
+  if (S.user.tg_id) document.getElementById('prof-id').textContent = 'ID: ' + S.user.tg_id;
+  const isAdmin = ADMIN_USER_IDS.includes(S.user.tg_id);
+  document.getElementById('admin-row').style.display = isAdmin ? 'flex' : 'none';
+  document.getElementById('admin-sep').style.display = isAdmin ? 'block' : 'none';
 }
 
 // ═══════════ SUBSCRIPTIONS ═══════════
-function renderSubs(){
-  const disc=S.promoDiscount;
-  document.getElementById('std-price').innerHTML=disc?`<s style="font-size:20px;opacity:.5">299₽</s> ${Math.round(299*(1-disc/100))}₽ <span>/мес</span>`:`299₽ <span>/мес</span>`;
-  document.getElementById('pro-price').innerHTML=disc?`<s style="font-size:20px;opacity:.8">899₽</s> ${Math.round(899*(1-disc/100))}₽ <span>/мес</span>`:`899₽ <span>/мес</span>`;
+function renderSubs() {
+  const disc = S.promoDiscount;
+  document.getElementById('std-price').innerHTML = disc ? `<s style="font-size:20px;opacity:.5">299₽</s> ${Math.round(299 * (1 - disc / 100))}₽ <span>/мес</span>` : `299₽ <span>/мес</span>`;
+  document.getElementById('pro-price').innerHTML = disc ? `<s style="font-size:20px;opacity:.8">899₽</s> ${Math.round(899 * (1 - disc / 100))}₽ <span>/мес</span>` : `899₽ <span>/мес</span>`;
 }
-function applyPromo(){
-  const code=document.getElementById('promo-inp').value.trim().toUpperCase();
-  const promo=S.promoCodes.find(p=>p.code===code&&p.active&&p.uses<p.max_uses);
-  if(!promo){toast('Промокод не найден или истёк');return;}
-  S.promoDiscount=promo.discount;S.promoCode=code;
-  promo.uses++;save();
-  document.getElementById('promo-applied').style.display='block';
-  document.getElementById('promo-applied').innerHTML=`<div style="background:rgba(191,90,242,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">Промокод <b>${code}</b> применён — скидка ${promo.discount}%!</div>`;
-  renderSubs();toast(`Промокод применён! Скидка ${promo.discount}%`);
+function applyPromo() {
+  const code = document.getElementById('promo-inp').value.trim().toUpperCase();
+  const promo = S.promoCodes.find(p => p.code === code && p.active && p.uses < p.max_uses);
+  if (!promo) { toast('Промокод не найден или истёк'); return; }
+  S.promoDiscount = promo.discount; S.promoCode = code;
+  promo.uses++; save();
+  document.getElementById('promo-applied').style.display = 'block';
+  document.getElementById('promo-applied').innerHTML = `<div style="background:rgba(191,90,242,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">Промокод <b>${code}</b> применён — скидка ${promo.discount}%!</div>`;
+  renderSubs(); toast(`Промокод применён! Скидка ${promo.discount}%`);
 }
 
 // ═══════════ PAYMENT MODAL ═══════════
-function openPayment(tariff){
-  S.selPayTariff=tariff;S.selPayMethod='';
-  const prices={Standard:299,PRO:899};
-  const basePrice=prices[tariff]||0;
-  const disc=S.promoDiscount;
-  const finalPrice=disc?Math.round(basePrice*(1-disc/100)):basePrice;
-  const html=`
+function openPayment(tariff) {
+  S.selPayTariff = tariff; S.selPayMethod = '';
+  const prices = { Standard: 299, PRO: 899 };
+  const basePrice = prices[tariff] || 0;
+  const disc = S.promoDiscount;
+  const finalPrice = disc ? Math.round(basePrice * (1 - disc / 100)) : basePrice;
+  const html = `
     <button class="mclose" onclick="closeModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div style="font-size:18px;font-weight:900;color:var(--dk);margin-bottom:6px;padding-right:40px">Оплата тарифа ${tariff}</div>
-    <div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:18px">Сумма: <b style="color:var(--acc);font-size:16px">${finalPrice}₽</b>${disc?` <s style="opacity:.5">${basePrice}₽</s> (−${disc}%)`:''}</div>
+    <div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:18px">Сумма: <b style="color:var(--acc);font-size:16px">${finalPrice}₽</b>${disc ? ` <s style="opacity:.5">${basePrice}₽</s> (−${disc}%)` : ''}</div>
     <div style="font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">Способ оплаты</div>
     <div class="pm" onclick="selPayMethod('yoomoney',this)">
       <div class="pmic" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg></div>
@@ -1450,325 +1527,354 @@ function openPayment(tariff){
     </div>
     <div class="pm" onclick="selPayMethod('tinkoff',this)">
       <div class="pmic" style="background:linear-gradient(135deg,#FBBF24,#F59E0B)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
-      <div><div class="pmt">Тинькофф</div><div class="pmst">Номер карты: ${PAYMENT.tinkoff}</div></div>
+      <div><div class="pmt">Тинькофф</div><div class="pmst">Номер карты: ${PAYMENT_DETAILS.tinkoff_account}</div></div>
     </div>
     <div style="margin-top:18px">
       <button class="btn ba" id="pay-confirm-btn" onclick="confirmPayStep()" style="display:none">Перейти к оплате →</button>
     </div>
-    <div style="font-size:12px;font-weight:600;color:var(--lg);text-align:center;margin-top:12px">После оплаты пришлите чек в @${BOT}</div>
+    <div style="font-size:12px;font-weight:600;color:var(--lg);text-align:center;margin-top:12px">После оплаты пришлите чек в @${BOT_NAME}</div>
   `;
   showModal(html);
 }
-function selPayMethod(method,el){
-  S.selPayMethod=method;
-  document.querySelectorAll('.pm').forEach(p=>p.classList.remove('sel'));
+function selPayMethod(method, el) {
+  S.selPayMethod = method;
+  document.querySelectorAll('.pm').forEach(p => p.classList.remove('sel'));
   el.classList.add('sel');
-  document.getElementById('pay-confirm-btn').style.display='flex';
+  document.getElementById('pay-confirm-btn').style.display = 'flex';
 }
-function confirmPayStep(){
-  if(!S.selPayMethod){toast('Выберите способ оплаты');return;}
-  const t=S.selPayTariff,m=S.selPayMethod;
-  const links={yoomoney:PAYMENT.yoomoney,crypto:t==='Standard'?PAYMENT.crypto_std:PAYMENT.crypto_pro,tinkoff:null};
-  const link=links[m];
-  if(link&&window.Telegram?.WebApp)window.Telegram.WebApp.openLink(link);
-  else if(link)window.open(link,'_blank');
+function confirmPayStep() {
+  if (!S.selPayMethod) { toast('Выберите способ оплаты'); return; }
+  const t = S.selPayTariff, m = S.selPayMethod;
+  const links = {
+    yoomoney: t === 'Standard' ? PAYMENT_DETAILS.yoomoney_standard : PAYMENT_DETAILS.yoomoney_pro,
+    crypto: t === 'Standard' ? PAYMENT_DETAILS.crypto_standard : PAYMENT_DETAILS.crypto_pro,
+    tinkoff: null
+  };
+  const link = links[m];
+  if (link && window.Telegram?.WebApp) window.Telegram.WebApp.openLink(link);
+  else if (link) window.open(link, '_blank');
   
-  const paymentInfo={
-    id:Date.now(),
-    tariff:t,
-    method:m,
-    amount:Math.round((t==='PRO'?899:299)*(1-S.promoDiscount/100)),
-    promocode:S.promoCode||null,
-    discount:S.promoDiscount||0,
-    status:'pending',
-    created_at:new Date().toISOString()
+  const paymentInfo = {
+    id: Date.now(),
+    tariff: t,
+    method: m,
+    amount: Math.round((t === 'PRO' ? 899 : 299) * (1 - S.promoDiscount / 100)),
+    promocode: S.promoCode || null,
+    discount: S.promoDiscount || 0,
+    status: 'pending',
+    created_at: new Date().toISOString()
   };
   
-  if(window.Telegram?.WebApp){
-    try{
+  if (window.Telegram?.WebApp) {
+    try {
       window.Telegram.WebApp.sendData(JSON.stringify({
-        action:'payment_initiated',
-        payment_data:paymentInfo
+        action: 'payment_initiated',
+        payment_data: paymentInfo
       }));
-      console.log('✅ Информация о платеже отправлена боту');
-    }catch(e){
-      console.error('Ошибка отправки платежа боту:',e);
-    }
+    } catch (e) { console.error('Ошибка отправки платежа боту:', e); }
   }
   
-  const mb=document.getElementById('modal-body');
-  mb.innerHTML=`
+  const mb = document.getElementById('modal-body');
+  mb.innerHTML = `
     <button class="mclose" onclick="closeModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div style="text-align:center;padding:10px 0 20px">
       <div style="margin-bottom:12px;display:flex;justify-content:center;color:rgba(255,255,255,.2)"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
       <div style="font-size:18px;font-weight:900;color:var(--dk);margin-bottom:8px">Отправьте чек</div>
-      <div style="font-size:14px;font-weight:600;color:var(--gr);margin-bottom:20px">После оплаты отправьте скриншот чека боту @${BOT} — мы проверим и активируем тариф в течение часа</div>
+      <div style="font-size:14px;font-weight:600;color:var(--gr);margin-bottom:20px">После оплаты отправьте скриншот чека боту @${BOT_NAME} — мы проверим и активируем тариф в течение часа</div>
       <button class="btn ba" onclick="openBotForPayment('${paymentInfo.id}')">Отправить чек в бот →</button>
       <button class="btn bg" style="margin-top:10px" onclick="closeModal()">Закрыть</button>
     </div>
   `;
   S.payments.push(paymentInfo);
   save();
-  addNotif('yl','💳','Платёж ожидает подтверждения',`Отправьте чек в @${BOT}`);
+  addNotif('yl', '💳', 'Платёж ожидает подтверждения', `Отправьте чек в @${BOT_NAME}`);
 }
-function openBotForPayment(paymentId){
-  if(window.Telegram?.WebApp){
-    window.Telegram.WebApp.openTelegramLink(`https://t.me/${BOT}?start=payment_${paymentId}`);
-  }else{
-    window.open(`https://t.me/${BOT}?start=payment_${paymentId}`,'_blank');
+function openBotForPayment(paymentId) {
+  if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.openTelegramLink(`https://t.me/${BOT_NAME}?start=payment_${paymentId}`);
+  } else {
+    window.open(`https://t.me/${BOT_NAME}?start=payment_${paymentId}`, '_blank');
   }
   closeModal();
 }
-function openBot(){if(window.Telegram?.WebApp)window.Telegram.WebApp.openTelegramLink(`https://t.me/${BOT}`);}
 
 // ═══════════ REFERRAL ═══════════
-function renderReferral(){
-  document.getElementById('ref-bal').textContent=(S.user.ref_balance||0)+'₽';
-  document.getElementById('ref-total').textContent=(S.user.ref_total||0)+'₽';
-  document.getElementById('ref-cnt').textContent=S.referrals.length;
-  document.getElementById('ref-act').textContent=S.referrals.filter(r=>r.bought).length;
-  document.getElementById('ref-link').textContent=`https://t.me/${BOT}?start=ref_${S.user.tg_id||'0'}`;
-  const el=document.getElementById('ref-list');
-  if(!S.referrals.length){el.innerHTML=`<div class="empty" style="padding:24px"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div class="et" style="font-size:15px">Нет рефералов</div><div class="es">Поделитесь ссылкой!</div></div>`;return;}
-  el.innerHTML=S.referrals.map(r=>`<div class="rc"><div class="rav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg></div><div style="flex:1"><div class="rn">${esc(r.name)}</div><div class="rd-row">${r.bought?'Купил подписку':'Зарегистрировался'}</div></div><div class="rr">${r.bought?'+'+Math.round((S.user.tariff==='PRO'?899:299)*0.05)+'₽':'—'}</div></div>`).join('');
+function renderReferral() {
+  document.getElementById('ref-bal').textContent = (S.user.ref_balance || 0) + '₽';
+  document.getElementById('ref-total').textContent = (S.user.ref_total || 0) + '₽';
+  document.getElementById('ref-cnt').textContent = S.referrals.length;
+  document.getElementById('ref-act').textContent = S.referrals.filter(r => r.bought).length;
+  document.getElementById('ref-link').textContent = `https://t.me/${BOT_NAME}?start=ref_${S.user.tg_id || '0'}`;
+  const el = document.getElementById('ref-list');
+  if (!S.referrals.length) {
+    el.innerHTML = `<div class="empty" style="padding:24px"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div class="et" style="font-size:15px">Нет рефералов</div><div class="es">Поделитесь ссылкой!</div></div>`;
+    return;
+  }
+  el.innerHTML = S.referrals.map(r => `
+    <div class="rc">
+      <div class="rav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg></div>
+      <div style="flex:1"><div class="rn">${esc(r.name)}</div><div class="rd-row">${r.bought ? 'Купил подписку' : 'Зарегистрировался'}</div></div>
+      <div class="rr">${r.bought ? '+' + Math.round((S.user.tariff === 'PRO' ? 899 : 299) * REFERRAL_PERCENT / 100) + '₽' : '—'}</div>
+    </div>`).join('');
 }
-function copyRef(){
-  const link=document.getElementById('ref-link').textContent;
-  navigator.clipboard?.writeText(link).then(()=>toast('Ссылка скопирована!')).catch(()=>toast(link));
+function copyRef() {
+  const link = document.getElementById('ref-link').textContent;
+  navigator.clipboard?.writeText(link).then(() => toast('Ссылка скопирована!')).catch(() => toast(link));
 }
-function shareRef(){
-  const link=document.getElementById('ref-link').textContent;
-  if(window.Telegram?.WebApp)window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('Присоединяйся к PuppyPost — маркетплейс для животных! 🐾')}`);
-  else toast('Скопируйте ссылку и поделитесь ею');
+function shareRef() {
+  const link = document.getElementById('ref-link').textContent;
+  if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('Присоединяйся к Postcrab — удобная доска объявлений! 🦀')}`);
+  } else toast('Скопируйте ссылку и поделитесь ею');
 }
 
 // ═══════════ PIN AD ═══════════
-function renderPinAd(){
-  const t=TARIFFS[S.user.tariff||'Free'];
-  const el=document.getElementById('pin-ad-list');
-  const activeAds=S.myAds.filter(a=>a.status==='active');
-  if(t.pins===0){el.innerHTML=`<div class="card" style="text-align:center;padding:28px 18px"><div style="margin-bottom:14px;display:flex;justify-content:center;color:rgba(255,255,255,.15)"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div style="font-size:15px;font-weight:700;margin:10px 0 6px;letter-spacing:-.1px">Нет доступных закрепов</div><div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:14px">Оформите подписку чтобы закреплять объявления</div><button class="btn ba" onclick="navTo('subscriptions')">Смотреть тарифы</button></div>`;return;}
-  if(!activeAds.length){el.innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><div class="et">Нет активных объявлений</div></div>`;return;}
-  const used=S.user.pins_used||0;
-  el.innerHTML=`<div style="background:rgba(255,87,34,.08);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--acc)">Использовано закрепов: ${used}/${t.pins} этот месяц</div>`+
-  activeAds.map(a=>{
-    const pinned=a.pinned_until&&a.pinned_until>Date.now();
-    return `<div class="mac" onclick="${pinned?`toast('Уже закреплено до '+new Date(${a.pinned_until}).toLocaleDateString(\"ru\"))`:`pinMyAd(${a.id})`}">
-      <div class="mat">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div>
-      <div class="mai"><div class="matl">${esc(a.title)}</div><div class="map">${fmtPrice(a.price)}</div>
-        <div class="mas ${pinned?'s-act':'s-ina'}">${pinned?`⭐ Закреп до ${new Date(a.pinned_until).toLocaleDateString('ru')}`:'Не закреплено'}</div>
-      </div>
-    </div>`;
-  }).join('');
+function renderPinAd() {
+  const t = TARIFFS[S.user.tariff || 'Free'];
+  const el = document.getElementById('pin-ad-list');
+  const activeAds = S.myAds.filter(a => a.status === 'active');
+  if (t.pins_per_month === 0) {
+    el.innerHTML = `<div class="card" style="text-align:center;padding:28px 18px"><div style="margin-bottom:14px;display:flex;justify-content:center;color:rgba(255,255,255,.15)"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div style="font-size:15px;font-weight:700;margin:10px 0 6px;letter-spacing:-.1px">Нет доступных закрепов</div><div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:14px">Оформите подписку чтобы закреплять объявления</div><button class="btn ba" onclick="navTo('subscriptions')">Смотреть тарифы</button></div>`;
+    return;
+  }
+  if (!activeAds.length) {
+    el.innerHTML = `<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><div class="et">Нет активных объявлений</div></div>`;
+    return;
+  }
+  const used = S.user.pins_used || 0;
+  el.innerHTML = `<div style="background:rgba(255,87,34,.08);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--acc)">Использовано закрепов: ${used}/${t.pins_per_month} этот месяц</div>` +
+    activeAds.map(a => {
+      const pinned = a.pinned_until && a.pinned_until > Date.now();
+      return `<div class="mac" onclick="${pinned ? `toast('Уже закреплено до '+new Date(${a.pinned_until}).toLocaleDateString("ru"))` : `pinMyAd(${a.id})`}">
+        <div class="mat">${a.photos && a.photos.length ? `<img src="${esc(a.photos[0])}">` : `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div>
+        <div class="mai"><div class="matl">${esc(a.title)}</div><div class="map">${fmtPrice(a.price)}</div>
+        <div class="mas ${pinned ? 's-act' : 's-ina'}">${pinned ? `⭐ Закреп до ${new Date(a.pinned_until).toLocaleDateString('ru')}` : 'Не закреплено'}</div>
+      </div></div>`;
+    }).join('');
 }
 
 // ═══════════ NOTIFICATIONS ═══════════
-function addNotif(cls,icon,title,body){
-  const n={id:Date.now()+Math.random(),iconCls:'nic-'+cls,icon,title,body,time:Date.now(),read:false};
-  S.notifs.unshift(n);S.notifs=S.notifs.slice(0,50);save();updateNavBadge();
+function addNotif(cls, icon, title, body) {
+  const n = { id: Date.now() + Math.random(), iconCls: 'nic-' + cls, icon, title, body, time: Date.now(), read: false };
+  S.notifs.unshift(n); S.notifs = S.notifs.slice(0, 50); save(); updateNavBadge();
 }
-function renderNotifications(){
-  const el=document.getElementById('notif-list');
-  if(!S.notifs.length){el.innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span><div class="et">Нет уведомлений</div></div>`;return;}
-  el.innerHTML=S.notifs.map(n=>`
-    <div class="notif-item ${n.read?'':'unread'}" onclick="readNotif(${n.id})">
-      <div class="notif-ic ${n.iconCls||'nic-bl'}">${n.icon}</div>
+function renderNotifications() {
+  const el = document.getElementById('notif-list');
+  if (!S.notifs.length) {
+    el.innerHTML = `<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span><div class="et">Нет уведомлений</div></div>`;
+    return;
+  }
+  el.innerHTML = S.notifs.map(n => `
+    <div class="notif-item ${n.read ? '' : 'unread'}" onclick="readNotif(${n.id})">
+      <div class="notif-ic ${n.iconCls || 'nic-bl'}">${n.icon}</div>
       <div style="flex:1"><div class="notif-tl">${esc(n.title)}</div><div class="notif-bd" style="color:var(--gr);font-size:12px">${esc(n.body)}</div><div style="font-size:10px;font-weight:600;color:var(--lg);margin-top:3px">${timeAgo(n.time)}</div></div>
     </div>`).join('');
-  setTimeout(()=>{S.notifs.forEach(n=>n.read=true);save();updateNavBadge();},1500);
+  setTimeout(() => { S.notifs.forEach(n => n.read = true); save(); updateNavBadge(); }, 1500);
 }
-function readNotif(id){S.notifs.forEach(n=>{if(n.id===id)n.read=true;});save();updateNavBadge();}
-function markAllRead(){S.notifs.forEach(n=>n.read=true);save();updateNavBadge();renderNotifications();}
-function updateNavBadge(){
-  const cnt=S.notifs.filter(n=>!n.read).length;
-  const dot=document.getElementById('notif-dot'),dot2=document.getElementById('notif-dot2');
-  const badge=document.getElementById('nav-profile-badge');
-  if(dot)dot.style.display=cnt?'block':'none';
-  if(dot2)dot2.style.display=cnt?'block':'none';
-  if(badge){badge.style.display=cnt?'flex':'none';badge.textContent=cnt>9?'9+':cnt;}
+function readNotif(id) { S.notifs.forEach(n => { if (n.id === id) n.read = true; }); save(); updateNavBadge(); }
+function markAllRead() { S.notifs.forEach(n => n.read = true); save(); updateNavBadge(); renderNotifications(); }
+function updateNavBadge() {
+  const cnt = S.notifs.filter(n => !n.read).length;
+  const dot = document.getElementById('notif-dot'), dot2 = document.getElementById('notif-dot2');
+  const badge = document.getElementById('nav-profile-badge');
+  if (dot) dot.style.display = cnt ? 'block' : 'none';
+  if (dot2) dot2.style.display = cnt ? 'block' : 'none';
+  if (badge) { badge.style.display = cnt ? 'flex' : 'none'; badge.textContent = cnt > 9 ? '9+' : cnt; }
 }
-function showPushNotif(cls,icon,title,body){
-  const bar=document.getElementById('notif-bar');
-  const n=document.createElement('div');
-  n.className='notif';
-  n.innerHTML=`<div class="notif-ic nic-${cls}">${icon}</div><div><div class="notif-tl">${esc(title)}</div><div class="notif-bd">${esc(body)}</div></div>`;
-  n.onclick=()=>{n.remove();navTo('notifications');};
+function showPushNotif(cls, icon, title, body) {
+  const bar = document.getElementById('notif-bar');
+  const n = document.createElement('div');
+  n.className = 'notif';
+  n.innerHTML = `<div class="notif-ic nic-${cls}">${icon}</div><div><div class="notif-tl">${esc(title)}</div><div class="notif-bd">${esc(body)}</div></div>`;
+  n.onclick = () => { n.remove(); navTo('notifications'); };
   bar.appendChild(n);
-  setTimeout(()=>{n.style.transition='all .4s ease';n.style.opacity='0';n.style.transform='translateX(110%)';setTimeout(()=>n.remove(),400);},4000);
+  setTimeout(() => { n.style.transition = 'all .4s ease'; n.style.opacity = '0'; n.style.transform = 'translateX(110%)'; setTimeout(() => n.remove(), 400); }, 4000);
 }
 
 // ═══════════ ADMIN ═══════════
-function renderAdmin(){
-  const isAdmin=ADMIN_IDS.includes(S.user.tg_id);
-  if(!isAdmin){toast('Нет доступа');navBack();return;}
-  document.getElementById('stat-users').textContent=S.referrals.length+1;
-  const allAds=[...S.ads,...S.myAds.filter(a=>!S.ads.find(x=>x.id===a.id))];
-  document.getElementById('stat-ads').textContent=allAds.length;
-  document.getElementById('stat-active').textContent=allAds.filter(a=>a.status==='active').length;
-  document.getElementById('stat-mod').textContent=allAds.filter(a=>a.status==='moderation').length;
-  const modAds=S.myAds.filter(a=>a.status==='moderation');
-  const mq=document.getElementById('admin-mod-queue');
-  if(!modAds.length){mq.innerHTML=`<div style="font-size:13px;font-weight:600;color:var(--gr);padding:12px 0">Нет объявлений на модерации</div>`;}
-  else{mq.innerHTML=modAds.map(a=>`
-    <div class="mod-card"><div class="mod-img">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<div style="color:rgba(255,255,255,.15)"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}</div>
-    <div class="mod-body"><div class="mod-title">${esc(a.title)}</div><div class="mod-meta">${fmtPrice(a.price)} · ${esc(a.category)} · ${esc(a.city||'—')}</div>
-    <div style="display:flex;gap:8px">
-      <button class="btn ba" style="flex:1;padding:11px" onclick="moderateAd(${a.id},true)">Одобрить</button>
-      <button class="btn" style="flex:1;padding:11px;background:rgba(255,69,58,.1);border:1px solid rgba(255,69,58,.2);color:var(--rd);box-shadow:none" onclick="moderateAd(${a.id},false)">Отклонить</button>
-    </div></div></div>`).join('');}
-  const pendPay=S.payments.filter(p=>p.status==='pending');
-  const pl=document.getElementById('admin-payments-list');
-  if(!pendPay.length){pl.innerHTML=`<div style="font-size:13px;font-weight:600;color:var(--gr);padding:12px 0">Нет ожидающих платежей</div>`;}
-  else{pl.innerHTML=pendPay.map(p=>`
-    <div class="admin-card"><div style="font-size:14px;font-weight:800;margin-bottom:4px">Тариф ${p.tariff} · ${p.amount}₽</div>
-    <div style="font-size:12px;font-weight:600;color:var(--gr);margin-bottom:10px">${p.method} · ${timeAgo(p.created_at)}${p.promo?` · Промокод: ${p.promo}`:''}</div>
-    <div style="display:flex;gap:8px">
-      <button class="btn ba" style="flex:1;padding:11px" onclick="approvePayment(${p.id})">Подтвердить</button>
-      <button class="btn" style="flex:1;padding:11px;background:rgba(255,69,58,.1);border:1px solid rgba(255,69,58,.2);color:var(--rd);box-shadow:none" onclick="rejectPayment(${p.id})">Отклонить</button>
-    </div></div>`).join('');}
-  const pl2=document.getElementById('promo-list-admin');
-  if(!S.promoCodes.length){pl2.innerHTML=`<div style="font-size:13px;font-weight:600;color:var(--gr);padding:4px 0">Нет промокодов</div>`;}
-  else{pl2.innerHTML=S.promoCodes.map(p=>`
-    <div class="admin-card" style="display:flex;align-items:center;gap:12px">
-      <div style="flex:1"><div style="font-size:15px;font-weight:900;color:var(--dk)">${esc(p.code)}</div>
-      <div style="font-size:12px;font-weight:600;color:var(--gr)">−${p.discount}% · ${p.uses}/${p.max_uses} использований</div></div>
-      <div onclick="deactivatePromo('${p.code}')" style="font-size:12px;font-weight:800;color:${p.active?'var(--rd)':'var(--gr)'};cursor:pointer">${p.active?'Откл.':'Откл.'}</div>
-    </div>`).join('');}
+function renderAdmin() {
+  const isAdmin = ADMIN_USER_IDS.includes(S.user.tg_id);
+  if (!isAdmin) { toast('Нет доступа'); navBack(); return; }
+  document.getElementById('stat-users').textContent = S.referrals.length + 1;
+  const allAds = [...S.ads, ...S.myAds.filter(a => !S.ads.find(x => x.id === a.id))];
+  document.getElementById('stat-ads').textContent = allAds.length;
+  document.getElementById('stat-active').textContent = allAds.filter(a => a.status === 'active').length;
+  document.getElementById('stat-mod').textContent = allAds.filter(a => a.status === 'moderation').length;
+  // Moderation queue
+  const modAds = S.myAds.filter(a => a.status === 'moderation');
+  const mq = document.getElementById('admin-mod-queue');
+  if (!modAds.length) { mq.innerHTML = `<div style="font-size:13px;font-weight:600;color:var(--gr);padding:12px 0">Нет объявлений на модерации</div>`; }
+  else {
+    mq.innerHTML = modAds.map(a => `
+      <div class="mod-card">
+        <div class="mod-img">${a.photos && a.photos.length ? `<img src="${esc(a.photos[0])}">` : `<div style="color:rgba(255,255,255,.15)"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`}</div>
+        <div class="mod-body">
+          <div class="mod-title">${esc(a.title)}</div>
+          <div class="mod-meta">${fmtPrice(a.price)} · ${esc(a.category)} · ${esc(a.city || '—')}</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn ba" style="flex:1;padding:11px" onclick="moderateAd(${a.id},true)">Одобрить</button>
+            <button class="btn" style="flex:1;padding:11px;background:rgba(255,69,58,.1);border:1px solid rgba(255,69,58,.2);color:var(--rd);box-shadow:none" onclick="moderateAd(${a.id},false)">Отклонить</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  // Payments
+  const pendPay = S.payments.filter(p => p.status === 'pending');
+  const pl = document.getElementById('admin-payments-list');
+  if (!pendPay.length) { pl.innerHTML = `<div style="font-size:13px;font-weight:600;color:var(--gr);padding:12px 0">Нет ожидающих платежей</div>`; }
+  else {
+    pl.innerHTML = pendPay.map(p => `
+      <div class="admin-card">
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px">Тариф ${p.tariff} · ${p.amount}₽</div>
+        <div style="font-size:12px;font-weight:600;color:var(--gr);margin-bottom:10px">${p.method} · ${timeAgo(p.created_at)}${p.promo ? ` · Промокод: ${p.promo}` : ''}</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn ba" style="flex:1;padding:11px" onclick="approvePayment(${p.id})">Подтвердить</button>
+          <button class="btn" style="flex:1;padding:11px;background:rgba(255,69,58,.1);border:1px solid rgba(255,69,58,.2);color:var(--rd);box-shadow:none" onclick="rejectPayment(${p.id})">Отклонить</button>
+        </div>
+      </div>`).join('');
+  }
+  // Promos
+  const pl2 = document.getElementById('promo-list-admin');
+  if (!S.promoCodes.length) { pl2.innerHTML = `<div style="font-size:13px;font-weight:600;color:var(--gr);padding:4px 0">Нет промокодов</div>`; }
+  else {
+    pl2.innerHTML = S.promoCodes.map(p => `
+      <div class="admin-card" style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1"><div style="font-size:15px;font-weight:900;color:var(--dk)">${esc(p.code)}</div>
+        <div style="font-size:12px;font-weight:600;color:var(--gr)">−${p.discount}% · ${p.uses}/${p.max_uses} использований</div></div>
+        <div onclick="deactivatePromo('${p.code}')" style="font-size:12px;font-weight:800;color:${p.active ? 'var(--rd)' : 'var(--gr)'};cursor:pointer">${p.active ? 'Откл.' : 'Откл.'}</div>
+      </div>`).join('');
+  }
 }
-function moderateAd(id,approve){
-  const ad=S.myAds.find(a=>a.id===id);if(!ad)return;
-  if(approve){
-    ad.status='active';
-    if(!S.ads.find(x=>x.id===id))S.ads.unshift({...ad});
-    addNotif('gn','✅','Объявление опубликовано!',`"${ad.title}" теперь в ленте`);
-    showPushNotif('gn','✅','Объявление опубликовано!',`"${ad.title}" теперь в ленте`);
+function moderateAd(id, approve) {
+  const ad = S.myAds.find(a => a.id === id); if (!ad) return;
+  if (approve) {
+    ad.status = 'active';
+    if (!S.ads.find(x => x.id === id)) S.ads.unshift({ ...ad });
+    addNotif('gn', '✅', 'Объявление опубликовано!', `"${ad.title}" теперь в ленте`);
+    showPushNotif('gn', '✅', 'Объявление опубликовано!', `"${ad.title}" теперь в ленте`);
     toast('Объявление одобрено');
   } else {
-    const reason=prompt('Причина отказа (необязательно):','Не соответствует правилам');
-    ad.status='rejected';ad.reject_reason=reason||'Не соответствует правилам';
-    addNotif('rd','❌','Объявление отклонено',`"${ad.title}": ${ad.reject_reason}`);
+    const reason = prompt('Причина отказа (необязательно):', 'Не соответствует правилам');
+    ad.status = 'rejected'; ad.reject_reason = reason || 'Не соответствует правилам';
+    addNotif('rd', '❌', 'Объявление отклонено', `"${ad.title}": ${ad.reject_reason}`);
     toast('Объявление отклонено');
   }
-  save();renderAdmin();
+  save(); renderAdmin();
 }
-function approvePayment(id){
-  const p=S.payments.find(x=>x.id===id);if(!p)return;
-  p.status='approved';p.confirmed_at=Date.now();
-  S.user.tariff=p.tariff;
-  S.user.tariff_end=Date.now()+30*86400000;
-  S.user.pins_used=0;
+function approvePayment(id) {
+  const p = S.payments.find(x => x.id === id); if (!p) return;
+  p.status = 'approved'; p.confirmed_at = Date.now();
+  S.user.tariff = p.tariff;
+  S.user.tariff_end = Date.now() + 30 * 86400000;
+  S.user.pins_used = 0;
   save();
-  addNotif('gn','🎉','Подписка активирована!',`Тариф ${p.tariff} активен до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}`);
-  showPushNotif('gn','🎉','Подписка активирована!',`Тариф ${p.tariff} активен до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}`);
+  addNotif('gn', '🎉', 'Подписка активирована!', `Тариф ${p.tariff} активен до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}`);
+  showPushNotif('gn', '🎉', 'Подписка активирована!', `Тариф ${p.tariff} активен до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}`);
   toast('Платёж подтверждён, тариф активирован');
   renderAdmin();
 }
-function rejectPayment(id){
-  const p=S.payments.find(x=>x.id===id);if(!p)return;
-  p.status='rejected';save();
-  addNotif('rd','❌','Платёж отклонён',`Тариф ${p.tariff}. Обратитесь в поддержку`);
-  toast('Платёж отклонён');renderAdmin();
+function rejectPayment(id) {
+  const p = S.payments.find(x => x.id === id); if (!p) return;
+  p.status = 'rejected'; save();
+  addNotif('rd', '❌', 'Платёж отклонён', `Тариф ${p.tariff}. Обратитесь в поддержку`);
+  toast('Платёж отклонён'); renderAdmin();
 }
-function sendBroadcast(){
-  const text=document.getElementById('broadcast-text').value.trim();
-  if(!text){toast('Введите текст рассылки');return;}
-  if(window.Telegram?.WebApp){
-    try{
-      window.Telegram.WebApp.sendData(JSON.stringify({action:'broadcast',text}));
+function sendBroadcast() {
+  const text = document.getElementById('broadcast-text').value.trim();
+  if (!text) { toast('Введите текст рассылки'); return; }
+  if (window.Telegram?.WebApp) {
+    try {
+      window.Telegram.WebApp.sendData(JSON.stringify({ action: 'broadcast', text }));
       toast('Рассылка отправлена через бот!');
-    }catch(e){
-      console.error('Ошибка рассылки:',e);
-      toast('Ошибка отправки рассылки');
-      return;
-    }
+    } catch (e) { console.error('Ошибка рассылки:', e); toast('Ошибка отправки рассылки'); return; }
   } else {
-    addNotif('bl','📢','Сообщение от администратора',text);
-    showPushNotif('bl','📢','Рассылка от администратора',text);
+    addNotif('bl', '📢', 'Сообщение от администратора', text);
+    showPushNotif('bl', '📢', 'Рассылка от администратора', text);
     toast('Рассылка отправлена (дев-режим)');
   }
-  document.getElementById('broadcast-text').value='';
+  document.getElementById('broadcast-text').value = '';
 }
-function showPromoCreate(){
-  const html=`
+function showPromoCreate() {
+  const html = `
     <button class="mclose" onclick="closeModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div style="font-size:18px;font-weight:900;margin-bottom:18px">Создать промокод</div>
-    <div class="fgr"><label class="flb">Код промокода</label><input class="inp" id="new-promo-code" placeholder="PUPPY20" style="text-transform:uppercase"></div>
+    <div class="fgr"><label class="flb">Код промокода</label><input class="inp" id="new-promo-code" placeholder="POST20" style="text-transform:uppercase"></div>
     <div class="fgr"><label class="flb">Скидка (%)</label><input class="inp" id="new-promo-disc" type="number" min="5" max="80" placeholder="20"></div>
     <div class="fgr"><label class="flb">Макс. использований</label><input class="inp" id="new-promo-uses" type="number" min="1" placeholder="50"></div>
     <button class="btn ba" onclick="createPromo()">Создать</button>
   `;
   showModal(html);
 }
-function createPromo(){
-  const code=(document.getElementById('new-promo-code').value||'').toUpperCase().trim();
-  const disc=parseInt(document.getElementById('new-promo-disc').value)||0;
-  const uses=parseInt(document.getElementById('new-promo-uses').value)||100;
-  if(!code){toast('Введите код');return;}
-  if(disc<5||disc>80){toast('Скидка 5–80%');return;}
-  if(S.promoCodes.find(p=>p.code===code)){toast('Такой промокод уже есть');return;}
-  S.promoCodes.push({code,discount:disc,duration:30,max_uses:uses,uses:0,active:true,created_at:Date.now()});
-  save();toast('Промокод создан!');closeModal();renderAdmin();
+function createPromo() {
+  const code = (document.getElementById('new-promo-code').value || '').toUpperCase().trim();
+  const disc = parseInt(document.getElementById('new-promo-disc').value) || 0;
+  const uses = parseInt(document.getElementById('new-promo-uses').value) || 100;
+  if (!code) { toast('Введите код'); return; }
+  if (disc < 5 || disc > 80) { toast('Скидка 5–80%'); return; }
+  if (S.promoCodes.find(p => p.code === code)) { toast('Такой промокод уже есть'); return; }
+  S.promoCodes.push({ code, discount: disc, duration: 30, max_uses: uses, uses: 0, active: true, created_at: Date.now() });
+  save(); toast('Промокод создан!'); closeModal(); renderAdmin();
 }
-function deactivatePromo(code){
-  const p=S.promoCodes.find(x=>x.code===code);if(p)p.active=!p.active;save();renderAdmin();
+function deactivatePromo(code) {
+  const p = S.promoCodes.find(x => x.code === code); if (p) p.active = !p.active; save(); renderAdmin();
 }
 
 // ═══════════ MODAL ═══════════
-function showModal(html){
-  document.getElementById('modal-body').innerHTML=html;
+function showModal(html) {
+  document.getElementById('modal-body').innerHTML = html;
   document.getElementById('overlay').classList.add('show');
 }
-function closeModal(){document.getElementById('overlay').classList.remove('show');}
-function closeOverlay(e){if(e.target===document.getElementById('overlay'))closeModal();}
+function closeModal() { document.getElementById('overlay').classList.remove('show'); }
+function closeOverlay(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
 
 // ═══════════ INIT ═══════════
-window.addEventListener('load',()=>{
-  if(window.Telegram?.WebApp){
-    const tg=window.Telegram.WebApp;
-    tg.ready();tg.expand();
-    const u=tg.initDataUnsafe?.user;
-    if(u){
-      _storagePrefix='pp_'+u.id+'_';
-      S.user=LS('user')||{name:u.first_name+(u.last_name?' '+u.last_name:''),tg_id:u.id,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,ref_total:0,daily_ads:0,last_daily_reset:null,views_total:0};
-      S.ads=LS('ads')||[];
-      S.myAds=LS('my_ads')||[];
-      S.favs=LS('favs')||[];
-      S.notifs=LS('notifs')||[];
-      S.promoCodes=LS('promos')||[];
-      S.payments=LS('payments')||[];
-      S.referrals=LS('refs')||[];
-      S.searchHist=LS('search_hist')||[];
-      S.user.name=u.first_name+(u.last_name?' '+u.last_name:'');
-      S.user.tg_id=u.id;
-      S.user.username=u.username||'';
-      console.log('✅ Telegram user:',S.user.tg_id,S.user.name,'prefix:',_storagePrefix);
+window.addEventListener('load', async () => {
+  if (window.Telegram?.WebApp) {
+    const tg = window.Telegram.WebApp;
+    tg.ready(); tg.expand();
+    const u = tg.initDataUnsafe?.user;
+    if (u) {
+      _storagePrefix = 'pc_' + u.id + '_';
+      // Загружаем из localStorage (быстро)
+      S.user = LS('user') || { name: u.first_name + (u.last_name ? ' ' + u.last_name : ''), tg_id: u.id, tariff: 'Free', tariff_end: null, pins_used: 0, ref_balance: 0, ref_total: 0, daily_ads: 0, last_daily_reset: null, views_total: 0 };
+      S.ads = LS('ads') || [];
+      S.myAds = LS('my_ads') || [];
+      S.favs = LS('favs') || [];
+      S.notifs = LS('notifs') || [];
+      S.promoCodes = LS('promos') || [];
+      S.payments = LS('payments') || [];
+      S.referrals = LS('refs') || [];
+      S.searchHist = LS('search_hist') || [];
+      S.user.name = u.first_name + (u.last_name ? ' ' + u.last_name : '');
+      S.user.tg_id = u.id;
+      S.user.username = u.username || '';
+      
+      // Затем обновляем с сервера
+      await loadInitialData();
     }
   }
-  
-  const urlParams=new URLSearchParams(window.location.search);
-  if(urlParams.get('refresh')==='1'){
-    const tariff=urlParams.get('tariff');
-    const tariffEnd=urlParams.get('tariff_end');
-    if(tariff){
-      S.user.tariff=tariff;
-      S.user.tariff_end=tariffEnd?new Date(tariffEnd).getTime():Date.now()+30*86400000;
-      S.user.pins_used=0;
+  // Обработка URL параметров (для обновления тарифа после оплаты)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('refresh') === '1') {
+    const tariff = urlParams.get('tariff');
+    const tariffEnd = urlParams.get('tariff_end');
+    if (tariff) {
+      S.user.tariff = tariff;
+      S.user.tariff_end = tariffEnd ? new Date(tariffEnd).getTime() : Date.now() + 30 * 86400000;
+      S.user.pins_used = 0;
       save();
       toast(`Тариф ${tariff} активирован!`);
-      console.log('✅ Тариф обновлён из URL:',tariff);
-      setTimeout(()=>{renderProfile();renderSubs();navTo('profile');},800);
+      setTimeout(() => { renderProfile(); renderSubs(); navTo('profile'); }, 800);
     }
   }
-  
   initDemo();
-  loadServerData(); // загружаем свежие данные с сервера
-  renderHome();renderPinned();
+  renderHome(); renderPinned();
   updateNavBadge();
-  if(S.user.tariff!=='Free'&&S.user.tariff_end&&Date.now()>S.user.tariff_end){
-    const old=S.user.tariff;
-    S.user.tariff='Free';S.user.tariff_end=null;save();
-    addNotif('rd','⏰','Подписка закончилась',`Тариф ${old} истёк. Продлите для сохранения привилегий.`);
-    showPushNotif('rd','⏰','Подписка закончилась',`Тариф ${old} истёк`);
+  if (S.user.tariff !== 'Free' && S.user.tariff_end && Date.now() > S.user.tariff_end) {
+    const old = S.user.tariff;
+    S.user.tariff = 'Free'; S.user.tariff_end = null; save();
+    addNotif('rd', '⏰', 'Подписка закончилась', `Тариф ${old} истёк. Продлите для сохранения привилегий.`);
+    showPushNotif('rd', '⏰', 'Подписка закончилась', `Тариф ${old} истёк`);
   }
 });
 </script>
