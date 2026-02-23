@@ -696,8 +696,11 @@ const TARIFFS={Free:{daily_ads:1,pins:0,pin_hours:0,price:0},Standard:{daily_ads
 const PAYMENT={yoomoney:'https://yoomoney.ru/to/4100119456604619',crypto_std:'https://t.me/send?start=IVRWI4KCIZoj',crypto_pro:'https://t.me/send?start=IVRMtMS6xa0a',tinkoff:'2200701043238127'};
 const ADMIN_IDS=[6115882628];
 const BOT='postcrab_bot';
-// URL API сервера бота (замените на ваш реальный адрес/домен)
-const API_BASE='http://YOUR_SERVER_IP:8080';
+// JSONBin.io — HTTPS хранилище (никакого Mixed Content!)
+// Зарегистрируйтесь на https://jsonbin.io, создайте bin, вставьте данные:
+const JSONBIN_API_KEY='$2a$10$ЗАМЕНИТЕ_НА_ВАШИ_ДАННЫЕ'; // X-Master-Key
+const JSONBIN_BIN_ID='ЗАМЕНИТЕ_НА_ID_BIN';              // ID вашего bin
+const JSONBIN_URL=`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
 const SYNONYMS={
   'айфон':['iphone','apple','iphone 15','iphone 14','iphone 13'],
   'iphone':['айфон','apple','яблоко'],
@@ -791,28 +794,76 @@ const CAT_TEMPLATES={
     descHints:['В связи с переездом','Состояние хорошее','Всё работает','Самовывоз'],
   },
 };
-// ═══════════ STORAGE (только для локальных UI-данных, не для объявлений) ═══════════
+// ═══════════ STORAGE ═══════════
 let _storagePrefix = 'pp_';
 function _getPrefix(){return _storagePrefix;}
 const LS=k=>{try{return JSON.parse(localStorage.getItem(_getPrefix()+k))}catch{return null}};
 const SS=(k,v)=>{try{localStorage.setItem(_getPrefix()+k,JSON.stringify(v))}catch{}};
 
-// Telegram initData для авторизации API запросов
-let _tgInitData = '';
+// ═══════════ JSONBIN ═══════════
+let _jsonbinCache = null;
+let _jsonbinCacheTs = 0;
+const CACHE_TTL = 30000; // 30 сек — кэш чтобы не превышать лимит
 
-// Хелпер для API запросов
-async function apiGet(path){
+async function jsonbinRead(){
+  // Кэш на 30 секунд
+  if(_jsonbinCache && Date.now()-_jsonbinCacheTs < CACHE_TTL) return _jsonbinCache;
   try{
-    const r=await fetch(API_BASE+path,{headers:{'X-Telegram-Init-Data':_tgInitData}});
-    return await r.json();
-  }catch(e){console.error('API GET',path,e);return {ok:false,error:e.message};}
+    const r=await fetch(JSONBIN_URL,{headers:{'X-Master-Key':JSONBIN_API_KEY,'X-Bin-Meta':'false'}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    _jsonbinCache=d;
+    _jsonbinCacheTs=Date.now();
+    return d;
+  }catch(e){
+    console.error('JSONBin read error:',e);
+    return _jsonbinCache||{ads:[],users:{},promos:[]};
+  }
 }
-async function apiPost(path,data){
-  try{
-    const r=await fetch(API_BASE+path,{method:'POST',headers:{'Content-Type':'application/json','X-Telegram-Init-Data':_tgInitData},body:JSON.stringify(data)});
-    return await r.json();
-  }catch(e){console.error('API POST',path,e);return {ok:false,error:e.message};}
+
+async function loadAdsFromServer(){
+  const data=await jsonbinRead();
+  if(data.ads){
+    S.ads=data.ads;
+    S._adsLoaded=true;
+    renderHome();renderPinned();
+    if(S.curSc==='search')doSearch(document.getElementById('search-inp')?.value||'');
+    if(S.curSc==='favs')renderFavs();
+  }
 }
+
+async function loadMyAdsFromServer(){
+  if(!S.user.tg_id)return;
+  const data=await jsonbinRead();
+  const uid=String(S.user.tg_id);
+  const udata=data.users?.[uid];
+  if(udata){
+    S.myAds=udata.my_ads||[];
+    // Обновляем тариф из реальной БД
+    if(udata.tariff){
+      S.user.tariff=udata.tariff;
+      S.user.tariff_end=udata.tariff_end||null;
+      S.user.pins_used=udata.pins_used||0;
+      save();
+    }
+    renderProfile();
+    if(S.curSc==='my-ads')setTab(S.curTab);
+    if(S.curSc==='pin-ad')renderPinAd();
+  }
+}
+
+async function loadProfileFromServer(){
+  await loadMyAdsFromServer();
+}
+
+async function validatePromo(code){
+  const data=await jsonbinRead();
+  const promos=data.promos||[];
+  return promos.find(p=>p.code===code&&p.active&&p.uses_left>0)||null;
+}
+
+// ═══════════ TELEGRAM INIT DATA ═══════════
+let _tgInitData='';
 
 const S={
   // Данные пользователя (загружаются с сервера, кешируются локально)
@@ -844,42 +895,6 @@ function save(){
   SS('payments',S.payments);
   SS('refs',S.referrals);
   SS('search_hist',S.searchHist);
-}
-
-// ═══════════ API: ЗАГРУЗКА ДАННЫХ ═══════════
-async function loadAdsFromServer(){
-  const res=await apiGet('/api/ads');
-  if(res.ok && res.ads){
-    S.ads=res.ads;
-    S._adsLoaded=true;
-    renderHome();renderPinned();
-    if(S.curSc==='search')doSearch(document.getElementById('search-inp')?.value||'');
-    if(S.curSc==='favs')renderFavs();
-  }
-}
-
-async function loadMyAdsFromServer(){
-  if(!S.user.tg_id)return;
-  const res=await apiGet('/api/my_ads');
-  if(res.ok && res.ads){
-    S.myAds=res.ads;
-    renderProfile();
-    if(S.curSc==='my-ads')setTab(S.curTab);
-    if(S.curSc==='pin-ad')renderPinAd();
-  }
-}
-
-async function loadProfileFromServer(){
-  const res=await apiGet('/api/profile');
-  if(res.ok && res.profile){
-    const p=res.profile;
-    // Обновляем тариф и подписку из реальных данных БД
-    S.user.tariff=p.tariff;
-    S.user.tariff_end=p.tariff_end; // уже в ms
-    S.user.pins_used=p.pins_used||0;
-    S.user.ref_balance=p.ref_balance||0;
-    save();
-  }
 }
 
 // ═══════════ INIT DATA ═══════════
@@ -1018,8 +1033,10 @@ function renderAdList(cid,ads){
 // ═══════════ AD DETAIL ═══════════
 function openAd(id){
   const ad=[...S.ads,...S.myAds].find(a=>a.id===id);if(!ad)return;
-  // Реальный счётчик просмотров через API
-  apiPost('/api/view',{ad_id:id});
+  // Счётчик просмотров — передаём боту через sendData
+  if(window.Telegram?.WebApp){
+    try{window.Telegram.WebApp.sendData(JSON.stringify({action:'view_ad',ad_id:id}));}catch(e){}
+  }
   ad.views=(ad.views||0)+1;
   S.curAdId=id;S.prevSc=S.curSc;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -1153,34 +1170,36 @@ function pinMyAd(id){
   const t=TARIFFS[S.user.tariff||'Free'];
   if(!t||t.pins===0){toast('Закреп доступен только по подписке');setTimeout(()=>navTo('subscriptions'),800);return;}
   if((S.user.pins_used||0)>=t.pins){toast(`Лимит закрепов исчерпан (${t.pins}/мес)`);return;}
-  // Закрепляем через API
-  apiPost('/api/pin',{ad_id:id,hours:t.pin_hours}).then(res=>{
-    if(res.ok){
+  // Закрепляем через sendData боту
+  if(window.Telegram?.WebApp){
+    try{
+      window.Telegram.WebApp.sendData(JSON.stringify({action:'pin_ad',ad_id:id,hours:t.pin_hours}));
       // Обновляем локально
       const ad=S.myAds.find(a=>a.id===id);
       if(ad){ad.pinned_until=Date.now()+t.pin_hours*3600000;S.user.pins_used=(S.user.pins_used||0)+1;save();}
       const pub=S.ads.find(a=>a.id===id);if(pub)pub.pinned_until=ad?ad.pinned_until:null;
-      toast(`⭐ Закреплено на ${t.pin_hours}ч!`);
+      toast(`⭐ Закреплено на ${t.pin_hours}ч! Обновится в ленте через минуту.`);
       addNotif('gn','★','Объявление закреплено!',`Теперь в топе ${t.pin_hours}ч`);
       navBack();
-    }else{
-      toast(res.error||'Ошибка закрепа');
-    }
-  });
-}
-async function deactivateAd(id){
-  const res=await apiPost('/api/deactivate',{ad_id:id});
-  if(res.ok){
-    const ad=S.myAds.find(a=>a.id===id);if(ad)ad.status='inactive';
-    toast('Объявление снято с публикации');navBack();setTab('archive');
-    // Перезагружаем объявления
-    loadAdsFromServer();loadMyAdsFromServer();
+    }catch(e){toast('Ошибка закрепа');}
   }else{
-    toast(res.error||'Ошибка при снятии объявления');
+    toast('Доступно только в Telegram');
   }
 }
+async function deactivateAd(id){
+  if(window.Telegram?.WebApp){
+    try{
+      window.Telegram.WebApp.sendData(JSON.stringify({action:'deactivate_ad',ad_id:id}));
+      const ad=S.myAds.find(a=>a.id===id);if(ad)ad.status='inactive';
+      S.ads=S.ads.filter(a=>a.id!==id);
+      toast('Объявление снято. Обновится в ленте через минуту.');
+      navBack();setTab('archive');
+      _jsonbinCache=null; // Сбрасываем кэш
+      setTimeout(()=>loadAdsFromServer(),3000);
+    }catch(e){toast('Ошибка');}
+  }else toast('Доступно только в Telegram');
+}
 async function reactivateAd(id){
-  // Для восстановления - создаём новое через sendData (повторная модерация)
   const ad=S.myAds.find(a=>a.id===id);
   if(ad){
     toast('Для повторной публикации создайте новое объявление');
@@ -1189,15 +1208,17 @@ async function reactivateAd(id){
 }
 async function deleteAd(id){
   if(!confirm('Удалить объявление навсегда?'))return;
-  const res=await apiPost('/api/delete',{ad_id:id});
-  if(res.ok){
-    S.myAds=S.myAds.filter(a=>a.id!==id);
-    S.ads=S.ads.filter(a=>a.id!==id);
-    toast('Объявление удалено');navBack();setTab('active');
-    loadAdsFromServer();
-  }else{
-    toast(res.error||'Ошибка при удалении');
-  }
+  if(window.Telegram?.WebApp){
+    try{
+      window.Telegram.WebApp.sendData(JSON.stringify({action:'delete_ad',ad_id:id}));
+      S.myAds=S.myAds.filter(a=>a.id!==id);
+      S.ads=S.ads.filter(a=>a.id!==id);
+      toast('Объявление удалено. Обновится через минуту.');
+      navBack();setTab('active');
+      _jsonbinCache=null;
+      setTimeout(()=>loadAdsFromServer(),3000);
+    }catch(e){toast('Ошибка удаления');}
+  }else toast('Доступно только в Telegram');
 }
 
 // ═══════════ CREATE AD ═══════════
@@ -1463,13 +1484,13 @@ function renderSubs(){
 async function applyPromo(){
   const code=document.getElementById('promo-inp').value.trim().toUpperCase();
   if(!code){toast('Введите промокод');return;}
-  // Проверяем через API (реальная БД)
-  const res=await apiPost('/api/validate_promo',{code});
-  if(!res.ok){toast(res.error||'Промокод не найден или истёк');return;}
-  S.promoDiscount=res.discount;S.promoCode=code;
+  // Проверяем через JSONBin
+  const promo=await validatePromo(code);
+  if(!promo){toast('Промокод не найден или истёк');return;}
+  S.promoDiscount=promo.discount;S.promoCode=code;
   document.getElementById('promo-applied').style.display='block';
-  document.getElementById('promo-applied').innerHTML=`<div style="background:rgba(191,90,242,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">Промокод <b>${code}</b> применён — скидка ${res.discount}%!</div>`;
-  renderSubs();toast(`Промокод применён! Скидка ${res.discount}%`);
+  document.getElementById('promo-applied').innerHTML=`<div style="background:rgba(191,90,242,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">Промокод <b>${code}</b> применён — скидка ${promo.discount}%!</div>`;
+  renderSubs();toast(`Промокод применён! Скидка ${promo.discount}%`);
 }
 
 // ═══════════ PAYMENT MODAL ═══════════
