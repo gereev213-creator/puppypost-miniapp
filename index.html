@@ -696,6 +696,8 @@ const TARIFFS={Free:{daily_ads:1,pins:0,pin_hours:0,price:0},Standard:{daily_ads
 const PAYMENT={yoomoney:'https://yoomoney.ru/to/4100119456604619',crypto_std:'https://t.me/send?start=IVRWI4KCIZoj',crypto_pro:'https://t.me/send?start=IVRMtMS6xa0a',tinkoff:'2200701043238127'};
 const ADMIN_IDS=[6115882628];
 const BOT='postcrab_bot';
+// URL API сервера бота (замените на ваш реальный адрес/домен)
+const API_BASE='http://YOUR_SERVER_IP:8080';
 const SYNONYMS={
   'айфон':['iphone','apple','iphone 15','iphone 14','iphone 13'],
   'iphone':['айфон','apple','яблоко'],
@@ -789,17 +791,36 @@ const CAT_TEMPLATES={
     descHints:['В связи с переездом','Состояние хорошее','Всё работает','Самовывоз'],
   },
 };
-// ═══════════ STORAGE ═══════════
-// Ключи хранилища привязаны к Telegram user_id для изоляции данных пользователей
+// ═══════════ STORAGE (только для локальных UI-данных, не для объявлений) ═══════════
 let _storagePrefix = 'pp_';
 function _getPrefix(){return _storagePrefix;}
 const LS=k=>{try{return JSON.parse(localStorage.getItem(_getPrefix()+k))}catch{return null}};
 const SS=(k,v)=>{try{localStorage.setItem(_getPrefix()+k,JSON.stringify(v))}catch{}};
 
+// Telegram initData для авторизации API запросов
+let _tgInitData = '';
+
+// Хелпер для API запросов
+async function apiGet(path){
+  try{
+    const r=await fetch(API_BASE+path,{headers:{'X-Telegram-Init-Data':_tgInitData}});
+    return await r.json();
+  }catch(e){console.error('API GET',path,e);return {ok:false,error:e.message};}
+}
+async function apiPost(path,data){
+  try{
+    const r=await fetch(API_BASE+path,{method:'POST',headers:{'Content-Type':'application/json','X-Telegram-Init-Data':_tgInitData},body:JSON.stringify(data)});
+    return await r.json();
+  }catch(e){console.error('API POST',path,e);return {ok:false,error:e.message};}
+}
+
 const S={
+  // Данные пользователя (загружаются с сервера, кешируются локально)
   user: LS('user')||{name:'Пользователь',tg_id:null,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,ref_total:0,daily_ads:0,last_daily_reset:null,views_total:0},
-  ads: LS('ads')||[],
-  myAds: LS('my_ads')||[],
+  // Объявления (загружаются с сервера при каждом открытии)
+  ads: [],
+  myAds: [],
+  // Локальные данные (хранятся в localStorage)
   favs: LS('favs')||[],
   notifs: LS('notifs')||[],
   promoCodes: LS('promos')||[],
@@ -812,13 +833,57 @@ const S={
   curCat:'',curTab:'active',
   selPayTariff:'',selPayMethod:'',
   curSlide:0,
+  _adsLoaded:false,
 };
-function save(){SS('user',S.user);SS('ads',S.ads);SS('my_ads',S.myAds);SS('favs',S.favs);SS('notifs',S.notifs);SS('promos',S.promoCodes);SS('payments',S.payments);SS('refs',S.referrals);SS('search_hist',S.searchHist);}
+// Сохраняем только локальные данные (не объявления — они в БД)
+function save(){
+  SS('user',S.user);
+  SS('favs',S.favs);
+  SS('notifs',S.notifs);
+  SS('promos',S.promoCodes);
+  SS('payments',S.payments);
+  SS('refs',S.referrals);
+  SS('search_hist',S.searchHist);
+}
+
+// ═══════════ API: ЗАГРУЗКА ДАННЫХ ═══════════
+async function loadAdsFromServer(){
+  const res=await apiGet('/api/ads');
+  if(res.ok && res.ads){
+    S.ads=res.ads;
+    S._adsLoaded=true;
+    renderHome();renderPinned();
+    if(S.curSc==='search')doSearch(document.getElementById('search-inp')?.value||'');
+    if(S.curSc==='favs')renderFavs();
+  }
+}
+
+async function loadMyAdsFromServer(){
+  if(!S.user.tg_id)return;
+  const res=await apiGet('/api/my_ads');
+  if(res.ok && res.ads){
+    S.myAds=res.ads;
+    renderProfile();
+    if(S.curSc==='my-ads')setTab(S.curTab);
+    if(S.curSc==='pin-ad')renderPinAd();
+  }
+}
+
+async function loadProfileFromServer(){
+  const res=await apiGet('/api/profile');
+  if(res.ok && res.profile){
+    const p=res.profile;
+    // Обновляем тариф и подписку из реальных данных БД
+    S.user.tariff=p.tariff;
+    S.user.tariff_end=p.tariff_end; // уже в ms
+    S.user.pins_used=p.pins_used||0;
+    S.user.ref_balance=p.ref_balance||0;
+    save();
+  }
+}
 
 // ═══════════ INIT DATA ═══════════
 function initDemo(){
-  // Демо-данные убраны. Объявления публикуются через бота и приходят из канала.
-  // Новый пользователь получает приветственное уведомление
   if(S.notifs.length===0){
     const n=Date.now();
     S.notifs=[
@@ -857,11 +922,11 @@ function navTo(sc){
   const nid=NAVMAP[sc]; if(nid) document.getElementById(nid).classList.add('active');
   window.scrollTo(0,0);
   const r={
-    'home':()=>{renderHome();renderPinned();},
-    'search':()=>{const inp=document.getElementById('search-inp');inp.value='';renderSearchSugg();doSearch('');setTimeout(()=>inp.focus(),200);},
+    'home':()=>{renderHome();renderPinned();loadAdsFromServer();},
+    'search':()=>{const inp=document.getElementById('search-inp');inp.value='';renderSearchSugg();doSearch('');setTimeout(()=>inp.focus(),200);loadAdsFromServer();},
     'favs':renderFavs,
     'profile':renderProfile,
-    'my-ads':()=>setTab(S.curTab),
+    'my-ads':()=>{loadMyAdsFromServer().then(()=>setTab(S.curTab));setTab(S.curTab);},
     'subscriptions':renderSubs,
     'referral':renderReferral,
     'pin-ad':renderPinAd,
@@ -953,15 +1018,41 @@ function renderAdList(cid,ads){
 // ═══════════ AD DETAIL ═══════════
 function openAd(id){
   const ad=[...S.ads,...S.myAds].find(a=>a.id===id);if(!ad)return;
-  ad.views=(ad.views||0)+1;save();
+  // Реальный счётчик просмотров через API
+  apiPost('/api/view',{ad_id:id});
+  ad.views=(ad.views||0)+1;
   S.curAdId=id;S.prevSc=S.curSc;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('sc-ad-detail').classList.add('active');
   S.curSc='ad-detail';
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  
+  // Слайдер с ВСЕМИ фото и свайпом
   const slider=document.getElementById('ad-slider');
+  S.curSlide=0;
   if(ad.photos&&ad.photos.length){
-    slider.innerHTML=`<img src="${esc(ad.photos[0])}" style="width:100%;height:100%;object-fit:cover">`+(ad.photos.length>1?`<div class="asl-nav">${ad.photos.map((_,i)=>`<div class="asl-dot ${i===0?'active':''}"></div>`).join('')}</div>`:'');
+    const dots=ad.photos.length>1?`<div class="asl-nav">${ad.photos.map((_,i)=>`<div class="asl-dot ${i===0?'active':''}"></div>`).join('')}</div>`:'';
+    slider.innerHTML=`<img id="slider-img" src="${esc(ad.photos[0])}" style="width:100%;height:100%;object-fit:cover">${dots}`;
+    // Свайп для слайдера
+    if(ad.photos.length>1){
+      let tsx=0;
+      slider.addEventListener('touchstart',e=>{tsx=e.touches[0].clientX;},{ passive: true });
+      slider.addEventListener('touchend',e=>{
+        const dx=e.changedTouches[0].clientX-tsx;
+        if(Math.abs(dx)>40){
+          if(dx<0)S.curSlide=Math.min(S.curSlide+1,ad.photos.length-1);
+          else S.curSlide=Math.max(S.curSlide-1,0);
+          document.getElementById('slider-img').src=ad.photos[S.curSlide];
+          slider.querySelectorAll('.asl-dot').forEach((d,i)=>d.classList.toggle('active',i===S.curSlide));
+        }
+      },{ passive: true });
+      // Клик по слайдеру — следующее фото
+      slider.addEventListener('click',()=>{
+        S.curSlide=(S.curSlide+1)%ad.photos.length;
+        document.getElementById('slider-img').src=ad.photos[S.curSlide];
+        slider.querySelectorAll('.asl-dot').forEach((d,i)=>d.classList.toggle('active',i===S.curSlide));
+      });
+    }
   } else {
     slider.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,.15)"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>`;
   }
@@ -1015,12 +1106,19 @@ function setTab(tab,el){
   document.querySelectorAll('.tb').forEach(t=>t.classList.remove('active'));
   if(el)el.classList.add('active');
   else{const m={active:'tab-active',moderation:'tab-moderation',archive:'tab-archive'};const b=document.getElementById(m[tab]);if(b)b.classList.add('active');}
+  // Загружаем актуальные объявления с сервера
+  loadMyAdsFromServer().then(()=>{
+    _renderMyAdsTab(tab);
+  });
+  _renderMyAdsTab(tab); // рендерим сразу из кеша
+}
+function _renderMyAdsTab(tab){
   const ads=S.myAds.filter(a=>tab==='archive'?a.status==='inactive'||a.status==='rejected':a.status===(tab==='active'?'active':'moderation'));
   const el2=document.getElementById('my-ads-list');
   if(!ads.length){
     const emIcons={active:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',moderation:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',archive:'<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>'};
     const em={active:[emIcons.active,'Нет активных','Создайте первое!'],moderation:[emIcons.moderation,'На модерации нет','Создайте объявление'],archive:[emIcons.archive,'Архив пуст','Деактивируйте объявление']};
-    const [ic,tl,sb]=em[tab]||['<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>','Пусто',''];
+    const [ic,tl,sb]=em[tab]||['','Пусто',''];
     el2.innerHTML=`<div class="empty"><span class="ei">${ic}</span><div class="et">${tl}</div><div class="es">${sb}</div></div>`;return;
   }
   const smap={active:'s-act',moderation:'s-mod',inactive:'s-ina',rejected:'s-rej'};
@@ -1052,23 +1150,54 @@ function openMyAd(id){
   `;
 }
 function pinMyAd(id){
-  const t=TARIFFS[S.user.tariff];
+  const t=TARIFFS[S.user.tariff||'Free'];
   if(!t||t.pins===0){toast('Закреп доступен только по подписке');setTimeout(()=>navTo('subscriptions'),800);return;}
   if((S.user.pins_used||0)>=t.pins){toast(`Лимит закрепов исчерпан (${t.pins}/мес)`);return;}
-  const ad=S.myAds.find(a=>a.id===id);
-  if(ad){ad.pinned_until=Date.now()+t.pin_hours*3600000;S.user.pins_used=(S.user.pins_used||0)+1;
-    const pub=S.ads.find(a=>a.id===id);if(pub)pub.pinned_until=ad.pinned_until;
-    save();toast(`⭐ Закреплено на ${t.pin_hours}ч!`);addNotif('gn','★','Объявление закреплено!',`"${ad.title}" теперь в топе ${t.pin_hours}ч`);navBack();}
+  // Закрепляем через API
+  apiPost('/api/pin',{ad_id:id,hours:t.pin_hours}).then(res=>{
+    if(res.ok){
+      // Обновляем локально
+      const ad=S.myAds.find(a=>a.id===id);
+      if(ad){ad.pinned_until=Date.now()+t.pin_hours*3600000;S.user.pins_used=(S.user.pins_used||0)+1;save();}
+      const pub=S.ads.find(a=>a.id===id);if(pub)pub.pinned_until=ad?ad.pinned_until:null;
+      toast(`⭐ Закреплено на ${t.pin_hours}ч!`);
+      addNotif('gn','★','Объявление закреплено!',`Теперь в топе ${t.pin_hours}ч`);
+      navBack();
+    }else{
+      toast(res.error||'Ошибка закрепа');
+    }
+  });
 }
-function deactivateAd(id){const ad=S.myAds.find(a=>a.id===id);if(ad){ad.status='inactive';save();toast('Перенесено в архив');navBack();setTab('archive');}}
-function reactivateAd(id){
-  const ad=S.myAds.find(a=>a.id===id);
-  if(ad){ad.status='moderation';save();toast('Отправлено на модерацию');addNotif('yl','⏳','На модерации',`"${ad.title}" ждёт проверки`);navBack();setTab('moderation');}
+async function deactivateAd(id){
+  const res=await apiPost('/api/deactivate',{ad_id:id});
+  if(res.ok){
+    const ad=S.myAds.find(a=>a.id===id);if(ad)ad.status='inactive';
+    toast('Объявление снято с публикации');navBack();setTab('archive');
+    // Перезагружаем объявления
+    loadAdsFromServer();loadMyAdsFromServer();
+  }else{
+    toast(res.error||'Ошибка при снятии объявления');
+  }
 }
-function deleteAd(id){
-  if(!confirm('Удалить объявление?'))return;
-  S.myAds=S.myAds.filter(a=>a.id!==id);S.ads=S.ads.filter(a=>a.id!==id);
-  save();toast('Удалено');navBack();setTab('active');
+async function reactivateAd(id){
+  // Для восстановления - создаём новое через sendData (повторная модерация)
+  const ad=S.myAds.find(a=>a.id===id);
+  if(ad){
+    toast('Для повторной публикации создайте новое объявление');
+    setTimeout(()=>navTo('create'),1000);
+  }
+}
+async function deleteAd(id){
+  if(!confirm('Удалить объявление навсегда?'))return;
+  const res=await apiPost('/api/delete',{ad_id:id});
+  if(res.ok){
+    S.myAds=S.myAds.filter(a=>a.id!==id);
+    S.ads=S.ads.filter(a=>a.id!==id);
+    toast('Объявление удалено');navBack();setTab('active');
+    loadAdsFromServer();
+  }else{
+    toast(res.error||'Ошибка при удалении');
+  }
 }
 
 // ═══════════ CREATE AD ═══════════
@@ -1247,7 +1376,6 @@ function renderCreatePreview(){
 function submitAd(){
   S.newAd.contact=document.getElementById('ad-contact').value.trim();
   if(!S.newAd.contact){toast('Введите контакт для связи');return;}
-  // Повторная проверка лимита перед отправкой
   if(!canPostAd())return;
   S.newAd.photos=S.photos;
   const newAd={
@@ -1261,8 +1389,10 @@ function submitAd(){
     status:'moderation',views:0,
     pinned_until:null,created_at:Date.now()
   };
-  
-  // ✅ ИНТЕГРАЦИЯ: Отправляем объявление боту
+
+  // Отправляем объявление боту через sendData
+  // ВАЖНО: фото в base64 пропускаются ботом — нужно загружать через Telegram file_id
+  // Для загрузки фото рекомендуется использовать Telegram file upload в боте
   if(window.Telegram?.WebApp){
     try{
       window.Telegram.WebApp.sendData(JSON.stringify({
@@ -1276,7 +1406,7 @@ function submitAd(){
           size:newAd.size,
           city:newAd.city,
           delivery:newAd.delivery,
-          photos:newAd.photos,
+          photos:[], // base64 не передаём боту — файлы нужно загружать напрямую
           contact_info:newAd.contact
         }
       }));
@@ -1285,27 +1415,28 @@ function submitAd(){
       console.error('Ошибка отправки боту:',e);
     }
   }
-  
+
+  // Добавляем локально в moderation
   S.myAds.unshift(newAd);
   S.user.daily_ads=(S.user.daily_ads||0)+1;
   save();
   addNotif('yl','⏳','Объявление на модерации',`"${newAd.title}" отправлено на проверку`);
   toast('Объявление отправлено на модерацию!');
-  // После отправки боту — закрываем Mini App, бот ответит в чат
-  setTimeout(()=>{
-    if(window.Telegram?.WebApp){
-      window.Telegram.WebApp.close();
-    }else{
-      navTo('my-ads');setTab('moderation');
-    }
-  },1200);
-}
 
+  // Переходим в "Мои объявления" вместо закрытия Mini App
+  setTimeout(()=>{
+    navTo('my-ads');setTab('moderation');
+  },800);
+}
 // ═══════════ PROFILE ═══════════
 function renderProfile(){
   document.getElementById('prof-name').textContent=S.user.name;
-  document.getElementById('prof-sub').textContent=`Тариф: ${S.user.tariff}${S.user.tariff_end?` · до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}`:' (бесплатный)'}`;
-  document.getElementById('prof-tariff').textContent=S.user.tariff;
+  const tariff=S.user.tariff||'Free';
+  const tariffEnd=S.user.tariff_end;
+  const tariffEndStr=tariffEnd?` · до ${new Date(tariffEnd).toLocaleDateString('ru')}`:' (бесплатный)';
+  document.getElementById('prof-sub').textContent=`Тариф: ${tariff}${tariffEndStr}`;
+  document.getElementById('prof-tariff').textContent=tariff;
+  // Статистика из myAds (загруженных с сервера)
   document.getElementById('prof-ads').textContent=S.myAds.filter(a=>a.status==='active').length;
   document.getElementById('prof-views').textContent=S.myAds.reduce((s,a)=>s+(a.views||0),0);
   document.getElementById('ref-bal-prof').textContent=(S.user.ref_balance||0)+'₽';
@@ -1315,6 +1446,12 @@ function renderProfile(){
   const isAdmin=ADMIN_IDS.includes(S.user.tg_id);
   document.getElementById('admin-row').style.display=isAdmin?'flex':'none';
   document.getElementById('admin-sep').style.display=isAdmin?'block':'none';
+  // Обновляем данные с сервера в фоне
+  loadProfileFromServer().then(()=>{
+    document.getElementById('prof-sub').textContent=`Тариф: ${S.user.tariff||'Free'}${S.user.tariff_end?` · до ${new Date(S.user.tariff_end).toLocaleDateString('ru')}`:''}`;
+    document.getElementById('prof-tariff').textContent=S.user.tariff||'Free';
+    document.getElementById('prof-views').textContent=S.myAds.reduce((s,a)=>s+(a.views||0),0);
+  });
 }
 
 // ═══════════ SUBSCRIPTIONS ═══════════
@@ -1323,15 +1460,16 @@ function renderSubs(){
   document.getElementById('std-price').innerHTML=disc?`<s style="font-size:20px;opacity:.5">299₽</s> ${Math.round(299*(1-disc/100))}₽ <span>/мес</span>`:`299₽ <span>/мес</span>`;
   document.getElementById('pro-price').innerHTML=disc?`<s style="font-size:20px;opacity:.8">899₽</s> ${Math.round(899*(1-disc/100))}₽ <span>/мес</span>`:`899₽ <span>/мес</span>`;
 }
-function applyPromo(){
+async function applyPromo(){
   const code=document.getElementById('promo-inp').value.trim().toUpperCase();
-  const promo=S.promoCodes.find(p=>p.code===code&&p.active&&p.uses<p.max_uses);
-  if(!promo){toast('Промокод не найден или истёк');return;}
-  S.promoDiscount=promo.discount;S.promoCode=code;
-  promo.uses++;save();
+  if(!code){toast('Введите промокод');return;}
+  // Проверяем через API (реальная БД)
+  const res=await apiPost('/api/validate_promo',{code});
+  if(!res.ok){toast(res.error||'Промокод не найден или истёк');return;}
+  S.promoDiscount=res.discount;S.promoCode=code;
   document.getElementById('promo-applied').style.display='block';
-  document.getElementById('promo-applied').innerHTML=`<div style="background:rgba(191,90,242,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">Промокод <b>${code}</b> применён — скидка ${promo.discount}%!</div>`;
-  renderSubs();toast(`Промокод применён! Скидка ${promo.discount}%`);
+  document.getElementById('promo-applied').innerHTML=`<div style="background:rgba(191,90,242,.1);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-weight:700;color:var(--pu)">Промокод <b>${code}</b> применён — скидка ${res.discount}%!</div>`;
+  renderSubs();toast(`Промокод применён! Скидка ${res.discount}%`);
 }
 
 // ═══════════ PAYMENT MODAL ═══════════
@@ -1455,19 +1593,25 @@ function shareRef(){
 
 // ═══════════ PIN AD ═══════════
 function renderPinAd(){
+  // Загружаем профиль для актуального кол-ва закрепов
+  loadProfileFromServer().then(()=>{_renderPinAd();});
+  _renderPinAd();
+}
+function _renderPinAd(){
   const t=TARIFFS[S.user.tariff||'Free'];
   const el=document.getElementById('pin-ad-list');
   const activeAds=S.myAds.filter(a=>a.status==='active');
+  const now=Date.now();
   if(t.pins===0){el.innerHTML=`<div class="card" style="text-align:center;padding:28px 18px"><div style="margin-bottom:14px;display:flex;justify-content:center;color:rgba(255,255,255,.15)"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div style="font-size:15px;font-weight:700;margin:10px 0 6px;letter-spacing:-.1px">Нет доступных закрепов</div><div style="font-size:13px;font-weight:600;color:var(--gr);margin-bottom:14px">Оформите подписку чтобы закреплять объявления</div><button class="btn ba" onclick="navTo('subscriptions')">Смотреть тарифы</button></div>`;return;}
   if(!activeAds.length){el.innerHTML=`<div class="empty"><span class="ei"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><div class="et">Нет активных объявлений</div></div>`;return;}
   const used=S.user.pins_used||0;
-  el.innerHTML=`<div style="background:rgba(255,87,34,.08);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--acc)">Использовано закрепов: ${used}/${t.pins} этот месяц</div>`+
+  el.innerHTML=`<div style="background:rgba(255,87,34,.08);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--acc)">Использовано закрепов: ${used}/${t.pins} этот месяц · ${t.pin_hours}ч каждый</div>`+
   activeAds.map(a=>{
-    const pinned=a.pinned_until&&a.pinned_until>Date.now();
-    return `<div class="mac" onclick="${pinned?`toast('Уже закреплено до '+new Date(${a.pinned_until}).toLocaleDateString(\"ru\"))`:`pinMyAd(${a.id})`}">
+    const pinned=a.pinned_until&&a.pinned_until>now;
+    return `<div class="mac" onclick="${pinned?`toast('Уже закреплено до '+new Date(${a.pinned_until}).toLocaleDateString('ru'))`:`pinMyAd(${a.id})`}">
       <div class="mat">${a.photos&&a.photos.length?`<img src="${esc(a.photos[0])}">`:`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`}</div>
       <div class="mai"><div class="matl">${esc(a.title)}</div><div class="map">${fmtPrice(a.price)}</div>
-        <div class="mas ${pinned?'s-act':'s-ina'}">${pinned?`⭐ Закреп до ${new Date(a.pinned_until).toLocaleDateString('ru')}`:'Не закреплено'}</div>
+        <div class="mas ${pinned?'s-act':'s-ina'}">${pinned?`⭐ Закреп до ${new Date(a.pinned_until).toLocaleDateString('ru')}`:'Нажмите чтобы закрепить'}</div>
       </div>
     </div>`;
   }).join('');
@@ -1641,57 +1785,61 @@ function closeOverlay(e){if(e.target===document.getElementById('overlay'))closeM
 
 // ═══════════ INIT ═══════════
 window.addEventListener('load',()=>{
-  // Telegram init — должен быть ДО загрузки данных
+  // Telegram init
   if(window.Telegram?.WebApp){
     const tg=window.Telegram.WebApp;
     tg.ready();tg.expand();
+    // Сохраняем initData для авторизации API запросов
+    _tgInitData=tg.initData||'';
     const u=tg.initDataUnsafe?.user;
     if(u){
-      // Устанавливаем prefix хранилища по tg user_id ДО чтения данных
       _storagePrefix='pp_'+u.id+'_';
-      // Перезагружаем состояние с правильным prefix (данные конкретного пользователя)
-      S.user=LS('user')||{name:u.first_name+(u.last_name?' '+u.last_name:''),tg_id:u.id,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,ref_total:0,daily_ads:0,last_daily_reset:null,views_total:0};
-      S.ads=LS('ads')||[];
-      S.myAds=LS('my_ads')||[];
+      // Перезагружаем состояние с правильным prefix
       S.favs=LS('favs')||[];
       S.notifs=LS('notifs')||[];
       S.promoCodes=LS('promos')||[];
       S.payments=LS('payments')||[];
       S.referrals=LS('refs')||[];
       S.searchHist=LS('search_hist')||[];
+      S.user=LS('user')||{name:u.first_name+(u.last_name?' '+u.last_name:''),tg_id:u.id,tariff:'Free',tariff_end:null,pins_used:0,ref_balance:0,daily_ads:0};
       // Обновляем данные пользователя из Telegram
       S.user.name=u.first_name+(u.last_name?' '+u.last_name:'');
       S.user.tg_id=u.id;
       S.user.username=u.username||'';
-      console.log('✅ Telegram user:',S.user.tg_id,S.user.name,'prefix:',_storagePrefix);
+      console.log('✅ Telegram user:',S.user.tg_id,S.user.name);
     }
   }
-  
-  // Обработка URL параметров для обновления тарифа (после загрузки данных пользователя)
+
+  // Обработка URL параметров для обновления тарифа после подтверждения оплаты
   const urlParams=new URLSearchParams(window.location.search);
   if(urlParams.get('refresh')==='1'){
     const tariff=urlParams.get('tariff');
-    const tariffEnd=urlParams.get('tariff_end');
+    const tariffEndTs=urlParams.get('tariff_end_ts');
     if(tariff){
       S.user.tariff=tariff;
-      S.user.tariff_end=tariffEnd?new Date(tariffEnd).getTime():Date.now()+30*86400000;
+      S.user.tariff_end=tariffEndTs?parseInt(tariffEndTs):Date.now()+30*86400000;
       S.user.pins_used=0;
       save();
       toast(`Тариф ${tariff} активирован!`);
-      console.log('✅ Тариф обновлён из URL:',tariff);
       setTimeout(()=>{renderProfile();renderSubs();navTo('profile');},800);
     }
   }
-  
+
   initDemo();
+  // Загружаем объявления с сервера (для всех пользователей)
+  loadAdsFromServer();
+  // Загружаем профиль и мои объявления с сервера
+  if(S.user.tg_id){
+    loadProfileFromServer();
+    loadMyAdsFromServer();
+  }
   renderHome();renderPinned();
   updateNavBadge();
-  // Simulate subscription expiry check
+  // Проверяем истечение подписки
   if(S.user.tariff!=='Free'&&S.user.tariff_end&&Date.now()>S.user.tariff_end){
     const old=S.user.tariff;
     S.user.tariff='Free';S.user.tariff_end=null;save();
     addNotif('rd','⏰','Подписка закончилась',`Тариф ${old} истёк. Продлите для сохранения привилегий.`);
-    showPushNotif('rd','⏰','Подписка закончилась',`Тариф ${old} истёк`);
   }
 });
 </script>
