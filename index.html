@@ -335,10 +335,13 @@
 
 <script>
 const BOT = 'postcrab_bot';
+// URL API бота — подставь свой домен/IP с портом
+const API_URL = (typeof POSTCRAB_API_URL !== 'undefined') ? POSTCRAB_API_URL : '';
+
 const PRICES = { free: 0, standard: 249, pro: 649 };
 const NAMES  = { free: 'Бесплатно', standard: 'Старт', pro: 'PRO' };
 
-// Ссылки на оплату
+// Базовые ссылки на оплату (меняются после применения промокода)
 const LINKS = {
   standard: {
     ym:     'https://yoomoney.ru/to/4100119456604619',
@@ -349,6 +352,9 @@ const LINKS = {
     crypto: 'https://t.me/send?start=IVRMtMS6xa0a'
   }
 };
+
+// Текущие активные ссылки (обновляются при применении промокода)
+let activeLinks = JSON.parse(JSON.stringify(LINKS));
 
 let plan = 'standard', disc = 0, promoCode = '';
 
@@ -361,6 +367,12 @@ function selectPlan(p) {
   });
   document.getElementById('plan-' + p).classList.add('sel');
   plan = p;
+  // Сбрасываем промокод при смене тарифа
+  disc = 0; promoCode = '';
+  activeLinks = JSON.parse(JSON.stringify(LINKS));
+  document.getElementById('promo-inp').value = '';
+  const msg = document.getElementById('pmsg');
+  if (msg) { msg.textContent = ''; msg.className = 'pmsg'; }
   const hide = p === 'free';
   ['payment-section','promo-section','sum-section','cta-section'].forEach(id => {
     document.getElementById(id).style.display = hide ? 'none' : '';
@@ -385,8 +397,9 @@ function updateSummary() {
 
 // ── Кнопки оплаты (YooMoney / крипто) ────────────────────────────────────────
 function goPayment(method) {
-  if (!LINKS[plan]) return;
-  window.open(method === 'ym' ? LINKS[plan].ym : LINKS[plan].crypto, '_blank');
+  const links = activeLinks[plan] || LINKS[plan];
+  if (!links) return;
+  window.open(method === 'ym' ? links.ym : links.crypto, '_blank');
 }
 
 // ── Тинькофф (раскрыть карту) ────────────────────────────────────────────────
@@ -411,30 +424,63 @@ function copyCard() {
   });
 }
 
-// ── Промокод → отправить боту через deep link ─────────────────────────────────
-function applyPromo() {
+// ── Промокод → проверить через API бота ──────────────────────────────────────
+async function applyPromo() {
   const v   = document.getElementById('promo-inp').value.trim().toUpperCase();
   const msg = document.getElementById('pmsg');
   if (!v) return;
 
-  promoCode = v;
-
-  // Формируем deep link: бот получит /start promo_КОД_ТАРИФ
-  const payload = 'promo_' + v + '_' + plan;
-  const botUrl  = 'https://t.me/' + BOT + '?start=' + payload;
-
-  msg.textContent = '⏳ Проверяем промокод в боте…';
+  msg.textContent = '⏳ Проверяем промокод…';
   msg.className   = 'pmsg';
 
-  // Открываем бота — он проверит промокод и ответит пользователю
-  window.open(botUrl, '_blank');
+  // Если API_URL задан — проверяем через бота напрямую
+  if (API_URL) {
+    try {
+      const resp = await fetch(`${API_URL}/api/check_promo?code=${encodeURIComponent(v)}&plan=${plan}`);
+      const data = await resp.json();
 
-  // На стороне страницы считаем применённым после перехода
-  // (реальная скидка подтверждается ботом при активации)
-  setTimeout(() => {
-    msg.textContent = '✓ Промокод отправлен боту — дождитесь подтверждения';
-    msg.className   = 'pmsg ok';
-  }, 800);
+      if (data.valid) {
+        promoCode = v;
+        disc      = data.discount;
+
+        // Обновляем активные ссылки для текущего тарифа
+        activeLinks[plan] = {
+          ym:     data.yoomoney_url,
+          crypto: data.crypto_url
+        };
+
+        // Обновляем итоговую цену
+        PRICES[plan] = data.base_price; // восстанавливаем базу для пересчёта
+        updateSummary();
+
+        msg.textContent = `✓ Промокод применён — скидка ${data.discount}%`;
+        msg.className   = 'pmsg ok';
+        showToast(`Скидка ${data.discount}% активирована`);
+      } else {
+        disc = 0;
+        promoCode = '';
+        activeLinks = JSON.parse(JSON.stringify(LINKS)); // сбрасываем
+        updateSummary();
+        msg.textContent = data.error || 'Промокод не найден';
+        msg.className   = 'pmsg err';
+      }
+    } catch(e) {
+      // Если API недоступен — fallback: отправляем в бота
+      _sendPromoToBot(v, msg);
+    }
+  } else {
+    // Нет API_URL — fallback через Telegram deep link
+    _sendPromoToBot(v, msg);
+  }
+}
+
+function _sendPromoToBot(v, msg) {
+  promoCode = v;
+  const payload = 'promo_' + v + '_' + plan;
+  const botUrl  = 'https://t.me/' + BOT + '?start=' + payload;
+  window.open(botUrl, '_blank');
+  msg.textContent = '✓ Промокод отправлен в @' + BOT + ' — ждите подтверждения';
+  msg.className   = 'pmsg ok';
 }
 
 // ── «Я оплатил» → открыть бота с сообщением о тарифе ────────────────────────
