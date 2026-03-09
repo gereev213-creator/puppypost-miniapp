@@ -464,17 +464,27 @@ async function applyPromo() {
   }
 }
 
-// ── «Я оплатил» → открыть бота с сообщением о тарифе ────────────────────────
+// ── «Я оплатил» → отправить данные в бота через Mini App API ───────────────
 function confirmPay() {
-  const planName = NAMES[plan];
-  const price    = Math.round(PRICES[plan] * (1 - disc / 100));
+  const price = Math.round(PRICES[plan] * (1 - disc / 100));
 
-  // deep link передаёт: тариф и цену, бот попросит скриншот
-  const payload = 'paid_' + plan + '_' + price;
-  const botUrl  = 'https://t.me/' + BOT + '?start=' + payload;
+  const data = JSON.stringify({
+    action: 'paid',
+    plan:   plan,
+    price:  price,
+    promo:  promoCode || ''
+  });
 
-  showToast('Открываем @' + BOT + ' — отправьте скриншот оплаты');
-  setTimeout(() => window.open(botUrl, '_blank'), 700);
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+    // Правильный способ: sendData закрывает Mini App и отправляет данные боту
+    showToast('Отправляем данные боту…');
+    setTimeout(() => Telegram.WebApp.sendData(data), 500);
+  } else {
+    // Fallback для браузера / старых клиентов
+    const botUrl = 'https://t.me/' + BOT + '?start=paid_' + plan + '_' + price;
+    showToast('Открываем @' + BOT + ' — отправьте скриншот оплаты');
+    setTimeout(() => window.open(botUrl, '_blank'), 700);
+  }
 }
 
 // ── Footer: ссылки ────────────────────────────────────────────────────────────
