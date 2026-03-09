@@ -344,10 +344,9 @@
 
 <script>
 const BOT = 'PolkaAdsBot';
-// API_URL: автоматически берём хост страницы (если HTML серватся с того же сервера что и бот)
-// Если страница открывается через github.io или другой CDN — укажите URL сервера явно:
-// const API_URL = 'https://ваш-сервер.com';
-const API_URL = (location.origin && location.origin !== 'null') ? location.origin : '';
+// ⚠️ УКАЖИТЕ ЗДЕСЬ АДРЕС ВАШЕГО СЕРВЕРА (где запущен polka_bot.py)
+// Например: 'https://myserver.amvera.io' или 'https://polka.example.com'
+const API_URL = 'https://amvera-nikicev2009-run-accost.io';
 
 const PRICES = { free: 0, standard: 299, pro: 799 };
 const NAMES  = { free: 'Бесплатно', standard: 'Старт', pro: 'PRO' };
@@ -464,15 +463,9 @@ async function applyPromo() {
   msg.textContent = '⏳ Проверяем промокод…';
   msg.className   = 'pmsg';
 
-  // Если API_URL пустой — сразу идём через бота
-  if (!API_URL) {
-    applyPromoViaBot(v, msg);
-    return;
-  }
-
   try {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
+    const timer = setTimeout(() => controller.abort(), 6000);
     const resp = await fetch(`${API_URL}/api/check_promo?code=${encodeURIComponent(v)}&plan=${plan}`, {
       signal: controller.signal
     });
@@ -498,25 +491,8 @@ async function applyPromo() {
       msg.className   = 'pmsg err';
     }
   } catch(e) {
-    // API недоступен — отправляем промокод боту через sendData или deep link
-    applyPromoViaBot(v, msg);
-  }
-}
-
-function applyPromoViaBot(code, msg) {
-  // Если открыто в Telegram Mini App — используем sendData, бот проверит промокод
-  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
-    const data = JSON.stringify({ action: 'check_promo', code: code, plan: plan });
-    showToast('Проверяем промокод через бота…');
-    Telegram.WebApp.sendData(data);
-    // Mini App закроется, бот ответит результатом
-  } else {
-    // Fallback для браузера: открываем бота
-    promoCode = code;
-    const botUrl = 'https://t.me/' + BOT + '?start=promo_' + code + '_' + plan;
-    window.open(botUrl, '_blank');
-    msg.textContent = '✓ Промокод будет применён в @' + BOT + ' — вернитесь после подтверждения';
-    msg.className   = 'pmsg ok';
+    msg.textContent = '✗ Не удалось проверить промокод. Попробуйте позже.';
+    msg.className   = 'pmsg err';
   }
 }
 
