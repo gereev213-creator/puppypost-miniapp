@@ -144,6 +144,8 @@
   .mb32{margin-bottom:32px}
 
   @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes priceFlash{0%{transform:scale(1)}40%{transform:scale(1.12);color:#fff}100%{transform:scale(1)}}
+  .sum-price.flash{animation:priceFlash .4s ease}
   .u{animation:up .35s ease both}
   .d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.19s}.d4{animation-delay:.25s}.d5{animation-delay:.31s}
 </style>
@@ -295,10 +297,20 @@
 <div class="sum-wrap mb10 u d4" id="sum-section">
   <div class="sum-card">
     <div class="sum-row"><span>Тариф</span><span class="v" id="sum-plan">Старт — 299 ₽</span></div>
-    <div class="sum-row" id="sum-promo-row" style="display:none"><span>Промокод</span><span class="v" id="sum-promo-v" style="color:#66BB6A">—</span></div>
+    <div class="sum-row" id="sum-promo-row" style="display:none">
+      <span>Скидка</span>
+      <span class="v" id="sum-promo-v" style="color:#66BB6A">—</span>
+    </div>
     <div class="sum-div"></div>
     <div class="sum-bot">
-      <div><div class="sum-lbl">Итого</div><div class="sum-price" id="sum-total">299 ₽</div></div>
+      <div>
+        <div class="sum-lbl">Итого</div>
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div class="sum-price" id="sum-total">299 ₽</div>
+          <div id="sum-original" style="display:none;font-size:18px;color:rgba(255,255,255,.3);text-decoration:line-through;font-weight:700"></div>
+        </div>
+        <div id="sum-savings" style="display:none;font-size:11px;color:#66BB6A;font-weight:700;margin-top:4px"></div>
+      </div>
       <div class="sum-aside">за первый<br>месяц</div>
     </div>
   </div>
@@ -332,7 +344,10 @@
 
 <script>
 const BOT = 'PolkaAdsBot';
-const API_URL = 'https://amvera-nikicev2009-run-accost.amvera.io';
+// API_URL: автоматически берём хост страницы (если HTML серватся с того же сервера что и бот)
+// Если страница открывается через github.io или другой CDN — укажите URL сервера явно:
+// const API_URL = 'https://ваш-сервер.com';
+const API_URL = (location.origin && location.origin !== 'null') ? location.origin : '';
 
 const PRICES = { free: 0, standard: 299, pro: 799 };
 const NAMES  = { free: 'Бесплатно', standard: 'Старт', pro: 'PRO' };
@@ -380,14 +395,34 @@ function selectPlan(p) {
 function updateSummary() {
   const base  = PRICES[plan];
   const final = Math.round(base * (1 - disc / 100));
-  document.getElementById('sum-plan').textContent  = NAMES[plan] + ' — ' + base + ' ₽';
-  document.getElementById('sum-total').textContent = final + ' ₽';
-  const promoRow = document.getElementById('sum-promo-row');
+  const saved = base - final;
+
+  document.getElementById('sum-plan').textContent = NAMES[plan] + ' — ' + base + ' ₽';
+
+  // Анимация смены цены
+  const totalEl = document.getElementById('sum-total');
+  totalEl.classList.remove('flash');
+  void totalEl.offsetWidth; // reflow
+  totalEl.textContent = final + ' ₽';
+  totalEl.classList.add('flash');
+
+  const promoRow   = document.getElementById('sum-promo-row');
+  const origEl     = document.getElementById('sum-original');
+  const savingsEl  = document.getElementById('sum-savings');
+
   if (disc > 0) {
-    promoRow.style.display = 'flex';
-    document.getElementById('sum-promo-v').textContent = '−' + disc + '%';
+    promoRow.style.display  = 'flex';
+    document.getElementById('sum-promo-v').textContent = '−' + disc + '% (−' + saved + ' ₽)';
+
+    origEl.style.display    = 'inline-block';
+    origEl.textContent      = base + ' ₽';
+
+    savingsEl.style.display = 'block';
+    savingsEl.textContent   = 'Вы экономите ' + saved + ' ₽';
   } else {
-    promoRow.style.display = 'none';
+    promoRow.style.display  = 'none';
+    origEl.style.display    = 'none';
+    savingsEl.style.display = 'none';
   }
 }
 
@@ -429,20 +464,28 @@ async function applyPromo() {
   msg.textContent = '⏳ Проверяем промокод…';
   msg.className   = 'pmsg';
 
+  // Если API_URL пустой — сразу идём через бота
+  if (!API_URL) {
+    applyPromoViaBot(v, msg);
+    return;
+  }
+
   try {
-    const resp = await fetch(`${API_URL}/api/check_promo?code=${encodeURIComponent(v)}&plan=${plan}`);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    const resp = await fetch(`${API_URL}/api/check_promo?code=${encodeURIComponent(v)}&plan=${plan}`, {
+      signal: controller.signal
+    });
+    clearTimeout(timer);
     const data = await resp.json();
 
     if (data.valid) {
       promoCode = v;
       disc      = data.discount;
-
-      // Обновляем ссылки для текущего тарифа
       activeLinks[plan] = {
         ym:     data.yoomoney_url,
         crypto: data.crypto_url
       };
-
       updateSummary();
       msg.textContent = `✓ Скидка ${data.discount}% применена — цена ${data.price} ₽`;
       msg.className   = 'pmsg ok';
@@ -455,11 +498,24 @@ async function applyPromo() {
       msg.className   = 'pmsg err';
     }
   } catch(e) {
-    // Fallback: отправляем в бота если API недоступен
-    promoCode = v;
-    const botUrl = 'https://t.me/' + BOT + '?start=promo_' + v + '_' + plan;
+    // API недоступен — отправляем промокод боту через sendData или deep link
+    applyPromoViaBot(v, msg);
+  }
+}
+
+function applyPromoViaBot(code, msg) {
+  // Если открыто в Telegram Mini App — используем sendData, бот проверит промокод
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+    const data = JSON.stringify({ action: 'check_promo', code: code, plan: plan });
+    showToast('Проверяем промокод через бота…');
+    Telegram.WebApp.sendData(data);
+    // Mini App закроется, бот ответит результатом
+  } else {
+    // Fallback для браузера: открываем бота
+    promoCode = code;
+    const botUrl = 'https://t.me/' + BOT + '?start=promo_' + code + '_' + plan;
     window.open(botUrl, '_blank');
-    msg.textContent = '✓ Промокод отправлен в @' + BOT;
+    msg.textContent = '✓ Промокод будет применён в @' + BOT + ' — вернитесь после подтверждения';
     msg.className   = 'pmsg ok';
   }
 }
