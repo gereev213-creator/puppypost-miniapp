@@ -111,21 +111,24 @@ input.pi{padding-right:32px}
 
 /* AI IMPROVE */
 .ai-row{display:flex;gap:8px;margin-top:8px}
-.ai-btn{display:flex;align-items:center;gap:6px;background:var(--or-bg);border:1.5px solid var(--or-bd);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;color:var(--or);cursor:pointer;-webkit-appearance:none;transition:all .15s;flex-shrink:0}
+.ai-btn{display:flex;align-items:center;gap:6px;background:var(--or-bg);border:1.5px solid var(--or-bd);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;color:var(--or);cursor:pointer;-webkit-appearance:none;transition:all .15s;flex:1;justify-content:center}
 .ai-btn:active{transform:scale(.96)}
 .ai-btn:disabled{opacity:.5;cursor:not-allowed}
+.ai-ic{font-size:15px;line-height:1}
 .ai-spin{width:14px;height:14px;border:2px solid var(--or-bd);border-top-color:var(--or);border-radius:50%;animation:spin .6s linear infinite;display:none}
 .ai-btn.loading .ai-spin{display:block}
 .ai-btn.loading .ai-ic{display:none}
 .ai-msg{font-size:12px;color:var(--sub);margin-top:6px;display:none}
 .ai-msg.on{display:block}
 .ai-accept{background:var(--gr);color:#fff;border-color:var(--gr)}
+.edit-btn{width:100%;margin-top:14px;padding:13px;background:var(--bg);border:2px solid var(--bd);border-radius:var(--r);font-size:14px;font-weight:700;color:var(--sub);cursor:pointer;-webkit-appearance:none;transition:all .15s}
+.edit-btn:active{background:var(--bd)}
 
 /* PHOTOS */
 .ph-lmt{display:inline-flex;align-items:center;gap:5px;background:var(--w);border:1px solid var(--or-bd);border-radius:99px;padding:4px 11px;font-size:11px;font-weight:700;color:var(--or);margin-bottom:11px}
 .ph-zone{border:2px dashed var(--or-bd);border-radius:var(--r);background:var(--or-bg);padding:13px}
 .ph-zone-lbl{display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:11px}
-.ph-zone-ic{width:40px;height:40px;border-radius:9px;background:var(--or);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.ph-zone-ic{width:40px;height:40px;border-radius:9px;background:var(--or);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:24px;font-weight:300;line-height:1}
 .ph-zone-t{font-size:13px;font-weight:700;color:var(--or)}
 .ph-zone-s{font-size:11px;color:var(--sub);margin-top:2px}
 .ph-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
@@ -139,29 +142,42 @@ input[type=file]{display:none}
 
 
 
-/* PREVIEW */
-.prev{background:var(--w);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;box-shadow:0 2px 14px rgba(255,77,18,.07)}
-.ph{background:linear-gradient(135deg,var(--or),var(--or2));padding:14px 17px;color:#fff}
-.pcat{font-size:10px;font-weight:700;opacity:.75;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
-.pt{font-size:17px;font-weight:800;line-height:1.3}
-.pp{font-size:22px;font-weight:900;margin-top:6px}
-.pph{display:flex;gap:5px;padding:10px 17px 0;overflow-x:auto}
-.pphoto{width:60px;height:60px;border-radius:7px;object-fit:cover;flex-shrink:0;background:#E0E0E0}
-.pb2{padding:12px 17px}
-.pr{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #F5F5F5;font-size:13px}
-.pr:last-child{border-bottom:none}
-.pr-l{color:var(--sub);min-width:72px;font-size:12px}
-.pr-v{font-weight:600;color:var(--tx)}
-.legit-b{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#FFB800,#FF6B00);color:#fff;border-radius:99px;padding:3px 10px;font-size:10px;font-weight:800;margin-bottom:8px}
+/* PREVIEW — стиль канала бота */
+.prev-wrap{background:var(--w);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.prev-body{padding:14px 16px 16px}
+.prev-legit{display:inline-flex;align-items:center;background:linear-gradient(135deg,#FFB800,#FF6B00);color:#fff;border-radius:99px;padding:3px 11px;font-size:11px;font-weight:800;margin-bottom:9px}
+.prev-title{font-size:16px;font-weight:800;line-height:1.35;margin-bottom:8px;color:var(--tx)}
+.prev-desc{font-size:13px;color:var(--sub);line-height:1.5;margin-bottom:10px;white-space:pre-wrap}
+.prev-price{font-size:15px;font-weight:800;color:var(--tx);margin-bottom:6px}
+.prev-row{font-size:13px;color:var(--tx);margin-bottom:3px;line-height:1.4}
+.pph{display:flex;gap:5px;padding:10px 16px 0;overflow-x:auto}
+.pphoto{width:80px;height:80px;border-radius:8px;object-fit:cover;flex-shrink:0}
 
+/* SHIMMER ANIMATIONS */
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 4px 12px rgba(255,77,18,.28)}50%{box-shadow:0 4px 22px rgba(255,77,18,.55)}}
+@keyframes slide-shine{0%{transform:translateX(-100%) skewX(-15deg)}100%{transform:translateX(300%) skewX(-15deg)}}
+.bnx{flex:1;height:46px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .13s;-webkit-appearance:none;box-shadow:0 4px 12px rgba(255,77,18,.28);position:relative;overflow:hidden;animation:pulse-glow 2.4s ease-in-out infinite}
+.bnx::after{content:'';position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:slide-shine 2s ease-in-out infinite}
+.bnx:active{transform:scale(.97);animation:none}
+.bnx.sub{background:linear-gradient(135deg,#16A34A,var(--gr));box-shadow:0 4px 12px rgba(34,197,94,.28);animation:none}
+.bnx.sub::after{display:none}
+.ai-btn{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--or-bg),#FFF7F4);border:1.5px solid var(--or-bd);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;color:var(--or);cursor:pointer;-webkit-appearance:none;transition:all .15s;flex:1;justify-content:center;position:relative;overflow:hidden}
+.ai-btn::after{content:'';position:absolute;top:0;left:0;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:slide-shine 3s ease-in-out infinite}
+.ai-btn:active{transform:scale(.96)}
+.ai-btn:disabled{opacity:.5;cursor:not-allowed}
+.ai-btn:disabled::after{display:none}
+
+/* EDIT MENU */
+.edit-menu{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--w);border-radius:18px 18px 0 0;padding:8px 16px 32px;box-shadow:0 -4px 24px rgba(0,0,0,.12)}
+.edit-menu-t{font-size:13px;font-weight:700;color:var(--sub);text-align:center;padding:12px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+.edit-menu-row{width:100%;padding:14px 0;border:none;background:none;font-size:15px;font-weight:600;color:var(--tx);cursor:pointer;text-align:left;border-bottom:1px solid var(--bd);display:block;-webkit-appearance:none}
+.edit-menu-cancel{width:100%;padding:14px 0;border:none;background:none;font-size:15px;font-weight:600;color:#EF4444;cursor:pointer;text-align:center;margin-top:6px;display:block;-webkit-appearance:none}
 /* BOTTOM BAR */
 .bar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--w);border-top:1px solid var(--bd);padding:9px 16px 18px;display:flex;gap:9px}
 .bbk{flex:0 0 44px;height:46px;background:var(--bg);border:2px solid var(--bd);border-radius:11px;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-appearance:none;color:var(--tx);transition:all .13s}
 .bbk:active{transform:scale(.93)}
 .bbk:disabled{opacity:.3;pointer-events:none}
-.bnx{flex:1;height:46px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .13s;-webkit-appearance:none;box-shadow:0 4px 12px rgba(255,77,18,.28)}
-.bnx:active{transform:scale(.97)}
-.bnx.sub{background:linear-gradient(135deg,#16A34A,var(--gr));box-shadow:0 4px 12px rgba(34,197,94,.28)}
 
 /* SUCCESS */
 #sok{text-align:center;padding-top:20px}
@@ -348,13 +364,18 @@ input[type=file]{display:none}
   </div>
   <div class="fld">
     <label class="lb">Описание <span style="font-weight:400;text-transform:none">(необязательно)</span></label>
-    <textarea id="i-desc" placeholder="Расскажите подробнее: состояние, дефекты, история покупки…" maxlength="1000" oninput="cnt('i-desc','c-d',1000)"></textarea>
+    <textarea id="i-desc" placeholder="Опишите товар или нажмите «Сгенерировать» — ИИ составит описание из заполненных данных" maxlength="1000" oninput="cnt('i-desc','c-d',1000)"></textarea>
     <div class="cc" id="c-d">0 / 1000</div>
     <div class="ai-row">
-      <button class="ai-btn" id="ai-btn" onclick="improveDesc()" title="Улучшить описание с помощью ИИ">
-        <span class="ai-ic"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <button class="ai-btn" id="ai-gen-btn" onclick="generateDesc()" title="Сгенерировать описание по данным товара">
+        <span class="ai-ic">✦</span>
         <div class="ai-spin"></div>
-        Улучшить с ИИ
+        Сгенерировать
+      </button>
+      <button class="ai-btn" id="ai-btn" onclick="improveDesc()" title="Улучшить написанное описание">
+        <span class="ai-ic">↑</span>
+        <div class="ai-spin"></div>
+        Улучшить
       </button>
     </div>
     <div class="ai-msg" id="ai-msg"></div>
@@ -382,7 +403,7 @@ input[type=file]{display:none}
   </div>
   <div class="ph-zone">
     <label class="ph-zone-lbl" for="fi" id="phl">
-      <div class="ph-zone-ic"><svg style="width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20.94 13A9 9 0 1121 12"/><path d="M16 19h6M19 16v6"/></svg></div>
+      <div class="ph-zone-ic">+</div>
       <div><div class="ph-zone-t" id="phat">Добавить фото</div><div class="ph-zone-s">Нажмите чтобы выбрать из галереи</div></div>
     </label>
     <div class="ph-grid" id="phg"></div>
@@ -395,13 +416,14 @@ input[type=file]{display:none}
 <!-- S12 PREVIEW -->
 <div class="scr" id="s12">
   <div class="st">Предпросмотр</div>
-  <div class="ss">Проверьте всё перед отправкой</div>
+  <div class="ss">Так объявление увидят покупатели</div>
   <div class="prev" id="prev"></div>
+  <button class="edit-btn" onclick="goToEdit()">Редактировать объявление</button>
 </div>
 
 <!-- SUCCESS -->
 <div class="scr" id="sok">
-  <div class="ok-ic">✓</div>
+  <div class="ok-ic" style="font-size:26px;font-weight:700">✓</div>
   <div class="ok-t">Объявление отправлено!</div>
   <div class="ok-s">Ваше объявление на модерации.<br>Обычно проверка занимает до 30 минут.<br>Мы уведомим вас о результате.</div>
 </div>
@@ -409,6 +431,7 @@ input[type=file]{display:none}
 </div>
 
 <!-- BAR -->
+<div id="edit-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300" onclick="closeEditMenu()"></div>
 <div class="bar" id="bar">
   <button class="bbk" id="bbk" onclick="goBack()" disabled>←</button>
   <button class="bnx" id="bnx" onclick="goNext()">Далее →</button>
@@ -507,6 +530,7 @@ function prepS(n){
   if(n===4) updateTitlePlaceholder();
   if(n===5) buildCond();
   if(n===6) buildSz();
+  if(n===7) initCity();
   if(n===11)buildPh();
   if(n===12)buildPrev();
 }
@@ -530,6 +554,37 @@ function updateTitlePlaceholder(){
 
 function goNext(){if(!valid(step))return;collect(step);const nx=nxt(step);if(!nx||step===MAX){submit();return;}prepS(nx);show(nx);}
 function goBack(){const pv=prv(step);if(pv)show(pv);}
+function goToEdit(){
+  // Показываем меню редактирования — выбор шага
+  const steps=[
+    {n:1,lbl:'Категория'},
+    {n:2,lbl:'Тип размещения'},
+    {n:4,lbl:'Название'},
+    {n:5,lbl:'Состояние'},
+    {n:7,lbl:'Город'},
+    {n:8,lbl:'Доставка'},
+    {n:9,lbl:'Цена и описание'},
+    {n:10,lbl:'Контакты'},
+    {n:11,lbl:'Фотографии'},
+  ].filter(s=>nxt(s.n-1)!==null||s.n===1);
+  const menu=document.getElementById('edit-menu');
+  if(!menu){
+    const m=document.createElement('div');m.id='edit-menu';m.className='edit-menu';
+    m.innerHTML='<div class="edit-menu-t">Что редактировать?</div>'+
+      steps.map(s=>`<button class="edit-menu-row" onclick="goToStep(${s.n})">${s.lbl}</button>`).join('')+
+      '<button class="edit-menu-cancel" onclick="closeEditMenu()">Отмена</button>';
+    document.body.appendChild(m);
+    document.getElementById('edit-overlay').style.display='block';
+  } else {
+    menu.style.display='block';
+    document.getElementById('edit-overlay').style.display='block';
+  }
+}
+function goToStep(n){closeEditMenu();prepS(n);show(n);}
+function closeEditMenu(){
+  const m=document.getElementById('edit-menu');if(m)m.style.display='none';
+  document.getElementById('edit-overlay').style.display='none';
+}
 
 // ─── GENDER SUBS ──────────────────────────────
 function updateGndSubs(){
@@ -592,9 +647,12 @@ function initCity(){
   const pg=document.getElementById('pg');pg.innerHTML='';
   POP.forEach(c=>{
     const b=document.createElement('button');b.className='pb'+(S.city===c?' s':'');b.textContent=c;b.dataset.v=c;
-    b.onclick=()=>{S.city=c;document.querySelectorAll('.pb').forEach(x=>x.classList.remove('s'));b.classList.add('s');showCS(c);};
+    b.onclick=()=>{S.city=c;document.querySelectorAll('.pb').forEach(x=>x.classList.remove('s'));b.classList.add('s');showCS(c);hideE('e-city');};
     pg.appendChild(b);
   });
+  // Если город уже выбран — показываем бейдж, скрываем поле
+  if(S.city){showCS(S.city);}
+  else{document.getElementById('csd').style.display='none';document.getElementById('cia').style.display='block';}
 }
 function cityF(){if(document.getElementById('i-city').value)cityS();}
 function cityS(){
@@ -607,12 +665,81 @@ function cityS(){
   dd.classList.add('op');
 }
 function chooseC(c){S.city=c;document.getElementById('cdd').classList.remove('op');document.getElementById('i-city').value='';document.querySelectorAll('.pb').forEach(b=>b.classList.toggle('s',b.dataset.v===c));showCS(c);hideE('e-city');}
-function showCS(c){document.getElementById('csn').textContent=c;document.getElementById('csd').style.display='flex';}
-function clrCity(){S.city='';document.getElementById('csd').style.display='none';document.getElementById('i-city').value='';document.querySelectorAll('.pb').forEach(b=>b.classList.remove('s'));}
+function showCS(c){document.getElementById('csn').textContent=c;document.getElementById('csd').style.display='flex';document.getElementById('cia').style.display='none';}
+function clrCity(){S.city='';document.getElementById('csd').style.display='none';document.getElementById('cia').style.display='block';document.getElementById('i-city').value='';document.querySelectorAll('.pb').forEach(b=>b.classList.remove('s'));}
 document.addEventListener('click',e=>{if(!e.target.closest('#s7'))document.getElementById('cdd')?.classList.remove('op');});
 
 // ─── AI DESCRIPTION ───────────────────────────
+const GROQ_KEY='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';
 let aiOriginal='';
+
+function collectAdInfo(){
+  const title=document.getElementById('i-t')?.value.trim()||S.title||'';
+  const price=document.getElementById('i-pr')?.value||S.price||'';
+  const condEl=document.querySelector('#cond-ch .chip.s');
+  const cond=condEl?condEl.dataset.v.replace('· ',''):S.cond||'';
+  const szEl=document.querySelector('#sz-ch .chip.s');
+  const size=szEl&&szEl.dataset.v==='__c__'?document.getElementById('i-sz').value.trim():(szEl?szEl.dataset.v:(S.size||''));
+  return {title,price,category:S.cat||'',condition:cond,size,gender:S.gender||'',city:S.city||''};
+}
+
+async function groqCall(systemPrompt, userContent){
+  const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+    body:JSON.stringify({
+      model:'llama3-8b-8192',
+      messages:[
+        {role:'system',content:systemPrompt},
+        {role:'user',content:userContent}
+      ],
+      max_tokens:350,
+      temperature:0.75
+    })
+  });
+  if(!r.ok) throw new Error('groq '+r.status);
+  const d=await r.json();
+  const txt=(d.choices?.[0]?.message?.content||'').trim();
+  if(!txt) throw new Error('empty');
+  return txt;
+}
+
+async function generateDesc(){
+  const info=collectAdInfo();
+  if(!info.title){showMsg('ai-msg','Сначала укажите название товара на шаге 4',false);return;}
+  const btn=document.getElementById('ai-gen-btn');
+  btn.disabled=true;btn.classList.add('loading');
+  showMsg('ai-msg','',false);
+  const system=`Ты помогаешь продавцам на российском маркетплейсе составлять описания объявлений. Пиши живым, естественным языком как на Авито. Описание должно быть связным, привлекательным и честным. Никаких списков, никаких эмодзи. Только связный текст, 2-3 предложения. Не придумывай детали которых нет в данных. Отвечай ТОЛЬКО текстом описания.`;
+  const parts=[];
+  parts.push('Название: '+info.title);
+  if(info.category) parts.push('Категория: '+info.category);
+  if(info.condition) parts.push('Состояние: '+info.condition);
+  if(info.size) parts.push('Размер: '+info.size);
+  if(info.gender) parts.push('Для кого: '+info.gender.toLowerCase());
+  if(info.city) parts.push('Город: '+info.city);
+  if(info.price) parts.push('Цена: '+info.price+' руб');
+  try{
+    const generated=await groqCall(system, parts.join('\n'));
+    document.getElementById('i-desc').value=generated;
+    cnt('i-desc','c-d',1000);
+    showMsg('ai-msg','Готово — можете отредактировать',true);
+  }catch(e){
+    console.warn('gen err',e);
+    let fb=info.title;
+    if(info.condition) fb+=', '+info.condition.toLowerCase();
+    if(info.size) fb+=', размер '+info.size;
+    fb+='.';
+    if(info.city) fb+=' Продаю в '+info.city+'.';
+    fb+=' Торг уместен, отвечу на вопросы.';
+    document.getElementById('i-desc').value=fb;
+    cnt('i-desc','c-d',1000);
+    showMsg('ai-msg','Описание составлено — отредактируйте под себя',true);
+  }finally{
+    btn.disabled=false;btn.classList.remove('loading');
+  }
+}
+
 async function improveDesc(){
   const txt=document.getElementById('i-desc').value.trim();
   if(txt.length<5){showMsg('ai-msg','Сначала напишите описание',false);return;}
@@ -620,45 +747,23 @@ async function improveDesc(){
   const btn=document.getElementById('ai-btn');
   btn.disabled=true;btn.classList.add('loading');
   showMsg('ai-msg','',false);
+  const system=`Ты редактор объявлений для российского маркетплейса. Улучши текст: сделай его более живым и привлекательным как на Авито. Сохрани все факты из оригинала, ничего не придумывай. Никаких списков, никаких эмодзи. Связный текст 2-3 предложения. Отвечай ТОЛЬКО улучшенным текстом.`;
   try{
-    const prompt=
-      `Улучши описание товара для объявления на маркетплейсе.\n`+
-      `Товар: ${document.getElementById('i-t').value.trim()||'—'}\nКатегория: ${S.cat||'—'}\n\n`+
-      `Сделай описание структурированным, честным и привлекательным.\n`+
-      `Не придумывай детали которых нет в оригинале.\n`+
-      `Отвечай ТОЛЬКО улучшенным текстом, без пояснений и заголовков.\n\n`+
-      `Оригинал: ${txt}`;
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':'','anthropic-version':'2023-06-01'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:400,messages:[{role:'user',content:prompt}]})
-    });
-    if(!r.ok)throw new Error('api '+r.status);
-    const d=await r.json();
-    const improved=(d.content?.[0]?.text||'').trim();
-    if(improved){
-      document.getElementById('i-desc').value=improved;
+    const improved=await groqCall(system, txt);
+    document.getElementById('i-desc').value=improved;
+    cnt('i-desc','c-d',1000);
+    showMsg('ai-msg','Улучшено — проверьте текст',true);
+    btn.innerHTML='<span class="ai-ic">↩</span> Вернуть';
+    btn.onclick=()=>{
+      document.getElementById('i-desc').value=aiOriginal;
       cnt('i-desc','c-d',1000);
-      showMsg('ai-msg','Описание улучшено — проверьте текст выше',true);
-      btn.textContent='Вернуть оригинал';
-      btn.onclick=()=>{document.getElementById('i-desc').value=aiOriginal;cnt('i-desc','c-d',1000);showMsg('ai-msg','',false);btn.textContent='Улучшить с ИИ';btn.onclick=improveDesc;};
-    }else{
-      showMsg('ai-msg','Не удалось улучшить — попробуйте позже',false);
-    }
+      showMsg('ai-msg','',false);
+      btn.innerHTML='<span class="ai-ic">↑</span> Улучшить';
+      btn.onclick=improveDesc;
+    };
   }catch(e){
-    console.warn('ai err',e);
-    // Fallback: простое улучшение без AI — добавляем структуру
-    const lines=txt.split(/[.\n]+/).map(s=>s.trim()).filter(Boolean);
-    if(lines.length>1){
-      const improved=lines.map(l=>l.endsWith('.')?l:l+'.').join('\n');
-      document.getElementById('i-desc').value=improved;
-      cnt('i-desc','c-d',1000);
-      showMsg('ai-msg','Описание структурировано',true);
-      btn.textContent='Вернуть оригинал';
-      btn.onclick=()=>{document.getElementById('i-desc').value=aiOriginal;cnt('i-desc','c-d',1000);showMsg('ai-msg','',false);btn.textContent='Улучшить с ИИ';btn.onclick=improveDesc;};
-    }else{
-      showMsg('ai-msg','Ошибка соединения — попробуйте позже',false);
-    }
+    console.warn('improve err',e);
+    showMsg('ai-msg','Ошибка — попробуйте позже',false);
   }finally{
     btn.disabled=false;btn.classList.remove('loading');
   }
@@ -727,20 +832,27 @@ async function uploadPhs(){
 // ─── PREVIEW ──────────────────────────────────
 function buildPrev(){
   const price=Number(S.price).toLocaleString('ru-RU');
-  const dlvs=S.dlv.join(', ');
   const isL=S.legit===1;
+  const dlvs=S.dlv.join(', ');
+
+  // Фото (горизонтальный скролл)
   const phH=pf.length?'<div class="pph">'+pf.map(p=>'<img class="pphoto" src="'+p.prev+'">').join('')+'</div>':'';
-  let rows='';
-  const row=(lbl,val)=>{if(!val)return;rows+=`<div class="pr"><span class="pr-l">${lbl}</span><span class="pr-v">${esc(val)}</span></div>`;};
-  row('Категория',S.cat);
-  if(S.cond)row('Состояние',S.cond);
-  if(S.size)row('Размер',S.size);
-  if(S.gender)row('Для кого',S.gender);
-  row('Город',S.city);
-  row('Доставка',dlvs);
-  if(S.desc)row('Описание',S.desc.slice(0,80)+(S.desc.length>80?'…':''));
-  row('Контакт',S.contact);
-  document.getElementById('prev').innerHTML=`<div class="ph">${isL?'<div class="legit-b">◆ ЛЕГИТ · ОРИГИНАЛ</div>':''}<div class="pcat">${esc(S.cat)}</div><div class="pt">${esc(S.title)}</div><div class="pp">${price} ₽</div></div>${phH}<div class="pb2">${rows}</div>`;
+
+  // Текст объявления — точный формат канала бота
+  let txt='';
+  if(isL) txt+='<div class="prev-legit">◆ ЛЕГИТ · ОРИГИНАЛ</div>';
+  txt+=`<div class="prev-title">${esc(S.title)}</div>`;
+  if(S.desc) txt+=`<div class="prev-desc">${esc(S.desc)}</div>`;
+  txt+=`<div class="prev-price">Цена: ${price} ₽</div>`;
+  if(isL) txt+='<div class="prev-row">✓ Проверено модерацией Легит</div>';
+  if(S.cond) txt+=`<div class="prev-row">Состояние: ${esc(S.cond)}</div>`;
+  if(S.size) txt+=`<div class="prev-row">Размер: ${esc(S.size)}</div>`;
+  if(S.gender) txt+=`<div class="prev-row">Для: ${esc(S.gender.toLowerCase())} одежда</div>`;
+  if(S.city) txt+=`<div class="prev-row">Город: ${esc(S.city)}</div>`;
+  if(dlvs) txt+=`<div class="prev-row">Доставка: ${esc(dlvs)}</div>`;
+
+  // Кнопок нет — только контент объявления
+  document.getElementById('prev').innerHTML=`<div class="prev-wrap">${phH}<div class="prev-body">${txt}</div></div>`;
 }
 
 // ─── SELECTORS ────────────────────────────────
@@ -793,7 +905,7 @@ async function submit(){
   const payload={action:'create_ad',category:S.cat,is_legit:S.legit,title:S.title,condition:S.cond,size:S.size,gender:S.gender,city:S.city,delivery:S.dlv.join(', '),price:Number(S.price),description:S.desc,contact_info:S.contact,photo_ids:S.photoIds,tariff:TARIFF};
   await new Promise(r=>setTimeout(r,300));
   setL(false);
-  if(tg?.sendData){tg.sendData(JSON.stringify(payload));}
+  if(tg?.sendData){tg.sendData(JSON.stringify(payload));tg.close();}
   else{console.log('DEV:',payload);showOk();}
 }
 function showOk(){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('active'));document.getElementById('sok').classList.add('active');document.getElementById('bar').style.display='none';document.getElementById('slbl').textContent='Готово!';document.getElementById('pf').style.width='100%';}
